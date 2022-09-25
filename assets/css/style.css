@@ -1,0 +1,55 @@
+* {
+    transition: all 0.3s;
+}
+
+.previous-container {
+    width: 100%;
+}
+
+.previous li .delete {
+    opacity: 0;
+}
+
+.previous li:hover .delete {
+    opacity: 1;
+}
+
+.previous li span.copied {
+    font-size: 20px;
+}
+
+.notes {
+    height: 400px;
+}
+
+.table input {
+    height: 35px;
+}
+
+.alert {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0px;
+}
+
+.alert button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    height: fit-content;
+    margin-right: 10px;
+}
+
+.alert p {
+    margin-bottom: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (min-width: 767px) {
+    .previous-container {
+        width: 400px;
+    }
+}
