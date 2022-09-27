@@ -62,7 +62,6 @@ function send_post(requestType, postDataObject) {
         } else if (requestType == 'table') {
             addPreviousAnswer('Tabel berekening', response.message);
         }
-
     });
 }
 

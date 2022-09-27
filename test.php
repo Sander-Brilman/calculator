@@ -12,11 +12,19 @@ require_once('assets/php/load_files.php');
 // as [datatype]
 
 
-dump(get_power_of_from_datatype('m[1]'));
-dump(get_power_of_from_datatype('m[2]'));
-dump(get_power_of_from_datatype('m[3]'));
+dump(calculate_string('( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) as km'));
+// dump(calculate_string('( ( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) ) as km'));
 
-echo calculate_string('2000 m + 0.8 m/s * 300 sec + 5 m * 3 m as km');
+// dump(calculate_string('4 number as km'));
+
+
+$t = new number(11);
+
+
+// 2 m1 * 5 m2 == 10 m3
+
+// 7 m1 / 2 m2
+
 
 
 

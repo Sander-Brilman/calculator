@@ -1,318 +1,146 @@
 <?php
-<<<<<<< HEAD:assets/php/functions/calculating.php
-function process_table_request()
-=======
-
-
-
-function process_string_request()
->>>>>>> dad8ef153e9fe83750f70e70a38a26d1e3410f14:assets/php/functions.php
-{
-    /**
-     * Handles the request for table calculations
-     * 
-     * Includes error handeling & input validation
-     */
-<<<<<<< HEAD:assets/php/functions/calculating.php
-    
-    for ($i = 1; $i <= 4; $i++) { 
-        if (!isset($_REQUEST['cell'.$i])) {
-            return_error('Cell '.$i.' is missing');
-        }
-=======
-
-    // set_error_handler('exceptions_error_handler');
-
-    // function exceptions_error_handler($severity, $message, $filename, $lineno) {
-    //     if (error_reporting() == 0) {
-    //         return;
-    //     }
-    //     if (error_reporting() & $severity) {
-    //         throw new ErrorException($message, 0, $severity, $filename, $lineno);
-    //     }
-    // }
-
-
-    error_reporting(E_ERROR | E_PARSE);
-
-
-    if (!isset($_REQUEST['sum'])) {
-        request_error('No sum given to calculate');
->>>>>>> dad8ef153e9fe83750f70e70a38a26d1e3410f14:assets/php/functions.php
-    }
-
-    $cell1 = comma_to_dot($_REQUEST['cell1']);
-    $cell2 = comma_to_dot($_REQUEST['cell2']);
-    $cell3 = comma_to_dot($_REQUEST['cell3']);
-    $cell4 = comma_to_dot($_REQUEST['cell4']);
-
-    function table_calculation($multiply1, $multiply2, $divide)
-    {
-        return ($multiply1 * $multiply2) / $divide;
-    }
-
-    switch (null) {
-        case $cell1:
-            $answer = table_calculation($cell2, $cell3, $cell4);
-            break;
-        case $cell2:
-            $answer = table_calculation($cell1, $cell4, $cell3);
-            break;
-        case $cell3:
-            $answer = table_calculation($cell1, $cell4, $cell2);
-            break;
-        case $cell4:
-            $answer = table_calculation($cell2, $cell3, $cell1);
-            break;
-        default:
-            $answer = 'No empty cells';
-            break;
-    }
-
-<<<<<<< HEAD:assets/php/functions/calculating.php
-    return_response('success', $answer, ['answer' => $answer]);
-=======
-function process_table_request()
-{
-    /**
-     * Handles the request for table calculations
-     * 
-     * Includes error handeling & input validation
-     */
-
-    for ($i = 1; $i <= 4; $i++) { 
-        if (!isset($_REQUEST['cell'.$i])) {
-            request_error('Cell '.$i.' is missing');
-        }
-    }
-
-    $answer = calculate_missing_value(
-        $_REQUEST['cell1'],
-        $_REQUEST['cell2'],
-        $_REQUEST['cell3'],
-        $_REQUEST['cell4'],
-    );
-
-    request_response('success', $answer, ['answer' => $answer]);
->>>>>>> dad8ef153e9fe83750f70e70a38a26d1e3410f14:assets/php/functions.php
-}
-
-function calculate_string_old(string $sum)
-{
-    /**
-     * MEDICAL ADVICE:
-     * Don't attempt to read/edit this code. It will be at the cost of your mental health
-     * 
-     * does the actual calculating of the sum
-     */
-    
-    try {
-
-        $valid_caractars = array(//lijst met geldige operators
-            '(',
-            ')',
-            '^' => 4,   
-            '*' => 3,
-            '/' => 3,    
-            '+' => 2,
-            '-' => 2,
-            '%' => 1,
-        );
-    
-        $opening_haakje = 0;
-    
-        $rekensom = '(' . $sum . ')';
-    
-        // replace characters
-        $rekensom = str_replace(' ', '', $rekensom); 
-        $rekensom = str_replace('**', '^', $rekensom);
-        $rekensom = str_replace(')', ' )', $rekensom);
-        $rekensom = str_replace('(', '( ', $rekensom);
-        $rekensom = str_replace(':', '/', $rekensom);
-        $rekensom = str_replace('x', '*', $rekensom);
-        $rekensom = str_replace('X', '*', $rekensom);
-        $rekensom = str_replace(',', '.', $rekensom);
-    
-        $rekensom = str_replace('*', ' * ', $rekensom);
-        $rekensom = str_replace('^', ' ^ ', $rekensom);
-        $rekensom = str_replace('/', ' / ', $rekensom);
-        $rekensom = str_replace('%', ' % ', $rekensom);
-        $rekensom = str_replace('+', ' + ', $rekensom);
-        $rekensom = str_replace('-', ' - ', $rekensom);
-    
-        $rekensom = str_replace(PHP_EOL, '', $rekensom);
-    
-        $totale_array = explode(' ', $rekensom);
-    
-        $teller = 0;
-        foreach ($totale_array as $current_caracter) {//loop through the array and remove cells that are not valid
-    
-            $valid = false;
-    
-            foreach ($valid_caractars as $current_valid_caracter => $value) {
-    
-                if (!is_numeric($current_caracter)) {
-    
-                    if ($current_caracter == $current_valid_caracter) {
-    
-                        $valid = true;
-    
-                    }
-    
-                } else {
-    
-                    $valid = true;
-    
-                }
-    
-            }
-    
-            if ($valid == false) {
-    
-                unset($totale_array[$teller]);
-    
-                $totale_array = array_values($totale_array);
-    
-            } else {
-    
-                $teller++;
-    
-            }
-    
-        }
-    
-        function opdracht($valid_caractars, $huidige_array) {//de functie van het bepalen van de opdracht die moet worden uitgevoert.
-    
-            $opdrachten = array();
-    
-            $counter = 0;
-            foreach ($huidige_array as $onderdeel) {
-                if ($onderdeel != '(' && $onderdeel != ')') {
-                    if (isset($valid_caractars[$onderdeel])) {
-                        $opdrachten["$onderdeel->$counter"] = $valid_caractars[$onderdeel];
-                    }
-                }
-                $counter++;
-            }
-    
-            arsort($opdrachten);
-    
-            $repeat = true;
-            foreach ($opdrachten as $name => $value) {
-                if ($repeat) {
-                    return explode('->', $name);
-                }
-            }
-    
-        }
-    
-        $huidige_array = $totale_array;
-        $ophalen = false;
-    
-        do {//loop for solving the calculations
-    
-            for ($teller = 0; $teller <= sizeof($totale_array); $teller++) {// search for brackets
-    
-                $weghalen = false;
-    
-                if ($ophalen == true) {//get data from total list to current list
-    
-                    $huidige_array[] = $totale_array[$teller];
-    
-                }    
-    
-                if (isset($totale_array[$teller]) && $totale_array[$teller] == '(') {//when opening bracket is found
-    
-                    $opening_haakje = $teller;
-                    $huidige_array = array(// reset current list
-                        '(',
-                    );
-                    $ophalen = true;
-    
-                } elseif (isset($totale_array[$teller]) && $totale_array[$teller] == ')') {// when closing bracket has been found
-    
-                    $sluiting_haakje = $teller;
-                    $ophalen = false;
-    
-                    do {//de loop voor de sommen oplossen in 1 haakjes
-    
-                        $opdracht = opdracht($valid_caractars, $huidige_array);
-    
-                        $locatie = $opdracht[1];
-    
-                        $getal1 = $huidige_array[$locatie - 1];
-                        $getal2 = $huidige_array[$locatie + 1];
-    
-                        if ($opdracht[0] == '*') {//als het een keer opdracht is
-                            $andwoord = $getal1 * $getal2;
-                        } elseif ($opdracht[0] == '/') {//als het een gededeeld door opdracht is
-                            $andwoord = $getal1 / $getal2;
-                        } elseif ($opdracht[0] == '+') {//als het een plus opdracht is
-                            $andwoord = $getal1 + $getal2;
-                        } elseif ($opdracht[0] == '-') {// als het een min opdracht is
-                            $andwoord = $getal1 - $getal2;
-                        } elseif ($opdracht[0] == '%') {
-                            $andwoord = ($getal1 * $getal2) / 100;
-                        } elseif ($opdracht[0] == '^') {
-                            $andwoord = $getal1 ** $getal2;
-                        }
-    
-                        //haal de som van de huidige lijst weg
-                        unset($huidige_array[$locatie + 1]);
-                        unset($huidige_array[$locatie - 1]);
-                        $huidige_array[$locatie] = $andwoord;
-    
-                        $huidige_array = array_values($huidige_array);
-    
-                        $weghalen = true;
-    
-                    } while (sizeof($huidige_array) > 3);
-    
-                    if ($weghalen == true) {// remove brackets from total list
-    
-    
-                        $totale_array[$sluiting_haakje] = $andwoord;
-    
-                        for ($i = $opening_haakje; $i <= $sluiting_haakje - 1; $i++) {
-    
-                            unset($totale_array[$i]);
-    
-                        }
-    
-                        $totale_array = array_values($totale_array);
-    
-                        $teller = -1;
-    
-                    }
-    
-                }
-    
-            }
-    
-        } while (sizeof($totale_array) > 3);
-    
-        return $andwoord;
-
-    } catch (Error $e) {
-
-        return_error('Incorrecte som opgegeven');
-
-    } catch (Exception $ex) {
-
-        return_error('Incorrecte som opgegeven');
-
-    }
-
-
-}
 
 function calculate_string(string $full_calculate_string)
 {
-    $splitted_string = explode(' as ', $full_calculate_string);
+    /**
+     * Takes the parsed string and calculates the result. The given string must be fully formatted & parsed.
+     * Will throw Exceptions on error.
+     * 
+     * @param string $full_calculate_string The full formatted & parsed string
+     * 
+     * @return mixed The converted result of the calculation.
+     */
+    $splitted_string   = explode(' as ', $full_calculate_string);
+    $final_return_type = $splitted_string[1];
 
-    $sum = $splitted_string[0];
-    $return_type = $splitted_string[1];
+    $sum_string        = $splitted_string[0];
+    $sum_array         = str_to_sum_array($sum_string);
 
+    // replace [value] [datatype] pair with datatype objects
+    $sum_array = set_datatypes_recursive($sum_array);
+
+    // calculate the converted array in appropriate order
+    $result_datatype = calculate_array_recursive($sum_array);
+
+    // convert to requested datatype
+    $result = $result_datatype->convert_to($final_return_type);
+
+    return $result;
+}
+
+function str_to_sum_array(string $sum_string): array
+{
+    /**
+     * split sum on the spaces.
+     * Divides parts into nested arrays if brackets they are wrapped in round brackets
+     * 
+     * @param string $sum_string the full parsed sum string
+     * 
+     * @return array A new multidimensional array with the sum splitted
+     */
+    $sum_array      = explode(' ', $sum_string);
+
+    do {
+        $sum_length     = sizeof($sum_array);
+        $open_bracket   = null;
+
+        for ($index = 0; $index < $sum_length; $index++) {
+            $char = $sum_array[$index];
+
+            if ($char == '(') {
+                $open_bracket = $index;
+            } else if ($char == ')') {
+                unset($sum_array[$index]);
+                $sum_array[$open_bracket] = array_splice($sum_array, $open_bracket + 1, $index - 1 - $open_bracket);
+                break;
+            }
+        }
+
+        $sum_array = array_values($sum_array);
+    } while ($open_bracket !== null);
+    
+    return $sum_array;
+}
+
+function set_datatypes_recursive(array $array): array
+{
+    /**
+     * Convert array with [value] [datatype] pair to datatype object
+     * Is used recursively to make sure all nested arrays are converted
+     * 
+     * @param array $array The array to preform the conversion on
+     * 
+     * @return array A new array with [value] [datatype] pair replaced with corresponding objects
+     */
+    $operators = [
+        '^',   
+        '*',
+        '/',    
+        '+',
+        '-',
+        '%',
+    ];
+    $value          = '';
+    $array_length   = sizeof($array);
+    for ($index = 0; $index < $array_length; $index++) {
+        $array_item = $array[$index];
+
+        if (is_array($array_item)) {
+            // recursive replacement
+            $array[$index] = set_datatypes_recursive($array_item);
+        } else if (!in_array($array_item, $operators)) {
+
+            if ($value == '') {
+                $value = $array_item;
+                continue;
+            }
+            
+            // unset keys & replace with the object
+            unset($array[$index - 1]);
+            $array[$index] = str_to_datatype($value, $array_item);
+
+            $value = '';
+        }
+    }
+    $array = array_values($array);
+    return $array;
+}
+
+function str_to_datatype(string $value, string $datatype_string): datatype
+{
+    /**
+     * Takes a [value] [datatype] pair in string format and returns a single datatype object.
+     * Will throw Exceptions on converting errors.
+     * 
+     * @param string $value The value that belongs to the datatype
+     * @param string $datatype_string The datatype you want the value in
+     * 
+     * @return datatype A new datatype object with the value set
+     */
+
+    // number
+    if ($datatype_string == 'number') {
+        if (!is_numeric($value)) {
+            throw new Exception('Cannot convert '.$value.' to datatype number: value is not numeric', 1);
+        }
+
+        return new number($value);
+    }
+
+    throw new Exception($datatype_string.' is not a valid datatype', 1);
+
+}
+
+function calculate_array_recursive(array $array): datatype
+{
+    /**
+     * Calculates nested arrays datatypes recursively and will return a single result datatype
+     * 
+     * @param array $array The array to calculate
+     * 
+     * @param datatype The result datatype object from all the calculation within the given array
+     */
+    $limit_counter = 0;
     $operators_priority = [
         '^' => 4,   
         '*' => 3,
@@ -322,77 +150,57 @@ function calculate_string(string $full_calculate_string)
         '%' => 1,
     ];
 
+    while (sizeof($array) > 1 || is_array($array[0])) {
 
-    $sum_array = explode(' ', $sum);
-    dump($sum_array);
+        $array_length = sizeof($array);
+        $highest_operator = null;
 
+        // get highest operator
+        for ($index = 0; $index < $array_length; $index++) { 
+            $array_item = $array[$index];
 
-    $counter = 0 ;
-    while (sizeof($sum_array) > 5 && $counter < 32) {
-        $sum_length = sizeof($sum_array);
-        $highest = null;
+            if (is_array($array_item)) {
 
-        for ($index = 0; $index < $sum_length; $index++) { 
-            $value = $sum_array[$index];
-    
-            if (!is_array($value) && isset($operators_priority[$value])) {
-                if ($highest === null || $operators_priority[$value] > $highest) {
-                    $highest = $index;
-                }
+                $array[$index] = calculate_array_recursive($array_item);
+
+            } else if ((is_string($array_item) && isset($operators_priority[$array_item])) &&
+                    ($highest_operator === null || $operators_priority[$array_item] > $highest_operator))
+            {
+                $highest_operator = $index;
             }
         }
-    
-        if ($highest !== null) {
 
-            $sum_part = [
-                $sum_array[$highest - 2],
-                $sum_array[$highest - 1],
-                $sum_array[$highest],
-                $sum_array[$highest + 1],
-                $sum_array[$highest + 2],
-            ];
-        
-            unset($sum_array[$highest - 2]);
-            unset($sum_array[$highest - 1]);    
-            unset($sum_array[$highest + 2]);
-        
-            $sum_array[$highest] = $sum_part;
-            $sum_array[$highest + 1] = get_return_type($sum_part);
+        // replace the [datatype] [operator] [datatype] with the result datatype object
+        if ($highest_operator !== null) {
 
-    
-            $sum_array = array_values($sum_array);
+            $object_1 = $array[$highest_operator - 1];
+            $object_2 = $array[$highest_operator + 1];
+
+            $return = $object_1->execute_operation($array[$highest_operator], $object_2);
+
+
+            unset($array[$highest_operator - 1]);  
+            unset($array[$highest_operator + 1]);
+
+            $array[$highest_operator] = $return;
+
+            $array = array_values($array);
         }
-        $counter++;
 
-        dump($sum_array);
+        // Prevent infinite loop in case of error
+        if ($limit_counter > 200) {
+
+            throw new Exception('Safety limit reached for calculate_array_recursive function', 1);
+            exit;
+
+        }
+
+        $limit_counter++;
 
     }
+
+    return $array[0];
 }
 
-function get_return_type(array $sum_part): string
-{
-    /**
-     * Get the return datatype of a sum_part
-     * 
-     * @param array $sum_array the sum to get the return value from, must follow the sum_part format.
-     * 
-     * @return string
-     */
 
-    $type1 = $sum_part[1];
-    $type2 = $sum_part[4];
-
-    $power_of_units = [
-
-    ];
-
-
-    return '';
-
-
-}
-
-function get_power_of_from_datatype(string $datatype): int {
-    return str_replace(']', '', explode('[', $datatype)[1]);
-}
 ?>

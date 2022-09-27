@@ -5,7 +5,7 @@ use LDAP\Result;
 require_once('../assets/php/load_files.php');
 
 $tests = [
-    
+    // new unit_test('')
 ];
 
 foreach ($tests as $unit_test) {
