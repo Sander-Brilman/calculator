@@ -11,8 +11,14 @@ require_once('assets/php/load_files.php');
 
 // as [datatype]
 
+$sum = '( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) as number';
 
-dump(calculate_string('( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) as km'));
+
+dump(calculate_string($sum));
+
+dump(str_to_sum_array($sum));
+
+
 // dump(calculate_string('( ( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) ) as km'));
 
 // dump(calculate_string('4 number as km'));

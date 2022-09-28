@@ -7,44 +7,13 @@ class number extends datatype
 
     public function convert_to(string $datatype)
     {
-        
-        throw new Exception('datatype number cannot be converted to '.$datatype, 1);
-    }
-
-    public function execute_operation(string $operator, datatype $value): datatype
-    {
-        /**
-         * Returns a new object with the preformed operation on it.
-         * 
-         * @param string $operator The operator
-         * @param datatype $value The value to preform the operation on
-         * 
-         * @return datatype returns a new datatype with the result of the operation set as value
-         */
-        
-        switch ($operator) {
-            case '+':
-                return $this->add($value);
-                break;
-            case '-':
-                return $this->subtract($value);
-                break;
-            case '*':
-                return $this->multiply($value);
-                break;
-            case '/':
-                return $this->divide($value);
-                break;
-            case '%':
-                return $this->percentage($value);
-                break;
-            case '^':
-                return $this->power_of($value);
-                break;
-            default:
-                throw new Exception('Invalid operator for datatype number', 1);
+        switch ($datatype) {
+            case 'number':
+                return $this->value;
                 break;
         }
+
+        throw new Exception('datatype number cannot be converted to '.$datatype, 1);
     }
 
     public function add(datatype $value): datatype
