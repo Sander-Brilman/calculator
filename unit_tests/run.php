@@ -1,7 +1,4 @@
 <?php
-
-use LDAP\Result;
-
 require_once('../assets/php/load_files.php');
 
 $tests = [

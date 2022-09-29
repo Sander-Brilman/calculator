@@ -18,6 +18,12 @@ dump(calculate_string($sum));
 
 dump(str_to_sum_array($sum));
 
+$int = 10;
+
+$int .= 0;
+
+dump($int);
+
 
 // dump(calculate_string('( ( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) ) as km'));
 
