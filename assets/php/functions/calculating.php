@@ -127,6 +127,16 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         return new number($value);
     }
 
+    global $meter_units;
+    foreach ($meter_units as $unit) {
+        if (str_starts_with($datatype_string, $unit)) {
+            $exponent = (int)str_replace($unit, '', $datatype_string);
+
+            return new meter($value, $exponent);
+            break;
+        }
+    }
+
     throw new Exception($datatype_string.' is not a valid datatype', 1);
 
 }

@@ -8,14 +8,52 @@ class meter extends datatype
 
     public function convert_to(string $datatype)
     {
-        $meter_convert_units = [
-            'mm',
-            'cm',
-            'dm',
-            'dcm',
-            'hm',
-            'km',
-        ];
+
+
+        // value per datatype
+        if (strpos($datatype, '/') !== false) {
+
+        }
+
+
+        global $meter_units;
+        foreach ($meter_units as $key => $unit) {
+            if (str_starts_with($datatype, $unit)) {
+                $meter_index = 3;
+                $current_index = $key;
+                $index_difference = abs($meter_index - $current_index);
+                $exponent = (int)str_replace($unit, '', $datatype);
+                $return_value = $this->value;
+
+                if ($exponent == 0) {
+                    return $this->value;
+                } else if ($exponent != $this->exponent_value) {
+                    throw new Exception('cant convert m'.$this->exponent_value.' to '.$datatype.'. exponent values are not equal', 1);
+                }
+
+                $multiply_number = 1;
+                if ($exponent < 0) {
+                    for ($i = 0; $i > $this->exponent_value; $i--) { 
+                        $multiply_number /= 10;
+                    }
+                } else {
+                    for ($i = 0; $i < $this->exponent_value; $i++) { 
+                        $multiply_number .= 0;
+                    }
+                }
+
+                dump($multiply_number);
+
+                if ($meter_index > $current_index) {
+                    for ($i = 0; $i < $index_difference; $i++) { 
+                        $return_value *= $multiply_number;
+                    }
+                }
+
+                return $return_value;
+                break;
+            }
+        }
 
         switch ($datatype) {
             case 'number':

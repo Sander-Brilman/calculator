@@ -11,21 +11,23 @@ require_once('assets/php/load_files.php');
 
 // as [datatype]
 
-$sum = '( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) as number';
+// $sum = '( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) as number';
 
 
-dump(calculate_string($sum));
+// dump(calculate_string($sum));
 
-dump(str_to_sum_array($sum));
+// dump(str_to_sum_array($sum));
 
-$int = 10;
+// $int = 10;
 
-$int .= 0;
+// $int .= 0;
 
-dump($int);
+// dump($int);
 
 
-// dump(calculate_string('( ( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) ) as km'));
+
+dump(calculate_string('20 m2 as cm2'));
+dump(calculate_string('20 m-2 as cm-2'));
 
 // dump(calculate_string('4 number as km'));
 
@@ -36,8 +38,6 @@ $t = new number(11);
 // 2 m1 * 5 m2 == 10 m3
 
 // 7 m1 / 2 m2
-
-
 
 
 ?>

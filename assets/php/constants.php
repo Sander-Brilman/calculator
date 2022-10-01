@@ -10,4 +10,14 @@ $operators_priority = [
     '%' => 1,
 ];
 
+$meter_units = [
+    'mm',
+    'cm',
+    'dm',
+    'm',
+    'dcm',
+    'hm',
+    'km',
+];
+
 ?>
