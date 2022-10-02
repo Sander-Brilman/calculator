@@ -1,6 +1,6 @@
 <?php
 class test_result {
-    public function __construct(bool $success, string $message) {
+    public function __construct(bool $success, string $message = '') {
         $this->success = $success;
         $this->message = $message;
     }
@@ -27,9 +27,7 @@ class unit_test
             throw new Error('Unit test "'.$this->test_name.'" did not return a valid result object', 1);
         }
 
-        if (!$test_results->success) {
-            throw new Exception('Unit test "'.$this->test_name.'" failed. Message: '.$test_results->message, 1);
-        }
+        return $test_results;
     }
 }
 

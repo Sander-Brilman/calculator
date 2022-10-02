@@ -7,11 +7,12 @@ class number extends datatype
 
     public function convert_to(string $datatype)
     {
-        switch ($datatype) {
-            case 'number':
-                return $this->value;
-                break;
+        $invalid_datatypes = [];
+
+        if (!in_array($datatype, $invalid_datatypes)) {
+            return $this->value;
         }
+
 
         throw new Exception('datatype number cannot be converted to '.$datatype, 1);
     }
@@ -89,6 +90,11 @@ class number extends datatype
          * @return datatype returns a new datatype with the result
          */
         $value_type = $value->datatype_name;
+
+        if ($value->value == 0) {
+            throw new Exception('Cant divide by 0..', 1);
+        }
+
         switch ($value_type) {
             case 'number':
                 return new number($this->value / $value->value, $this->exponent_value - $value->exponent_value);

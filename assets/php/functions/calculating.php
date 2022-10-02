@@ -6,26 +6,36 @@ function calculate_string(string $full_calculate_string)
      * Takes the parsed string and calculates the result. The given string must be fully formatted & parsed.
      * Will throw Exceptions on error.
      * 
+     * Syntax:
+     * [calculation] | [return datatype] | [number of decimals]
+     * 
      * @param string $full_calculate_string The full formatted & parsed string
      * 
      * @return mixed The converted result of the calculation.
      */
-    $splitted_string   = explode(' as ', $full_calculate_string);
-    $final_return_type = $splitted_string[1];
+    $splitted_string  = explode(' | ', $full_calculate_string);
+
+    $return_type = $splitted_string[1];
+    $decimal_places = $splitted_string[2];
 
     $sum_string        = $splitted_string[0];
     $sum_array         = str_to_sum_array($sum_string);
 
+
     // replace [value] [datatype] pair with datatype objects
     $sum_array = set_datatypes_recursive($sum_array);
+
+
 
     // calculate the converted array in appropriate order
     $result_datatype = calculate_array_recursive($sum_array);
 
-    // convert to requested datatype
-    $result = $result_datatype->convert_to($final_return_type);
 
-    return $result;
+
+    // convert to requested datatype
+    $result = $result_datatype->convert_to($return_type);
+
+    return round($result, $decimal_places);
 }
 
 function str_to_sum_array(string $sum_string): array
@@ -131,8 +141,7 @@ function str_to_datatype(string $value, string $datatype_string): datatype
     foreach ($meter_units as $unit) {
         if (str_starts_with($datatype_string, $unit)) {
             $exponent = (int)str_replace($unit, '', $datatype_string);
-
-            return new meter($value, $exponent);
+            return new meter(meter_conversion($value, $datatype_string, 'm'.$exponent), $exponent);
             break;
         }
     }
@@ -173,8 +182,7 @@ function calculate_array_recursive(array $array): datatype
 
                 $array[$index] = calculate_array_recursive($array_item);
 
-            } else if ((is_string($array_item) && isset($operators_priority[$array_item])) &&
-                    ($highest_operator === null || $operators_priority[$array_item] > $highest_operator))
+            } else if ((is_string($array_item) && isset($operators_priority[$array_item])) && $highest_operator === null)
             {
                 $highest_operator = $index;
             }
@@ -187,7 +195,6 @@ function calculate_array_recursive(array $array): datatype
             $object_2 = $array[$highest_operator + 1];
 
             $return = $object_1->execute_operation($array[$highest_operator], $object_2);
-
 
             unset($array[$highest_operator - 1]);  
             unset($array[$highest_operator + 1]);

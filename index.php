@@ -1,65 +1,68 @@
+<?php
+session_start();
+require_once('local_config.php');
+require_once('global_config.php');
+
+include_once('assets/php/debug_functions.php');
+include_once('assets/php/functions.php');
+include_once('assets/php/page_builder.php');
+
+// No process form file included. Everything happens through the API
+include("assets/php/redirects.php");
+
+unset($_SESSION['forms']);
+
+$page_info = get_page_info($url_array);
+
+$css_vars = "
+--theme-color: $theme_color;
+";
+?>
 <!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="<?= explode('_', $locate)[0] ?>" style="<?= $css_vars ?>">
+	<head>
+        <!-- title -->
+		<?= $page_info['title'] ?>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="assets/icons/pro.css">
+		<!-- meta tags -->
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<?= $page_info['metatags'] ?>
 
-    <script src="assets/js/main.js" defer></script>
-    <link rel="stylesheet" href="assets/css/style.css">
 
-    <title>Sanders rekenmachine</title>
-</head>
-<body class="d-flex flex-column flex-md-row w-100 vh-100">
+        <!-- canonical url's -->
+        <?= $page_info['canonical_url'] ?>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" />
 
-    <aside class="previous-container bg-light p-4 align-items-center">
-        <h2>Vorige berekeningen</h2>
-        <hr>
-        <ul class="previous list-unstyled"></ul>
-        <button class="delete-all btn-danger">Verwijder alles</button>
-    </aside>
+		<!-- stylesheets -->
+		<link rel="stylesheet" href="<?= url('/assets/css/icons.css') ?>">
+        <link rel="stylesheet" href="<?= url('/assets/css/bootstrap.min.css') ?>">
+		<?php
+		foreach ($page_info['files']['css'] as $path)
+			echo '<link rel="stylesheet" href="'.url($path).'">';
+		?>
 
-    <main class="d-flex flex-column p-4">
-        <h1 class="mb-2">Sanders rekenmachine</h1>
+		<!-- javascript -->
+        <script src="<?= url('/assets/js/jquery.js') ?>" defer></script>
+        <script src="<?= url('/assets/js/bootstrap.bundle.min.js') ?>" defer></script>
+		<?php
+		foreach ($page_info['files']['js'] as $path)
+			echo '<script src="'.url($path).'" async defer></script>';
+		?>
+        
+	</head>
 
-        <div class="alert alert-warning" style="display: none;">
-            <button type="button"><i class="fa-solid fa-xmark"></i></button>
-            <p></p>
-        </div>
+	<body>
+		<?php
+		include('pages/blocks/header.php');
 
-        <hr>
+		foreach ($page_info['files']['php'] as $path) {
+			include($path);
+		}
 
-        <form class="d-flex flex-column align-items-start">
-            <input type="text" class="string-sum w-100 p-1 mb-2" placeholder="Type hier je rekensom">
-            <button id="calculate-string" type="button" class="btn-primary">Bereken</button>
-        </form>
-
-        <hr>
-
-        <form class="table table-bordered">
-            <h2>Verhoudingstabel</h2>
-            <table class="table table-light border-secondary">
-                <tr>
-                    <td><input type="number" id="cell1" class="border border-secondary w-100"></td>
-                    <td><input type="number" id="cell2" class="border border-secondary w-100"></td>
-                </tr>
-                <tr>
-                    <td><input type="number" id="cell3" class="border border-secondary w-100"></td>
-                    <td><input type="number" id="cell4" class="border border-secondary w-100"></td>
-                </tr> 
-            </table>
-            <button type="button" id="calculate-table" class="btn-primary">Bereken</button>
-        </form>
-
-        <hr>
-
-        <textarea class="notes w-100 p-1" id="notes" placeholder="Notities"></textarea>
-
-    </main>
-</body>
+		include('pages/blocks/footer.php');
+		?>
+	</body>
 </html>

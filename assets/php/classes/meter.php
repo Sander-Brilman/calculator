@@ -10,47 +10,16 @@ class meter extends datatype
     {
 
 
-        // value per datatype
+        // check for derived unit
         if (strpos($datatype, '/') !== false) {
 
         }
 
 
         global $meter_units;
-        foreach ($meter_units as $key => $unit) {
+        foreach ($meter_units as $unit) {
             if (str_starts_with($datatype, $unit)) {
-                $meter_index = 3;
-                $current_index = $key;
-                $index_difference = abs($meter_index - $current_index);
-                $exponent = (int)str_replace($unit, '', $datatype);
-                $return_value = $this->value;
-
-                if ($exponent == 0) {
-                    return $this->value;
-                } else if ($exponent != $this->exponent_value) {
-                    throw new Exception('cant convert m'.$this->exponent_value.' to '.$datatype.'. exponent values are not equal', 1);
-                }
-
-                $multiply_number = 1;
-                if ($exponent < 0) {
-                    for ($i = 0; $i > $this->exponent_value; $i--) { 
-                        $multiply_number /= 10;
-                    }
-                } else {
-                    for ($i = 0; $i < $this->exponent_value; $i++) { 
-                        $multiply_number .= 0;
-                    }
-                }
-
-                dump($multiply_number);
-
-                if ($meter_index > $current_index) {
-                    for ($i = 0; $i < $index_difference; $i++) { 
-                        $return_value *= $multiply_number;
-                    }
-                }
-
-                return $return_value;
+                return meter_conversion($this->value, 'm'.$this->exponent_value, $datatype);
                 break;
             }
         }
@@ -164,6 +133,9 @@ class meter extends datatype
                 break;
 
             case 'meter':
+                if ($this->exponent_value == $value->exponent_value) {
+                    return new number($this->value / $value->value);
+                }
                 return new meter($this->value / $value->value, $this->exponent_value - $value->exponent_value);
                 break;
             

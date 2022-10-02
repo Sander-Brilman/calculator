@@ -18,6 +18,5 @@ function include_files(string $dir)
 include_files('functions');
 include_files('classes');
 
-require_once('constants.php');
 
 ?>

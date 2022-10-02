@@ -1,6 +1,14 @@
-Default values for units
+Syntax full
+[calculations] | [return datatype] | [number of decimal places]
+________________________________________________________________
 
-Distance - meters
+Syntax calculations
+[value] [datatype] [operator] [value] [datatype]
+________________________________________________________________
+
+
+
+- Useful links
 
 https://nl.wikipedia.org/wiki/SI-stelsel#
 
