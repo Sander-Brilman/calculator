@@ -122,7 +122,7 @@ $unit_tests['Full calculation test'] = [
             : new test_result(false, 'Values are not equal');
     }),
 
-    new unit_test('meter only', function() {
+    new unit_test('meter only 1', function() {
         $sum_full = '( ( 2000 cm1 + 100 dm1 ) * 100 mm1 + ( 66 km2 - 88 dcm2 + 1 hm2 ) ) / 10 m1 | m1 | 1';
 
         $result = calculate_string($sum_full);
@@ -133,11 +133,20 @@ $unit_tests['Full calculation test'] = [
             : new test_result(false, 'Values are not equal');
     }),
 
-    new unit_test('meter only (negative exponent)', function() {
+    new unit_test('meter only 2 (negative exponent)', function() {
         $sum_full = '( ( 2000 cm-1 + 100 dm-1 ) * 100 mm-1 + ( 66 km-2 - 88 dcm-2 + 1 hm-2 ) ) / 10 m-1 | m-1 | 3';
 
         $result = calculate_string($sum_full);
         $expected = '2009999999.912';
+
+        return $result == $expected
+            ? new test_result(true, '')
+            : new test_result(false, 'Values are not equal');
+    }),
+
+    new unit_test('meter only 3', function() {
+        $result = calculate_string('600 m2 / 300 m2 | m1 | 0');
+        $expected = 2;
 
         return $result == $expected
             ? new test_result(true, '')

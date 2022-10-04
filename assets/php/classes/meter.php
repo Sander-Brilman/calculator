@@ -8,11 +8,9 @@ class meter extends datatype
 
     public function convert_to(string $datatype)
     {
-
-
         // check for derived unit
         if (strpos($datatype, '/') !== false) {
-
+            throw new Exception('TODO');
         }
 
 
@@ -31,8 +29,6 @@ class meter extends datatype
 
         }
 
-
-
         throw new Exception('datatype number cannot be converted to '.$datatype, 1);
     }
 
@@ -48,7 +44,7 @@ class meter extends datatype
         $value_type = $value->datatype_name;
         switch ($value_type) {
             case 'number':
-                return new meter($this->value + $value->value, 1);
+                return new meter($this->value + $value->value, $this->exponent_value);
                 break;
 
             case 'meter':
@@ -76,7 +72,7 @@ class meter extends datatype
         $value_type = $value->datatype_name;
         switch ($value_type) {
             case 'number':
-                return new meter($this->value - $value->value);
+                return new meter($this->value - $value->value, $this->exponent_value);
                 break;
 
             case 'meter':
@@ -104,7 +100,7 @@ class meter extends datatype
         $value_type = $value->datatype_name;
         switch ($value_type) {
             case 'number':
-                return new meter($this->value * $value->value, $this->exponent_value + $value->exponent_value);
+                return new meter($this->value * $value->value, $this->exponent_value);
                 break;
 
             case 'meter':
@@ -129,7 +125,7 @@ class meter extends datatype
         $value_type = $value->datatype_name;
         switch ($value_type) {
             case 'number':
-                return new meter($this->value / $value->value, $this->exponent_value - $value->exponent_value);
+                return new meter($this->value / $value->value, $this->exponent_value);
                 break;
 
             case 'meter':
@@ -140,7 +136,7 @@ class meter extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator / on datatype number', 1);
+                throw new Exception('Invalid datatype for operator / on datatype meter', 1);
                 break;
         }
     }
@@ -159,13 +155,9 @@ class meter extends datatype
             case 'number':
                 return new number($this->value ** $value->value, $this->exponent_value * $value->exponent_value);
                 break;
-
-            case 'meter':
-                return new meter($this->value ** $value->value, $this->exponent_value * $value->exponent_value);
-                break;
             
             default:
-                throw new Exception('Invalid datatype for operator ^ on datatype number', 1);
+                throw new Exception('Invalid datatype for operator ^ on datatype meter', 1);
                 break;
         }
     }

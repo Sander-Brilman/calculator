@@ -6,6 +6,26 @@ Syntax calculations
 [value] [datatype] [operator] [value] [datatype]
 ________________________________________________________________
 
+tijd
+
+        switch ($datatype) {
+            case 'sec':
+            case 'number':
+                return $this->value;
+                break;
+            case 'min':
+                return $this->value / 60;
+                break;
+            case 'hrs':
+                return ($this->value / 60) / 60;
+                break;
+            case 'd':
+                return (($this->value / 60) / 60) / 24;
+                break;
+            case 'w':
+                return ((($this->value / 60) / 60) / 24) / 7;
+                break;
+        }
 
 
 - Useful links

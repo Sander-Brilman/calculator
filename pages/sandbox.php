@@ -41,13 +41,27 @@ $timer = start_timer();
 // dump(calculate_string('6737 m0 | dm0'). ' m1');
 
 
-dump(calculate_string('600 m2 / 300 m2 | m1'));
+// dump(calculate_string('600 m2 / 300 m2 | m1 | 2'));
+// dump(calculate_string('600 sec - 2 min | sec | 2'));
 
-// dump(calculate_string('200 m2 | km2'));
+
+// dump(calculate_string('600 sec + 2 min | sec | 2'));
+// dump(calculate_string('600 sec / 2 min | sec | 2'));
+// dump(calculate_string('600 sec * 2 min | day | 5'));
+
+
+// $sum_full = '( 2000 number + 100 number ) * 100 number / ( 8 number - 4 number ) | number | 0';
+
+// $result = calculate_string($sum_full);
+// $expected = 52500;
+
+// dump($result);
+
+dump(calculate_string('10 number - 5 number | number | 0'));
 
 echo end_timer($timer);
 
 // dump(meter_conversion(100, 'm2', 'km2'));
 
-$sum_full = '( 2000 cm1 + 100 dm1 ) * 100 mm1 / ( 8 number - 4 number ) | number';
+$sum_full = '( 2000 cm1 + 100 dm1 ) * 100 mm1 / ( 8 number - 4 number ) | number | 2';
 ?>

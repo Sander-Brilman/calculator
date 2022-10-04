@@ -21,16 +21,17 @@ function calculate_string(string $full_calculate_string)
     $sum_string        = $splitted_string[0];
     $sum_array         = str_to_sum_array($sum_string);
 
+    $calculating_history = [];
 
     // replace [value] [datatype] pair with datatype objects
     $sum_array = set_datatypes_recursive($sum_array);
 
-
-
     // calculate the converted array in appropriate order
-    $result_datatype = calculate_array_recursive($sum_array);
+    $result_datatype = calculate_array_recursive($sum_array, $calculating_history);
 
-
+    // dump history (debugging)
+    // dump($sum_string);
+    // dump($calculating_history);
 
     // convert to requested datatype
     $result = $result_datatype->convert_to($return_type);
@@ -137,25 +138,46 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         return new number($value);
     }
 
+    // meters
     global $meter_units;
     foreach ($meter_units as $unit) {
-        if (str_starts_with($datatype_string, $unit)) {
+        if (str_starts_with($datatype_string, $unit) && is_numeric(substr($datatype_string, strlen($unit)))) {
             $exponent = (int)str_replace($unit, '', $datatype_string);
             return new meter(meter_conversion($value, $datatype_string, 'm'.$exponent), $exponent);
             break;
         }
     }
 
+    // seconds
+    switch ($datatype_string) {
+        case 'sec':
+            return new second($value);
+            break;
+        case 'min':
+            return new second($value * 60);
+            break;
+        case 'hrs':
+            return new second(($value * 60) * 60);
+            break;
+        case 'day':
+            return new second((($value * 24) * 60) * 60);
+            break;
+        case 'w':
+            return new second(((($value * 7) * 24) * 60) * 60);
+            break;
+    }
+    
     throw new Exception($datatype_string.' is not a valid datatype', 1);
 
 }
 
-function calculate_array_recursive(array $array): datatype
+function calculate_array_recursive(array $array, array &$history): datatype
 {
     /**
      * Calculates nested arrays datatypes recursively and will return a single result datatype
      * 
      * @param array $array The array to calculate
+     * @param array &$history The array where the history of all calculations will be kept
      * 
      * @param datatype The result datatype object from all the calculation within the given array
      */
@@ -180,7 +202,7 @@ function calculate_array_recursive(array $array): datatype
 
             if (is_array($array_item)) {
 
-                $array[$index] = calculate_array_recursive($array_item);
+                $array[$index] = calculate_array_recursive($array_item, $history);
 
             } else if ((is_string($array_item) && isset($operators_priority[$array_item])) && $highest_operator === null)
             {
@@ -193,8 +215,9 @@ function calculate_array_recursive(array $array): datatype
 
             $object_1 = $array[$highest_operator - 1];
             $object_2 = $array[$highest_operator + 1];
+            $operator = $array[$highest_operator];
 
-            $return = $object_1->execute_operation($array[$highest_operator], $object_2);
+            $return = $object_1->execute_operation($operator, $object_2);
 
             unset($array[$highest_operator - 1]);  
             unset($array[$highest_operator + 1]);
@@ -202,6 +225,9 @@ function calculate_array_recursive(array $array): datatype
             $array[$highest_operator] = $return;
 
             $array = array_values($array);
+
+            // keep track of history
+            $history[] = $object_1->value.' '.$object_1->datatype_name.' '.$operator.' '.$object_2->value.' '.$object_2->datatype_name.' = '.$return->value.' '.$return->datatype_name;
         }
 
         // Prevent infinite loop in case of error
