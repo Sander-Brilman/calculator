@@ -1,4 +1,5 @@
 <?php
+$timer = start_timer();
 $unit_tests = [];
 
 require_once('assets/php/load_files.php');
@@ -46,5 +47,6 @@ function run_unit_tests_array($array, $group_name, $indent_level = 0)
     }
 }
 
-
 ?>
+
+<div class="alert alert-info">runtime: <?= end_timer($timer) ?> ms</div>

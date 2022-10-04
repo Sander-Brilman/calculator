@@ -20,8 +20,14 @@ require_once('assets/php/load_files.php');
 
 $timer = start_timer();
 
-// dump(calculate_string('20 m2 - 10 dm2 | cm2'));
+$number = new number(66);
+$value = new meter(5);
 
+$expected = new number(13.2);
+
+$result = $number->divide($value);
+
+dump($result);
 
 // dump(calculate_string('( ( 2000 cm1 + 100 dm1 ) * 100 mm1 + ( 66 km2 - 88 dcm2 + 1 hm2 ) ) / 10 m1 | m1'). ' m1');
 

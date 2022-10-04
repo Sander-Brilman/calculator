@@ -1,8 +1,8 @@
 <?php
 class number extends datatype 
 {
-    public function __construct($value, int $exponent_value = 0) {
-        parent::__construct('number', $value, true, $exponent_value);
+    public function __construct($value) {
+        parent::__construct('number', $value, false, 0);
     }
 
     public function convert_to(string $datatype)
@@ -29,7 +29,8 @@ class number extends datatype
         $invalid_datatypes = [ ];
 
         if (!in_array($value_type, $invalid_datatypes)) {
-            return str_to_datatype($this->value + $value->value, $value_type);
+            $value->value = ($value->value + $this->value);
+            return $value;
         }
 
         throw new Exception('Invalid datatype for operator + on datatype number', 1);
@@ -48,7 +49,8 @@ class number extends datatype
         $invalid_datatypes = [ ];
 
         if (!in_array($value_type, $invalid_datatypes)) {
-            return str_to_datatype($this->value - $value->value, $value_type);
+            $value->value = ($this->value - $value->value);
+            return $value;
         }
 
         throw new Exception('Invalid datatype for operator - on datatype number', 1);
@@ -67,7 +69,8 @@ class number extends datatype
         $invalid_datatypes = [ ];
 
         if (!in_array($value_type, $invalid_datatypes)) {
-            return str_to_datatype($value->value * $this->value, $value_type);
+            $value->value = ($value->value * $this->value);
+            return $value;
         }
 
         throw new Exception('Invalid datatype for operator * on datatype number', 1);
@@ -90,7 +93,7 @@ class number extends datatype
         }
 
         if (!in_array($value_type, $invalid_datatypes)) {
-            return new number($this->value / $value->value, $this->exponent_value - $value->exponent_value);
+            return new number($this->value / $value->value);
         }
 
         throw new Exception('Invalid datatype for operator / on datatype number', 1);
@@ -109,7 +112,8 @@ class number extends datatype
         $invalid_datatypes = [ ];
 
         if (!in_array($value_type, $invalid_datatypes)) {
-            return str_to_datatype($value->value * $this->value / 100, $value_type);
+            $value->value = ($value->value * $this->value / 100);
+            return $value;
         }
 
         throw new Exception('Invalid datatype for operator % on datatype number', 1);
@@ -127,7 +131,7 @@ class number extends datatype
         $value_type = $value->datatype_name;
         switch ($value_type) {
             case 'number':
-                return new number($this->value ** $value->value, $this->exponent_value * $value->exponent_value);
+                return new number($this->value ** $value->value);
                 break;
             
             default:

@@ -76,7 +76,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new Exception('Invalid datatype for operator + on datatype '.$this->datatype_name, 1);
+        throw new Exception('Operator + is not available for datatype '.$this->datatype_name, 1);
     }
 
     public function subtract(datatype $value): datatype
@@ -88,7 +88,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new Exception('Invalid datatype for operator - on datatype '.$this->datatype_name, 1);
+        throw new Exception('Operator - is not available for datatype '.$this->datatype_name, 1);
     }
 
     public function multiply(datatype $value): datatype
@@ -100,7 +100,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new Exception('Invalid datatype for operator * on datatype '.$this->datatype_name, 1);
+        throw new Exception('Operator * is not available for datatype '.$this->datatype_name, 1);
     }
 
     public function divide(datatype $value): datatype
@@ -112,7 +112,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new Exception('Invalid datatype for operator / on datatype '.$this->datatype_name, 1);
+        throw new Exception('Operator / is not available for datatype '.$this->datatype_name, 1);
     }
 
     public function percentage(datatype $value): datatype
@@ -124,7 +124,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new Exception('Invalid datatype for operator % on datatype '.$this->datatype_name, 1);
+        throw new Exception('Operator % is not available for datatype '.$this->datatype_name, 1);
     }
 
     public function power_of(datatype $value): datatype
@@ -136,7 +136,8 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new Exception('Invalid datatype for operator ^ on datatype '.$this->datatype_name, 1);
+        throw new Exception('Operator ^ is not available for datatype '.$this->datatype_name, 1);
     }
 }
+
 ?>

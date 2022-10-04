@@ -33,6 +33,36 @@ $unit_tests['number datatype tests'] = [
                     : new test_result(false, 'Expected value and result do not match');
             }
         ),
+
+        new unit_test('Number add test 3', function ()
+            {
+                $number = new number(30);
+                $value = new second(70);
+
+                $expected = new second(100);
+
+                $result = $number->add($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number add test 3', function ()
+            {
+                $number = new number(30);
+                $value = new meter(70);
+
+                $expected = new meter(100);
+
+                $result = $number->add($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
     ],
 
     'Subtract tests' => [
@@ -60,6 +90,36 @@ $unit_tests['number datatype tests'] = [
 
                 $result = $number->subtract($value);
                 
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number subtract test 3', function ()
+            {
+                $number = new number(600);
+                $value = new second(200);
+
+                $expected = new second(400);
+
+                $result = $number->subtract($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number subtract test 4', function ()
+            {
+                $number = new number(600);
+                $value = new meter(200);
+
+                $expected = new meter(400);
+
+                $result = $number->subtract($value);
+
                 return $expected == $result
                     ? new test_result(true, '')
                     : new test_result(false, 'Expected value and result do not match');
@@ -113,6 +173,37 @@ $unit_tests['number datatype tests'] = [
                 return new test_result(false, 'No Exception has been thrown');
             }
         ),
+
+        new unit_test('Number divide test 4', function ()
+            {
+                $number = new number(66);
+                $value = new second(5);
+
+                $expected = new number(13.2);
+
+                $result = $number->divide($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number divide test 5', function ()
+            {
+                $number = new number(66);
+                $value = new meter(5);
+
+                $expected = new number(13.2);
+
+                $result = $number->divide($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
     ],
 
     'multiply tests' => [
@@ -139,6 +230,37 @@ $unit_tests['number datatype tests'] = [
                 $expected = new number(330);
 
                 $result = $number->multiply($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number multiply test 3', function ()
+            {
+                $number = new number(66);
+                $value = new second(5);
+
+                $expected = new second(330);
+
+                $result = $number->multiply($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number multiply test 4', function ()
+            {
+                $number = new number(66);
+                $value = new meter(5);
+
+                $expected = new meter(330);
+
+                $result = $number->multiply($value);
+
 
                 return $expected == $result
                     ? new test_result(true, '')
@@ -192,6 +314,36 @@ $unit_tests['number datatype tests'] = [
                     : new test_result(false, 'Expected value and result do not match');
             }
         ),
+
+        new unit_test('Number percentage test 4', function ()
+            {
+                $number = new number(5);
+                $value = new second(312);
+
+                $expected = new second(15.6);
+
+                $result = $number->percentage($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number percentage test 5', function ()
+            {
+                $number = new number(10);
+                $value = new meter(200, 1);
+
+                $expected = new meter(20, 1);
+
+                $result = $number->percentage($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
     ],
 
     'convert tests' => [
@@ -202,6 +354,20 @@ $unit_tests['number datatype tests'] = [
                 $expected = 200;
 
                 $result = $number->convert_to('number');
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Number convert test 2', function ()
+            {
+                $number = new number(200);
+
+                $expected = 200;
+
+                $result = $number->convert_to('sec');
 
                 return $expected == $result
                     ? new test_result(true, '')

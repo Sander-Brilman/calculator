@@ -100,7 +100,7 @@ $unit_tests['meter datatype tests'] = [
         new unit_test('Meter Divide test 1', function ()
             {
                 $meter = new meter(50, 2);
-                $value = new number(25, 1);
+                $value = new number(25);
 
                 $expected = new meter(2, 2);
 
@@ -117,7 +117,7 @@ $unit_tests['meter datatype tests'] = [
                 $meter = new meter(30);
                 $value = new meter(10);
 
-                $expected = new number(3, 0);
+                $expected = new number(3);
                 $result = $meter->divide($value);
 
 
@@ -133,7 +133,7 @@ $unit_tests['meter datatype tests'] = [
         new unit_test('Meter multiply test 1', function ()
             {
                 $meter = new meter(50, 2);
-                $value = new number(3, 1);
+                $value = new number(3);
 
                 $expected = new meter(150, 2);
 
@@ -165,9 +165,9 @@ $unit_tests['meter datatype tests'] = [
             {
                 try {
                     $meter = new meter(50, 2);
-                    $value = new number(3, 1);
+                    $value = new number(3);
     
-                    $expected = new meter(150, 3);
+                    $expected = new meter(150, 2);
     
                     $result = $meter->execute_operation('%', $value);
                 } catch(Exception $ex) {
