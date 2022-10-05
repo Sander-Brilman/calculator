@@ -9,6 +9,8 @@ class second extends datatype
     public function convert_to(string $datatype)
     {
         switch ($datatype) {
+            case 'ms':
+                return $this->value * 1000;
             case 'sec':
             case 'number':
                 return $this->value;

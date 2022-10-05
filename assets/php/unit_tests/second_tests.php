@@ -237,7 +237,7 @@ $unit_tests['seconds datatype tests'] = [
     ],
 
     'convert tests' => [
-        new unit_test('Seconds convert test 1', function ()
+        new unit_test('Seconds convert test sec', function ()
             {
                 $second = new second(200);
 
@@ -251,7 +251,7 @@ $unit_tests['seconds datatype tests'] = [
             }
         ),
 
-        new unit_test('Seconds convert test 2', function ()
+        new unit_test('Seconds convert test min', function ()
             {
                 $second = new second(60);
 
@@ -265,7 +265,7 @@ $unit_tests['seconds datatype tests'] = [
             }
         ),
 
-        new unit_test('Seconds convert test 3', function ()
+        new unit_test('Seconds convert test hrs', function ()
             {
                 $second = new second(3600);
 
@@ -279,7 +279,7 @@ $unit_tests['seconds datatype tests'] = [
             }
         ),
 
-        new unit_test('Seconds convert test 4', function ()
+        new unit_test('Seconds convert test day', function ()
             {
                 $second = new second(86400);
 
@@ -293,13 +293,27 @@ $unit_tests['seconds datatype tests'] = [
             }
         ),
 
-        new unit_test('Seconds convert test 5', function ()
+        new unit_test('Seconds convert test w', function ()
             {
                 $second = new second(604800);
 
                 $expected = 1;
 
                 $result = $second->convert_to('w');
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value and result do not match');
+            }
+        ),
+
+        new unit_test('Seconds convert test ms', function ()
+            {
+                $second = new second(1);
+
+                $expected = 1000;
+
+                $result = $second->convert_to('ms');
 
                 return $expected == $result
                     ? new test_result(true, '')

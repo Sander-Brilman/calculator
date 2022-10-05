@@ -24,12 +24,13 @@ function calculate_string(string $full_calculate_string)
     $calculating_history = [];
 
     // replace [value] [datatype] pair with datatype objects
-    $sum_array = set_datatypes_recursive($sum_array);
+    $sum_array = set_datatypes_recursive($sum_array, $calculating_history);
+
 
     // calculate the converted array in appropriate order
     $result_datatype = calculate_array_recursive($sum_array, $calculating_history);
 
-    // dump history (debugging)
+    // print history for debugging
     // dump($sum_string);
     // dump($calculating_history);
 
@@ -49,11 +50,11 @@ function str_to_sum_array(string $sum_string): array
      * 
      * @return array A new multidimensional array with the sum splitted
      */
-    $sum_array      = explode(' ', $sum_string);
+    $sum_array = explode(' ', $sum_string);
 
     do {
-        $sum_length     = sizeof($sum_array);
-        $open_bracket   = null;
+        $sum_length = sizeof($sum_array);
+        $open_bracket = null;
 
         for ($index = 0; $index < $sum_length; $index++) {
             $char = $sum_array[$index];
@@ -73,13 +74,14 @@ function str_to_sum_array(string $sum_string): array
     return $sum_array;
 }
 
-function set_datatypes_recursive(array $array): array
+function set_datatypes_recursive(array $array, array &$history = []): array
 {
     /**
      * Convert array with [value] [datatype] pair to datatype object
      * Is used recursively to make sure all nested arrays are converted
      * 
      * @param array $array The array to preform the conversion on
+     * @param array $history The array to store the history of the conversion in
      * 
      * @return array A new array with [value] [datatype] pair replaced with corresponding objects
      */
@@ -98,7 +100,7 @@ function set_datatypes_recursive(array $array): array
 
         if (is_array($array_item)) {
             // recursive replacement
-            $array[$index] = set_datatypes_recursive($array_item);
+            $array[$index] = set_datatypes_recursive($array_item, $history);
         } else if (!in_array($array_item, $operators)) {
 
             if ($value == '') {
@@ -109,6 +111,9 @@ function set_datatypes_recursive(array $array): array
             // unset keys & replace with the object
             unset($array[$index - 1]);
             $array[$index] = str_to_datatype($value, $array_item);
+
+            // set history
+            $history['conversion'][] = "$value $array_item -> ".$array[$index]->value.' '.$array[$index]->datatype_name;
 
             $value = '';
         }
@@ -150,6 +155,9 @@ function str_to_datatype(string $value, string $datatype_string): datatype
 
     // seconds
     switch ($datatype_string) {
+        case 'ms':
+            return new second($value * 1000);
+            break;
         case 'sec':
             return new second($value);
             break;
@@ -227,7 +235,7 @@ function calculate_array_recursive(array $array, array &$history): datatype
             $array = array_values($array);
 
             // keep track of history
-            $history[] = $object_1->value.' '.$object_1->datatype_name.' '.$operator.' '.$object_2->value.' '.$object_2->datatype_name.' = '.$return->value.' '.$return->datatype_name;
+            $history['calculation'][] = $object_1->value.' '.$object_1->datatype_name.' '.$operator.' '.$object_2->value.' '.$object_2->datatype_name.' = '.$return->value.' '.$return->datatype_name;
         }
 
         // Prevent infinite loop in case of error

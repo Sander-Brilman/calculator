@@ -20,12 +20,8 @@ require_once('assets/php/load_files.php');
 
 $timer = start_timer();
 
-$number = new number(66);
-$value = new meter(5);
-
-$expected = new number(13.2);
-
-$result = $number->divide($value);
+$result = calculate_string('( ( 60 sec * 1 min ) + ( 8 hrs * 3 number ) + 1 w ) | sec | 0');
+$expected = 11;
 
 dump($result);
 
@@ -63,7 +59,7 @@ dump($result);
 
 // dump($result);
 
-dump(calculate_string('10 number - 5 number | number | 0'));
+// dump(calculate_string('10 number - 5 number | number | 0'));
 
 echo end_timer($timer);
 
