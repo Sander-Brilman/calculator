@@ -143,6 +143,10 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         return new number($value);
     }
 
+    if ($datatype_string == 'meter') {
+        return new meter($value);
+    }
+
     // meters
     global $meter_units;
     foreach ($meter_units as $unit) {
@@ -158,13 +162,13 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         case 'ms':
             return new second($value * 1000);
             break;
-        case 'sec':
+        case 's':
             return new second($value);
             break;
         case 'min':
             return new second($value * 60);
             break;
-        case 'hrs':
+        case 'h':
             return new second(($value * 60) * 60);
             break;
         case 'day':
@@ -174,9 +178,14 @@ function str_to_datatype(string $value, string $datatype_string): datatype
             return new second(((($value * 7) * 24) * 60) * 60);
             break;
     }
+
+    // derived_units
+    if (strpos($datatype_string, '/') !== false) {
+        $derived_unit_array = explode('/', $datatype_string);
+        return new derived_unit($value, $derived_unit_array[0], $derived_unit_array[1]);
+    }
     
     throw new Exception($datatype_string.' is not a valid datatype', 1);
-
 }
 
 function calculate_array_recursive(array $array, array &$history): datatype

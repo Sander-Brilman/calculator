@@ -3,7 +3,7 @@
 class second extends datatype
 {
     public function __construct($value) {
-        parent::__construct('sec', $value, false);
+        parent::__construct('s', $value, false);
     }
 
     public function convert_to(string $datatype)
@@ -11,14 +11,14 @@ class second extends datatype
         switch ($datatype) {
             case 'ms':
                 return $this->value * 1000;
-            case 'sec':
+            case 's':
             case 'number':
                 return $this->value;
                 break;
             case 'min':
                 return $this->value / 60;
                 break;
-            case 'hrs':
+            case 'h':
                 return ($this->value / 60) / 60;
                 break;
             case 'day':
@@ -43,7 +43,7 @@ class second extends datatype
          */
         $value_type = $value->datatype_name;
         switch ($value_type) {
-            case 'sec':
+            case 's':
             case 'number':
                 return new second($this->value + $value->value, 1);
                 break;
@@ -65,7 +65,7 @@ class second extends datatype
          */
         $value_type = $value->datatype_name;
         switch ($value_type) {
-            case 'sec':
+            case 's':
             case 'number':
                 return new second($this->value - $value->value, 1);
                 break;
@@ -87,7 +87,7 @@ class second extends datatype
          */
         $value_type = $value->datatype_name;
         switch ($value_type) {
-            case 'sec':
+            case 's':
             case 'number':
                 return new second($this->value * $value->value, 1);
                 break;
@@ -113,7 +113,7 @@ class second extends datatype
                 return new second($this->value / $value->value, 1);
                 break;
 
-            case 'sec':
+            case 's':
                 return new number($this->value / $value->value);
                 break;
             

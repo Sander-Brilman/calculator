@@ -367,7 +367,7 @@ $unit_tests['number datatype tests'] = [
 
                 $expected = 200;
 
-                $result = $number->convert_to('sec');
+                $result = $number->convert_to('s');
 
                 return $expected == $result
                     ? new test_result(true, '')

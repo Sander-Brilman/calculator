@@ -154,7 +154,7 @@ $unit_tests['Full calculation test'] = [
     }),
 
     new unit_test('second only 1', function() {
-        $result = calculate_string('660 sec / 1 min | number | 0');
+        $result = calculate_string('660 s / 1 min | number | 0');
         $expected = 11;
 
         return $result == $expected
@@ -163,7 +163,7 @@ $unit_tests['Full calculation test'] = [
     }),
 
     new unit_test('second only 2', function() {
-        $result = calculate_string('( ( 60 sec * 1 min ) + ( 8 hrs * 3 number ) + 1 w ) | sec | 0');
+        $result = calculate_string('( ( 60 s * 1 min ) + ( 8 h * 3 number ) + 1 w ) | s | 0');
         $expected = 694800;
 
         return $result == $expected
@@ -181,7 +181,7 @@ $unit_tests['Full calculation test'] = [
     }),
 
     new unit_test('second percentage 4', function() {
-        $result = calculate_string('50 number % 2 day | hrs | 0');
+        $result = calculate_string('50 number % 2 day | h | 0');
         $expected = 24;
 
         return $result == $expected

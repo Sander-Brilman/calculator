@@ -6,29 +6,27 @@ Syntax calculations
 [value] [datatype] [operator] [value] [datatype]
 ________________________________________________________________
 
-tijd
-
-        switch ($datatype) {
-            case 'sec':
-            case 'number':
-                return $this->value;
-                break;
-            case 'min':
-                return $this->value / 60;
-                break;
-            case 'hrs':
-                return ($this->value / 60) / 60;
-                break;
-            case 'd':
-                return (($this->value / 60) / 60) / 24;
-                break;
-            case 'w':
-                return ((($this->value / 60) / 60) / 24) / 7;
-                break;
-        }
 
 
-- Useful links
+
+1 km / 1 uur
+
+
+1000 m1 / 3600 sec -> m1/s [1000 / 3600]
+1000 m1 / 3600 sec -> dm1/min [1000 / 60] ?= m1/min 
+
+
+1 m1 / 1 sec 
+
+1 m1 / 1 s -> km1/h [1 / 0,000278] ?= m1/h
+
+
+
+
+
+
+
+- links
 
 https://nl.wikipedia.org/wiki/SI-stelsel#
 

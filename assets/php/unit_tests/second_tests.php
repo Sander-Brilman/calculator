@@ -243,7 +243,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 $expected = 200;
 
-                $result = $second->convert_to('sec');
+                $result = $second->convert_to('s');
 
                 return $expected == $result
                     ? new test_result(true, '')
@@ -265,13 +265,13 @@ $unit_tests['seconds datatype tests'] = [
             }
         ),
 
-        new unit_test('Seconds convert test hrs', function ()
+        new unit_test('Seconds convert test h', function ()
             {
                 $second = new second(3600);
 
                 $expected = 1;
 
-                $result = $second->convert_to('hrs');
+                $result = $second->convert_to('h');
 
                 return $expected == $result
                     ? new test_result(true, '')
