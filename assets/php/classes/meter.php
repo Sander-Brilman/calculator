@@ -42,6 +42,9 @@ class meter extends datatype
          * @return datatype returns a new datatype with the result
          */
         $value_type = $value->datatype_name;
+
+
+
         switch ($value_type) {
             case 'number':
                 return new meter($this->value + $value->value, $this->exponent_value);

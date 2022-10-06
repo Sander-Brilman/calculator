@@ -182,7 +182,7 @@ function str_to_datatype(string $value, string $datatype_string): datatype
     // derived_units
     if (strpos($datatype_string, '/') !== false) {
         $derived_unit_array = explode('/', $datatype_string);
-        return new derived_unit($value, $derived_unit_array[0], $derived_unit_array[1]);
+        return new derived_unit($value, $derived_unit_array[0], 1, $derived_unit_array[1]);
     }
     
     throw new Exception($datatype_string.' is not a valid datatype', 1);

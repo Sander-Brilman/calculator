@@ -42,6 +42,7 @@ class second extends datatype
          * @return datatype returns a new datatype with the result
          */
         $value_type = $value->datatype_name;
+
         switch ($value_type) {
             case 's':
             case 'number':
