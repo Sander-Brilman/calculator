@@ -11,13 +11,20 @@ function meter_conversion($value, string $from, string $to)
     foreach ($meter_units as $key => $unit) {
         if (str_starts_with($from, $unit) && is_numeric(substr($from, strlen($unit)))) {
             $from_index    = $key;
-            $exponent_from = (int)str_replace($unit, '', $from);
+            $from_exponent = (int)str_replace($unit, '', $from);
         }
 
         if (str_starts_with($to, $unit) && is_numeric(substr($to, strlen($unit)))) {
             $to_index    = $key;
-            $exponent_to = (int)str_replace($unit, '', $to);
+            $to_exponent = (int)str_replace($unit, '', $to);
         }
+    }
+
+    if (!isset($to_index)) {
+        throw new Exception("$to heeft geen exponenten, bedoel je misschien $to".'1');
+    }
+    if (!isset($from_index)) {
+        throw new Exception("$from heeft geen exponenten, bedoel je misschien $from".'1');
     }
 
     $index_difference = abs($from_index - $to_index);
@@ -25,19 +32,19 @@ function meter_conversion($value, string $from, string $to)
     $return_value = $value;
 
 
-    if ($exponent_from != $exponent_to) {
+    if ($from_exponent != $to_exponent) {
         throw new Exception('cant convert '.$from.' to '.$to.'. exponent values are not equal', 1);
-    } else if ($exponent_to == 0) {
+    } else if ($to_exponent == 0) {
         return $value;
     }
 
     $multiply_number = 1;
-    if ($exponent_to < 0) {
-        for ($i = 0; $i > $exponent_to; $i--) { 
+    if ($to_exponent < 0) {
+        for ($i = 0; $i > $to_exponent; $i--) { 
             $multiply_number /= 10;
         }
     } else {
-        for ($i = 0; $i < $exponent_to; $i++) { 
+        for ($i = 0; $i < $to_exponent; $i++) { 
             $multiply_number .= 0;
         }
     }

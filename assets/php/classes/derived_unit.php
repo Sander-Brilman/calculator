@@ -2,16 +2,31 @@
 
 class derived_unit extends datatype
 {
-    public function __construct($datatype1_value, string $datatype1, $datatype2_value = 1, string $datatype2) {
-        $this->datatype1 = str_to_datatype($datatype1_value, $datatype1);
-        $this->datatype2 = str_to_datatype($datatype2_value, $datatype2);
+    public function __construct($datatype1_value, string $datatype1, string $datatype2) {
 
+        if (in_array($datatype1, $this::$invalid_datatypes)) {
+            throw new Exception("$datatype1 is not a valid datatype for derived units");
+        }
+        if (in_array($datatype2, $this::$invalid_datatypes)) {
+            throw new Exception("$datatype2 is not a valid datatype for derived units");
+        }
+
+        $datatype_obj1 = str_to_datatype($datatype1_value, $datatype1);
+        $datatype_obj2 = str_to_datatype(1, $datatype2);
+
+        $this->datatype1 = $datatype_obj1;
+        $this->datatype1->value = $datatype_obj1->value / $datatype_obj2->value;
+
+        $this->datatype2 = $datatype_obj2;
+        $this->datatype2->value = 1;
 
         parent::__construct("$datatype1/$datatype2", $this->datatype1->value, false);
     }
 
     public datatype $datatype1;
     public datatype $datatype2;
+
+    static public array $invalid_datatypes = [];
 
     public function convert_to(string $datatype)
     {
@@ -33,23 +48,15 @@ class derived_unit extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-
-        if (get_class($value) == get_class($this->datatype2)) {
-   
-        } else if (!($value instanceof derived_unit)) {
-
-            return new derived_unit(
-                $this->datatype1->add($value->datatype1)->value,
-                $this->datatype1->datatype_name,
-                $this->datatype2->add($value->datatype2)->value,
-                $this->datatype2->datatype_name,
-            );
-
+        if (!($value instanceof derived_unit)) {
+            throw new Exception('Invalid datatype for operator + on datatype '.$this->datatype_name, 1);
         }
 
-
-        throw new Exception('Invalid datatype for operator + on datatype '.$this->datatype_name, 1);
-
+        return new derived_unit(
+            $this->datatype1->add($value->datatype1)->value,
+            $this->datatype1->datatype_name,
+            $this->datatype2->datatype_name,
+        );
     }
 
     public function subtract(datatype $value): datatype
@@ -62,15 +69,14 @@ class derived_unit extends datatype
          * @return datatype returns a new datatype with the result
          */
         if (!($value instanceof derived_unit)) {
-            throw new Exception('Invalid datatype for operator - on datatype '.$this->datatype_name, 1);
+            throw new Exception('Invalid datatype for operator + on datatype '.$this->datatype_name, 1);
         }
 
         return new derived_unit(
             $this->datatype1->subtract($value->datatype1)->value,
             $this->datatype1->datatype_name,
-            $this->datatype2->subtract($value->datatype2)->value,
             $this->datatype2->datatype_name,
-        );    
+        ); 
     }
 
     public function multiply(datatype $value): datatype
@@ -83,17 +89,23 @@ class derived_unit extends datatype
          * @return datatype returns a new datatype with the result
          */
         if ($value instanceof number) {
-            $copy = $this;
 
-            $copy->datatype1->value = $this->datatype1->value * $value->value;
+            return new derived_unit(
+                $this->datatype1->value * $value->value,
+                $this->datatype1->datatype_name,
+                $this->datatype2->datatype_name,
+            );
 
-            return $copy;
         } else if (get_class($value) == get_class($this->datatype2)) {
-            $copy = $this->datatype1;
-            $copy->value = $this->datatype1->value * ($value->value / $this->datatype2->value);
-            
-            return $copy;    
+
+            return new derived_unit(
+                $this->datatype1->value * ($value->value / $this->datatype2->value),
+                $this->datatype1->datatype_name,
+                $this->datatype2->datatype_name,
+            );
+
         }
+
         throw new Exception('Invalid datatype for operator * on datatype '.$this->datatype_name, 1);
     }
 
@@ -110,12 +122,13 @@ class derived_unit extends datatype
         if (!($value instanceof number)) {
             throw new Exception('Invalid datatype for operator / on datatype '.$this->datatype_name, 1);
         }
+
+        return new derived_unit(
+            $this->datatype1->value / $value->value,
+            $this->datatype1->datatype_name,
+            $this->datatype2->datatype_name,
+        );
         
-        $copy = $this;
-
-        $copy->datatype1->value = $this->datatype1->value / $value->value;
-
-        return $copy;
     }
 }
 ?>

@@ -3,7 +3,7 @@
 class meter extends datatype
 {
     public function __construct($value, int $exponent_value = 1) {
-        parent::__construct('meter', $value, true, $exponent_value);
+        parent::__construct('m'.$exponent_value, $value, true, $exponent_value);
     }
 
     public function convert_to(string $datatype)
@@ -12,7 +12,6 @@ class meter extends datatype
         if (strpos($datatype, '/') !== false) {
             throw new Exception('TODO');
         }
-
 
         global $meter_units;
         foreach ($meter_units as $unit) {
@@ -50,7 +49,7 @@ class meter extends datatype
                 return new meter($this->value + $value->value, $this->exponent_value);
                 break;
 
-            case 'meter':
+            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value + $value->value, $this->exponent_value);
                 }
@@ -78,7 +77,7 @@ class meter extends datatype
                 return new meter($this->value - $value->value, $this->exponent_value);
                 break;
 
-            case 'meter':
+            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value - $value->value, $this->exponent_value);
                 }
@@ -106,7 +105,7 @@ class meter extends datatype
                 return new meter($this->value * $value->value, $this->exponent_value);
                 break;
 
-            case 'meter':
+            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
                 return new meter($this->value * $value->value, $this->exponent_value + $value->exponent_value);
                 break;
             
@@ -131,7 +130,7 @@ class meter extends datatype
                 return new meter($this->value / $value->value, $this->exponent_value);
                 break;
 
-            case 'meter':
+            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
                 if ($this->exponent_value == $value->exponent_value) {
                     return new number($this->value / $value->value);
                 }

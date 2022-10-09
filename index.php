@@ -45,7 +45,7 @@ $css_vars = "
 		?>
 
 		<!-- javascript -->
-        <script src="<?= url('/assets/js/jquery.js') ?>" defer></script>
+        <script src="<?= url('/assets/js/jquery.js') ?>"></script>
         <script src="<?= url('/assets/js/bootstrap.bundle.min.js') ?>" defer></script>
 		<?php
 		foreach ($page_info['files']['js'] as $path)
