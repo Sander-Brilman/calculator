@@ -62,5 +62,12 @@ function meter_conversion($value, string $from, string $to)
     return $return_value;
 }
 
-
+function str_to_full_date_string(string $input): string
+{
+    try {
+        return (new DateTime($input))->format('c');
+    } catch(Exception $ex) {
+        throw new Exception('Cannot convert '.$input.' to a valid date', 1);
+    }
+}
 ?>

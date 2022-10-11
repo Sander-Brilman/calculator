@@ -8,19 +8,11 @@ ________________________________________________________________
 
 
 
-5 m / 2 s
+ERROR TYPES
 
- * 2 s 
-
-1 * 5 = 5 * 2 = 10
-2 * 5 = 10 * 2 = 20
-
-
-5 m / 2 s
-
- * 4 s 
-
-4 / 2 = 2 * 5 = 10
+CE000 = Convert Error
+OE000 = Operator Error
+DE000 = Invalid Datatype Error
 
 
 

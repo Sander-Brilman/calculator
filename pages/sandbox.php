@@ -16,11 +16,30 @@ require_once('assets/php/load_files.php');
 
 // dump((new second(10))->divide(new kilogram(2)));
 
-$expected = new kilogram(0.001);
 
-$result = str_to_datatype(1, 'dag');
 
-$expected == $result
+//                   [date]T[time]-[offset]   
+//                   yyyy-mm-ddThh:mm:ss-hh:mm
+// date time format: 1996-12-19T16:39:57-08:00
+// 
+
+
+
+
+dump(str_to_full_date_string('12-12-2022'));
+
+
+
+// $datetime = new DateTime('1990-12-31T23:59:60Z');
+// dump($datetime);
+
+
+// $datetime = new DateTime('1996-12-19T16:39:57-08:00');
+// dump($datetime);
+
+
+// $datetime = new DateTime('1996-12-19T16:39:57+e08:00');
+// dump($datetime);
 
 
 ?>

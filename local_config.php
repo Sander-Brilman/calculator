@@ -17,6 +17,6 @@
  * - @link https://github.com/Sander-Brilman/php-website-template/releases/tag/v1.0.0#setup-guide
  */
 
-$site_folder = '/websites/rekenmachine/'; // Don't forget the '/' at the start & end 
+$site_folder = '/websites/rekenmachine-remastered/calculator/'; // Don't forget the '/' at the start & end 
 
 ?>

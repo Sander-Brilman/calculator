@@ -8,12 +8,6 @@ class kilogram extends datatype
 
     public function convert_to(string $datatype)
     {
-        // check for derived unit
-        if (strpos($datatype, '/') !== false) {
-            throw new Exception('TODO');
-        }
-
-
         switch ($datatype) {
             case 'number':
                 return $this->value;

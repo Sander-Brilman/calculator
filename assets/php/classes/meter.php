@@ -8,11 +8,6 @@ class meter extends datatype
 
     public function convert_to(string $datatype)
     {
-        // check for derived unit
-        if (strpos($datatype, '/') !== false) {
-            throw new Exception('TODO');
-        }
-
         global $meter_units;
         foreach ($meter_units as $unit) {
             if (str_starts_with($datatype, $unit)) {
