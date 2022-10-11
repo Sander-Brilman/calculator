@@ -10,9 +10,11 @@ ________________________________________________________________
 
 ERROR TYPES
 
+GE000 = General Error
 CE000 = Convert Error
 OE000 = Operator Error
 DE000 = Invalid Datatype Error
+
 
 
 

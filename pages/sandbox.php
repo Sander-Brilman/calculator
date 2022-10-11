@@ -28,6 +28,7 @@ require_once('assets/php/load_files.php');
 
 dump(str_to_full_date_string('12-12-2022'));
 
+throw new calculator_error('GE000', '1', '2');
 
 
 // $datetime = new DateTime('1990-12-31T23:59:60Z');

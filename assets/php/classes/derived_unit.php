@@ -4,8 +4,8 @@ class derived_unit extends datatype
 {
     public function __construct($datatype1_value, string $datatype1, string $datatype2, $datatype2_value = 1)
     {
-        if (in_array($datatype1, $this::$invalid_datatypes)) { throw new Exception("$datatype1 is not a valid datatype for derived units"); }
-        if (in_array($datatype2, $this::$invalid_datatypes)) { throw new Exception("$datatype2 is not a valid datatype for derived units"); }
+        if (in_array($datatype1, $this::$invalid_datatypes)) { throw new calculator_error('DE000', $datatype1, ''); }
+        if (in_array($datatype2, $this::$invalid_datatypes)) { throw new calculator_error('DE000', $datatype2, ''); }
 
         $datatype_obj1 = str_to_datatype($datatype1_value, $datatype1);
         $datatype_obj2 = str_to_datatype($datatype2_value, $datatype2);
@@ -29,7 +29,7 @@ class derived_unit extends datatype
         $derived_units = explode('/', $datatype);
 
         if (sizeof($derived_units) != 2) {
-            throw new Exception('Invalid datatype for operator + on datatype '.$this->datatype_name, 1);
+            throw new calculator_error('CE001', $this->datatype_name, $datatype);
         }
 
         return $this->datatype1->convert_to($derived_units[0]) / $this->datatype2->convert_to($derived_units[1]);
