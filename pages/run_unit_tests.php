@@ -86,10 +86,22 @@ function run_unit_tests_array($array, $group_name, $indent_level, &$html, &$resu
     </div>
 </div>
 
+<?php
+
+if (($results['fails'] + $results['errors'] + $results['exceptions']) > 0) {
+    ?>
+    <div class="alert alert-danger lead fw-bold">
+        There are failed unit tests
+    </div>
+    <?php
+}
+
+?>
+
 <?= $html ?>
 
 <script>
-    $('.test-info > div').click(function() {
+    $('.test-info > div:not(#total)').click(function() {
         let search = $(this).attr('data-search');
         console.log('testing', search);
 

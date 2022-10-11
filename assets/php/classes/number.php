@@ -9,11 +9,11 @@ class number extends datatype
 
     public function convert_to(string $datatype)
     {
-        if (!in_array($datatype, $this::$invalid_datatypes)) {
-            return $this->value;
+        if (in_array($datatype, $this::$invalid_datatypes)) {
+            throw new Exception('datatype number cannot be converted to '.$datatype, 1);
         }
 
-        throw new Exception('datatype number cannot be converted to '.$datatype, 1);
+        return $this->value;
     }
 
     public function add(datatype $value): datatype
@@ -25,9 +25,9 @@ class number extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
+        $datatype_name = $value->datatype_name;
 
-        if (!in_array($value_type, $this::$invalid_datatypes)) {
+        if (!in_array($datatype_name, $this::$invalid_datatypes)) {
             $value->value = ($value->value + $this->value);
             return $value;
         }
@@ -44,9 +44,9 @@ class number extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
+        $datatype_name = $value->datatype_name;
 
-        if (!in_array($value_type, $this::$invalid_datatypes)) {
+        if (!in_array($datatype_name, $this::$invalid_datatypes)) {
             $value->value = ($this->value - $value->value);
             return $value;
         }
@@ -63,9 +63,9 @@ class number extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
+        $datatype_name = $value->datatype_name;
 
-        if (!in_array($value_type, $this::$invalid_datatypes)) {
+        if (!in_array($datatype_name, $this::$invalid_datatypes)) {
             $value->value = ($value->value * $this->value);
             return $value;
         }
@@ -82,13 +82,13 @@ class number extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
+        $datatype_name = $value->datatype_name;
         
         if ($value->value == 0) {
             throw new Exception('Cant divide by 0..', 1);
         }
 
-        if (!in_array($value_type, $this::$invalid_datatypes)) {
+        if (!in_array($datatype_name, $this::$invalid_datatypes)) {
             return new number($this->value / $value->value);
         }
 
@@ -104,9 +104,9 @@ class number extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
+        $datatype_name = $value->datatype_name;
         
-        if (!in_array($value_type, $this::$invalid_datatypes)) {
+        if (!in_array($datatype_name, $this::$invalid_datatypes)) {
             $value->value = ($value->value * $this->value / 100);
             return $value;
         }
@@ -123,8 +123,8 @@ class number extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
-        switch ($value_type) {
+        $datatype_name = $value->datatype_name;
+        switch ($datatype_name) {
             case 'number':
                 return new number($this->value ** $value->value);
                 break;

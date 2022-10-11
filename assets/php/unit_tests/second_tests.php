@@ -14,7 +14,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -29,7 +29,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
 
@@ -44,7 +44,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
 
@@ -77,7 +77,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -92,7 +92,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -124,7 +124,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -139,7 +139,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -147,13 +147,43 @@ $unit_tests['seconds datatype tests'] = [
             {
                 try {
                     $second = new second(173);
-                    $value = new meter(73);
+                    $value = new number(0);
                     $second->divide($value);
                 } catch (Exception $ex) {
                     return new test_result(true, '');
                 }
 
                 return new test_result(false, 'Exception was not thrown');
+            }
+        ),
+        
+        new unit_test('Seconds Divide test 4 - derived unit', function ()
+            {
+                $kilogram = new second(100);
+                $value = new kilogram(2);
+
+                $expected = new derived_unit(50, 's','kg');
+
+                $result = $kilogram->divide($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
+            }
+        ),
+        
+        new unit_test('Seconds Divide test 5 - derived unit', function ()
+            {
+                $kilogram = new second(100, 3);
+                $value = new meter(2);
+
+                $expected = new derived_unit(50, 's', 'm1');
+
+                $result = $kilogram->divide($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
 
@@ -171,7 +201,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -186,7 +216,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -217,7 +247,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
             }
         ),
         
@@ -247,7 +277,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected.' and result '.$result.' do not match');
             }
         ),
 
@@ -261,7 +291,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected.' and result '.$result.' do not match');
             }
         ),
 
@@ -275,7 +305,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected.' and result '.$result.' do not match');
             }
         ),
 
@@ -289,7 +319,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected.' and result '.$result.' do not match');
             }
         ),
 
@@ -303,7 +333,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected.' and result '.$result.' do not match');
             }
         ),
 
@@ -317,7 +347,7 @@ $unit_tests['seconds datatype tests'] = [
 
                 return $expected == $result
                     ? new test_result(true, '')
-                    : new test_result(false, 'Expected value and result do not match');
+                    : new test_result(false, 'Expected value '.$expected.' and result '.$result.' do not match');
             }
         ),
     ],

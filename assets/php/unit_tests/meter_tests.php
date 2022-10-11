@@ -126,7 +126,36 @@ $unit_tests['meter datatype tests'] = [
                     : new test_result(false, 'Expected value and result do not match');
             }
         ),
+        
+        new unit_test('Meter Divide test 4 - derived unit', function ()
+            {
+                $kilogram = new meter(100);
+                $value = new second(2);
 
+                $expected = new derived_unit(50, 'm1','s');
+
+                $result = $kilogram->divide($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
+            }
+        ),
+        
+        new unit_test('Meter Divide test 5 - derived unit', function ()
+            {
+                $kilogram = new meter(100, 3);
+                $value = new kilogram(2);
+
+                $expected = new derived_unit(50, 'm3', 'kg');
+
+                $result = $kilogram->divide($value);
+
+                return $expected == $result
+                    ? new test_result(true, '')
+                    : new test_result(false, 'Expected value '.$expected->value.' and result '.$result->value.' do not match');
+            }
+        ),
     ],
 
     'multiply tests' => [

@@ -2,25 +2,21 @@
 
 class derived_unit extends datatype
 {
-    public function __construct($datatype1_value, string $datatype1, string $datatype2) {
-
-        if (in_array($datatype1, $this::$invalid_datatypes)) {
-            throw new Exception("$datatype1 is not a valid datatype for derived units");
-        }
-        if (in_array($datatype2, $this::$invalid_datatypes)) {
-            throw new Exception("$datatype2 is not a valid datatype for derived units");
-        }
+    public function __construct($datatype1_value, string $datatype1, string $datatype2, $datatype2_value = 1)
+    {
+        if (in_array($datatype1, $this::$invalid_datatypes)) { throw new Exception("$datatype1 is not a valid datatype for derived units"); }
+        if (in_array($datatype2, $this::$invalid_datatypes)) { throw new Exception("$datatype2 is not a valid datatype for derived units"); }
 
         $datatype_obj1 = str_to_datatype($datatype1_value, $datatype1);
-        $datatype_obj2 = str_to_datatype(1, $datatype2);
+        $datatype_obj2 = str_to_datatype($datatype2_value, $datatype2);
+
+        $datatype_obj1->value = $datatype_obj1->value / $datatype_obj2->value;
+        $datatype_obj2->value = 1;
 
         $this->datatype1 = $datatype_obj1;
-        $this->datatype1->value = $datatype_obj1->value / $datatype_obj2->value;
-
         $this->datatype2 = $datatype_obj2;
-        $this->datatype2->value = 1;
 
-        parent::__construct("$datatype1/$datatype2", $this->datatype1->value, false);
+        parent::__construct($this->datatype1->datatype_name.'/'.$this->datatype2->datatype_name, $this->datatype1->value, false);
     }
 
     public datatype $datatype1;
@@ -121,6 +117,10 @@ class derived_unit extends datatype
         
         if (!($value instanceof number)) {
             throw new Exception('Invalid datatype for operator / on datatype '.$this->datatype_name, 1);
+        }
+
+        if ($value->value == 0) {
+            throw new Exception('Cannot divide by 0');
         }
 
         return new derived_unit(

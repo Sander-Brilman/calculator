@@ -28,7 +28,7 @@ class meter extends datatype
 
         }
 
-        throw new Exception('datatype number cannot be converted to '.$datatype, 1);
+        throw new Exception($this->datatype_name.' cannot be converted to '.$datatype, 1);
     }
 
     public function add(datatype $value): datatype
@@ -40,16 +40,16 @@ class meter extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
+        $datatype_name = $value->datatype_name;
 
 
 
-        switch ($value_type) {
+        switch ($datatype_name) {
             case 'number':
                 return new meter($this->value + $value->value, $this->exponent_value);
                 break;
 
-            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
+            case substr($datatype_name, 0, 1) == 'm' && is_numeric(substr($datatype_name, 1)):
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value + $value->value, $this->exponent_value);
                 }
@@ -57,7 +57,7 @@ class meter extends datatype
                 break;
 
             default:
-                throw new Exception('Invalid datatype for operator + on datatype meter', 1);
+                throw new Exception('Invalid datatype for operator + on '.$this->datatype_name, 1);
                 break;
         }
     }
@@ -71,13 +71,13 @@ class meter extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
-        switch ($value_type) {
+        $datatype_name = $value->datatype_name;
+        switch ($datatype_name) {
             case 'number':
                 return new meter($this->value - $value->value, $this->exponent_value);
                 break;
 
-            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
+            case substr($datatype_name, 0, 1) == 'm' && is_numeric(substr($datatype_name, 1)):
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value - $value->value, $this->exponent_value);
                 }
@@ -85,7 +85,7 @@ class meter extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator - on datatype meter', 1);
+                throw new Exception('Invalid datatype for operator - on '.$this->datatype_name, 1);
                 break;
         }
     }
@@ -99,18 +99,18 @@ class meter extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
-        switch ($value_type) {
+        $datatype_name = $value->datatype_name;
+        switch ($datatype_name) {
             case 'number':
                 return new meter($this->value * $value->value, $this->exponent_value);
                 break;
 
-            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
+            case substr($datatype_name, 0, 1) == 'm' && is_numeric(substr($datatype_name, 1)):
                 return new meter($this->value * $value->value, $this->exponent_value + $value->exponent_value);
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator * on datatype meter', 1);
+                throw new Exception('Invalid datatype for operator * on '.$this->datatype_name, 1);
                 break;
         }
     }
@@ -124,13 +124,18 @@ class meter extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
-        switch ($value_type) {
+        $datatype_name = $value->datatype_name;
+
+        if ($value->value == 0) {
+            throw new Exception('Cannot divide by 0');
+        }
+
+        switch ($datatype_name) {
             case 'number':
                 return new meter($this->value / $value->value, $this->exponent_value);
                 break;
 
-            case substr($value_type, 0, 1) == 'm' && is_numeric(substr($value_type, 1)):
+            case substr($datatype_name, 0, 1) == 'm' && is_numeric(substr($datatype_name, 1)):
                 if ($this->exponent_value == $value->exponent_value) {
                     return new number($this->value / $value->value);
                 }
@@ -138,9 +143,11 @@ class meter extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator / on datatype meter', 1);
+                return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
                 break;
         }
+
+        throw new Exception('Invalid datatype for operator / on '.$this->datatype_name, 1);
     }
 
     public function power_of(datatype $value): datatype
@@ -152,14 +159,14 @@ class meter extends datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        $value_type = $value->datatype_name;
-        switch ($value_type) {
+        $datatype_name = $value->datatype_name;
+        switch ($datatype_name) {
             case 'number':
-                return new number($this->value ** $value->value, $this->exponent_value * $value->exponent_value);
+                return new meter($this->value ** $value->value, $this->exponent_value * $value->exponent_value);
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator ^ on datatype meter', 1);
+                throw new Exception('Invalid datatype for operator ^ on '.$this->datatype_name, 1);
                 break;
         }
     }

@@ -9,16 +9,18 @@ require_once('assets/php/load_files.php');
 
 // dump(calculate_string('( ( 2000 cm1 + 100 dm1 ) * 100 mm1 + ( 66 km2 - 88 dcm2 + 1 hm2 ) ) / 10 m1 | m1'). ' m1');
 
+// dump((new meter(10, 1))->divide(new second(2)));
 
-// dump($derived);  
-// dump((new derived_unit(1, 'km1', 'h'))->convert_to('m1/s'));
-// dump((new derived_unit(1, 'km1', 'h'))->convert_to('dm1/min'));
+// dump((new kilogram(10))->divide(new second(2)));
 
-$unit = new derived_unit(100, 'm1', 's');
 
-dump($unit->convert_to('km1/h'));
-dump($unit->convert_to('cm1/s'));
+// dump((new second(10))->divide(new kilogram(2)));
 
+$expected = new kilogram(0.001);
+
+$result = str_to_datatype(1, 'dag');
+
+$expected == $result
 
 
 ?>

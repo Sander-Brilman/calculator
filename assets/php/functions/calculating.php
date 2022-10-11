@@ -157,8 +157,10 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         }
     }
 
-    // seconds
     switch ($datatype_string) {
+        //
+        // seconds
+        //
         case 'ms':
             return new second($value * 1000);
             break;
@@ -177,12 +179,47 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         case 'w':
             return new second(((($value * 7) * 24) * 60) * 60);
             break;
+
+        //
+        // kilogram
+        //
+        case 'ng':
+            return new kilogram($value / 1000000000000);
+            break;
+        case 'mcg':
+        case 'μg':
+            return new kilogram($value / 1000000000);
+            break;
+        case 'mg':
+            return new kilogram($value / 1000000);
+            break;
+        case 'cg':
+            return new kilogram($value / 100000);
+            break;
+        case 'dg':
+            return new kilogram($value / 10000);
+            break;
+        case 'g':
+            return new kilogram($value / 1000);
+            break;
+        case 'dag':
+            return new kilogram($value / 100);
+            break;
+        case 'hg':
+            return new kilogram($value / 10);
+            break;
+        case 'kg':
+            return new kilogram($value);
+            break;
+        case 't':
+            return new kilogram($value * 1000);
+            break;
     }
 
     // derived_units
     if (strpos($datatype_string, '/') !== false) {
         $derived_unit_array = explode('/', $datatype_string);
-        return new derived_unit($value, $derived_unit_array[0], 1, $derived_unit_array[1]);
+        return new derived_unit($value, $derived_unit_array[0], $derived_unit_array[1]);
     }
     
     throw new Exception($datatype_string.' is not a valid datatype', 1);
