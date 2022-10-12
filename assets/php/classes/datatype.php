@@ -28,7 +28,7 @@ class datatype
         /**
          * Placeholder function. This function should be overwritten with custom code for each datatype
          */
-        throw new calculator_error('CE000', $this->datatype_name, '');
+        throw new calculator_error('CE000', [$this->datatype_name, '']);
     }
 
     
@@ -62,7 +62,7 @@ class datatype
                 return $this->power_of($value);
                 break;
             default:
-                throw new calculator_error('OE000', $operator, $this->datatype_name);
+                throw new calculator_error('OE000', [$operator, $this->datatype_name]);
                 break;
         }
     }
@@ -76,7 +76,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new calculator_error('OE000', '+', $this->datatype_name);
+        throw new calculator_error('OE000', ['+', $this->datatype_name]);
     }
 
     public function subtract(datatype $value): datatype
@@ -88,7 +88,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new calculator_error('OE000', '-', $this->datatype_name);
+        throw new calculator_error('OE000', ['-', $this->datatype_name]);
     }
 
     public function multiply(datatype $value): datatype
@@ -100,7 +100,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new calculator_error('OE000', '*', $this->datatype_name);
+        throw new calculator_error('OE000', ['*', $this->datatype_name]);
     }
 
     public function divide(datatype $value): datatype
@@ -112,7 +112,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new calculator_error('OE000', '/', $this->datatype_name);
+        throw new calculator_error('OE000', ['/', $this->datatype_name]);
     }
 
     public function percentage(datatype $value): datatype
@@ -124,7 +124,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new calculator_error('OE000', '%', $this->datatype_name);
+        throw new calculator_error('OE000', ['%', $this->datatype_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -136,7 +136,7 @@ class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new calculator_error('OE000', '^', $this->datatype_name);
+        throw new calculator_error('OE000', ['^', $this->datatype_name]);
     }
 }
 

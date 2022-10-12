@@ -21,10 +21,10 @@ function meter_conversion($value, string $from, string $to)
     }
 
     if (!isset($to_index)) {
-        throw new Exception("$to heeft geen exponenten, bedoel je misschien $to".'1');
+        throw new calculator_error('DE003', [$to, $to]);
     }
     if (!isset($from_index)) {
-        throw new Exception("$from heeft geen exponenten, bedoel je misschien $from".'1');
+        throw new calculator_error('DE003', [$from, $from]);
     }
 
     $index_difference = abs($from_index - $to_index);
@@ -33,7 +33,7 @@ function meter_conversion($value, string $from, string $to)
 
 
     if ($from_exponent != $to_exponent) {
-        throw new Exception('cant convert '.$from.' to '.$to.'. exponent values are not equal', 1);
+        throw new calculator_error('CE002', [$from, $to]);
     } else if ($to_exponent == 0) {
         return $value;
     }
@@ -67,7 +67,7 @@ function str_to_full_date_string(string $input): string
     try {
         return (new DateTime($input))->format('c');
     } catch(Exception $ex) {
-        throw new Exception('Cannot convert '.$input.' to a valid date', 1);
+        throw new calculator_error('CE003', [$input]);
     }
 }
 ?>

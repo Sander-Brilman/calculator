@@ -23,7 +23,7 @@ class meter extends datatype
 
         }
 
-        throw new Exception($this->datatype_name.' cannot be converted to '.$datatype, 1);
+        throw new calculator_error('CE001', [$this->datatype_name, $datatype]);
     }
 
     public function add(datatype $value): datatype
@@ -48,11 +48,14 @@ class meter extends datatype
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value + $value->value, $this->exponent_value);
                 }
-                throw new Exception('Cannot add m'.$value->exponent_value.' on '.$this->exponent_value. ' because exponent_values are not equal', 1);
+                throw new calculator_error('DE002', [$datatype_name, '+', $this->datatype_name]);
                 break;
 
             default:
-                throw new Exception('Invalid datatype for operator + on '.$this->datatype_name, 1);
+                throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name], [
+                    'nl' => $this->datatype_name.' kan alleen worden opgeteld met getallen of door andere meter eenheden met dezelfde exponent waarde.',
+                    'en' => $this->datatype_name.' can only be increased by numbers or other meter units with the same exponent value.',
+                ]);
                 break;
         }
     }
@@ -76,11 +79,14 @@ class meter extends datatype
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value - $value->value, $this->exponent_value);
                 }
-                throw new Exception('Cannot subtract '.$value->value.' m'.$value->exponent_value.' from '.$this->value.' m'.$this->exponent_value. ' because exponent_values are not equal', 1);
+                throw new calculator_error('DE002', [$datatype_name, '-', $this->datatype_name]);
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator - on '.$this->datatype_name, 1);
+                throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name], [
+                    'nl' => 'Operatie - op datatype '.$this->datatype_name.' kan alleen worden uitgevoerd met getallen of door andere meter eenheden met dezelfde exponent waarde.',
+                    'en' => $this->datatype_name.' can only be subtracted by numbers or other meter units with the same exponent value.',
+                ]);
                 break;
         }
     }
@@ -105,7 +111,10 @@ class meter extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator * on '.$this->datatype_name, 1);
+                throw new calculator_error('DE001', [$datatype_name, '*', $this->datatype_name], [
+                    'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met datatype number of door andere meter eenheden.',
+                    'en' => $this->datatype_name.' can only be multiplied by numbers or other meter units.',
+                ]);
                 break;
         }
     }
@@ -122,7 +131,7 @@ class meter extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new Exception('Cannot divide by 0');
+            throw new calculator_error('OE001', [$datatype_name]);
         }
 
         switch ($datatype_name) {
@@ -137,12 +146,13 @@ class meter extends datatype
                 return new meter($this->value / $value->value, $this->exponent_value - $value->exponent_value);
                 break;
             
-            default:
-                return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
-                break;
         }
 
-        throw new Exception('Invalid datatype for operator / on '.$this->datatype_name, 1);
+        if (in_array($datatype_name, derived_unit::$invalid_datatypes)) {
+            throw new calculator_error('DE001', [$datatype_name, '/', $this->datatype_name]);
+        }
+
+        return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
     }
 
     public function power_of(datatype $value): datatype
@@ -161,7 +171,10 @@ class meter extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator ^ on '.$this->datatype_name, 1);
+                throw new calculator_error('DE001', [$datatype_name, '^', $this->datatype_name], [ 
+                    'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
+                    'en' => 'Exponentiation is only available using numbers',
+                ]);
                 break;
         }
     }

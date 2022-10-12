@@ -2,33 +2,25 @@
 
 class calculator_error extends Error
 {
-    public function __construct(string $error_code, string $error_data1, string $error_data2, array $additional_text = [ 'nl' => '', 'en' => '' ]) {
+    public function __construct(string $error_code, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
         /**
-         * The $error_data1 and $error_data2 variables are strings that will fill the value of the '?' inside the error messages
-         * The strings will be loaded in order. So $error_data1 will replace the first occurring '?' and $error_data2 will replace the second
+         * The error_data array contains strings with the details of the 
          * 
          * @param string $error_code the full error code of the error,
          * 
-         * @param string $error_data1 the string representing a part of the error.
-         * @param string $error_data21 the string representing a part of the error.
+         * @param array $error_data the array with strings containing the details of the errors. Will be the replace value for the question marks
          * 
-         * @param array $additional_text Give additional text in 
+         * @param array $additional_text Give additional text in different languages
          */
         $this->error_code = $error_code;
-
-        $this->error_data1 = $error_data1;
-        $this->error_data2 = $error_data2;
-
+        $this->error_data = $error_data;
         $this->additional_text = $additional_text;
 
         parent::__construct($error_code);
     }
 
     public string $error_code;
-
-    public string $error_data1;
-    public string $error_data2;
-
+    public array $error_data;
     public array $additional_text;
 
     public static array $supported_languages = ['nl', 'en'];
@@ -37,39 +29,67 @@ class calculator_error extends Error
         'GE' => [// General Error
 
             '000' => [// missing error code
-                'nl' => 'Er is iets mis gegaan.. We weten alleen niet wat. Maar het heeft te maken met ? en ?',
-                'en' => 'Something went wrong.. We do not know exactly what. But it has something to do with ? and ?',
+                'nl' => 'Er is iets mis gegaan.. We weten alleen niet wat. Maar het heeft te maken met [?] en [?]',
+                'en' => 'Something went wrong.. We do not know exactly what. But it has something to do with [?] and [?]',
             ],
 
         ],
         'CE' => [// Convert Error
 
             '000' => [// covert function is not set
-                'nl' => 'Omzetten is uitgeschakeld voor datatype ?.',
-                'en' => 'Converting is disables for datatype ?.',
+                'nl' => 'Omzetten is uitgeschakeld voor datatype [?].',
+                'en' => 'Converting is disables for datatype [?].',
             ],
 
             '001' => [// cannot convert to
-                'nl' => 'Datatype ? kan niet worden omgezet naar ?',
-                'en' => 'Datatype ? can not be converted to ?',
+                'nl' => 'Datatype [?] kan niet worden omgezet naar [?]',
+                'en' => 'Datatype [?] can not be converted to [?]',
+            ],
+
+            '002' => [// invalid exponent values not equal
+                'nl' => 'Kan eenheid [?] niet omzetten naar [?], exponenten zijn niet gelijk',
+                'en' => 'can not convert [?] to [?], exponents are not equal',
+            ],
+
+            '003' => [// invalid exponent values not equal
+                'nl' => 'Kan [?] niet omzetten naar een geldige datum & tijd',
+                'en' => 'can not convert [?] to a valid date time',
             ],
 
         ],
         'OE' => [// Operator Error
 
             '000' => [// invalid operator
-                'nl' => 'Operator ? is niet beschikbaar voor datatype ?',
-                'en' => 'Operator ? is not available for datatype ?',
+                'nl' => 'Operator [?] is niet beschikbaar voor datatype [?]',
+                'en' => 'Operator [?] is not available for datatype [?]',
             ],
             
-
+            '001' => [// divide by 0
+                'nl' => 'Zoals meeste rekenmachines, kan je ook hier [?] niet delen door 0',
+                'en' => 'Like most calculators, you can not divide [?] by 0',
+            ],
             
         ],
         'DE' => [// Invalid Datatype Error
 
             '000' => [// not a valid datatype for derived units
-                'nl' => '? kan niet worden gedeeld',
-                'en' => '? cannot be divided',
+                'nl' => '[?] kan niet worden gedeeld',
+                'en' => '[?] cannot be divided',
+            ],
+
+            '001' => [// invalid value for operator
+                'nl' => 'Ongeldige waarde [?] voor operator [?] op datatype [?]',
+                'en' => 'Invalid value [?] for operator [?] on datatype [?]',
+            ],
+
+            '002' => [// invalid exponent values not equal
+                'nl' => 'Ongeldige waarde [?] voor operator [?] op datatype [?], exponenten zijn niet gelijk',
+                'en' => 'Invalid value [?] for operator [?] on datatype [?], exponents are not equal',
+            ],
+
+            '003' => [// no exponent values found
+                'nl' => '[?] heeft geen exponenten. Bedoel je misschien [?]1?',
+                'en' => '[?] does not have an exponent value. Do you perhaps mean [?]1?',
             ],
 
         ],
@@ -97,11 +117,28 @@ class calculator_error extends Error
             ? $this::$error_messages[$error_type][$error_id][$lang]
             : $this::$error_messages['GE']['000'][$lang];
 
-        $return_string = str_replace_first_match('?', $this->error_data1, $return_string);
-        $return_string = str_replace_first_match('?', $this->error_data2, $return_string);
+        for ($i = sizeof($this->error_data); $i < substr_count($return_string, '?', 0); $i++) { 
+            $add_string = '';
+            switch ($lang) {
+                case 'nl':
+                    $add_string = '[onbekend]';
+                    break;
+                    
+                case 'en':
+                    $add_string = '[unknown]';
+                    break;
+            }
+            $this->error_data[] = $add_string;
+        }
 
-        if (isset($this->additional_text[$lang])) {
-            $return_string .= ' '.$this->additional_text[$lang];
+        foreach ($this->error_data as $data_string) {
+            $return_string = str_replace_first_match('[?]', $data_string, $return_string);
+        }
+
+        if (isset($this->additional_text[$lang]) && $this->additional_text[$lang] != '') {
+            $return_string .= '. '.(is_string($this->additional_text)
+                ? $this->additional_text
+                : $this->additional_text[$lang]);
         }
         
         return $return_string;
