@@ -45,7 +45,7 @@ class derived_unit extends datatype
          * @return datatype returns a new datatype with the result
          */
         if (!($value instanceof derived_unit)) {
-            throw new calculator_error('CE001', [$value->datatype_name, '+', $this->datatype_name]);
+            throw new calculator_error('DE001', [$value->datatype_name, '+', $this->datatype_name]);
         }
 
         return new derived_unit(
@@ -65,7 +65,7 @@ class derived_unit extends datatype
          * @return datatype returns a new datatype with the result
          */
         if (!($value instanceof derived_unit)) {
-            throw new calculator_error('CE001', [$value->datatype_name, '-', $this->datatype_name]);
+            throw new calculator_error('DE001', [$value->datatype_name, '-', $this->datatype_name]);
         }
 
         return new derived_unit(
@@ -102,7 +102,7 @@ class derived_unit extends datatype
 
         }
 
-        throw new calculator_error('CE001', [$value->datatype_name, '*', $this->datatype_name]);
+        throw new calculator_error('DE001', [$value->datatype_name, '*', $this->datatype_name]);
     }
 
     public function divide(datatype $value): datatype
@@ -116,11 +116,11 @@ class derived_unit extends datatype
          */
         
         if (!($value instanceof number)) {
-            throw new calculator_error('CE001', [$value->datatype_name, '/', $this->datatype_name]);
+            throw new calculator_error('DE001', [$value->datatype_name, '/', $this->datatype_name]);
         }
 
         if ($value->value == 0) {
-            throw new calculator_error('OE000', [$this->datatype_name, '']);
+            throw new calculator_error('OE001', [$this->datatype_name, '']);
         }
 
         return new derived_unit(

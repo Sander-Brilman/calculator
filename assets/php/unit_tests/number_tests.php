@@ -166,11 +166,11 @@ $unit_tests['number datatype tests'] = [
 
                 try {
                     $number->divide($value);
-                } catch (Exception $ex) {
+                } catch (calculator_error $ex) {
                     return new test_result(true);
                 }
 
-                return new test_result(false, 'No Exception has been thrown');
+                return new test_result(false, 'No calculator_error has been thrown');
             }
         ),
 

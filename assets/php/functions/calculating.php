@@ -1,10 +1,8 @@
 <?php
-
 function calculate_string(string $full_calculate_string)
 {
     /**
      * Takes the parsed string and calculates the result. The given string must be fully formatted & parsed.
-     * Will throw Exceptions on error.
      * 
      * Syntax:
      * [calculation] | [return datatype] | [number of decimals]
@@ -126,7 +124,6 @@ function str_to_datatype(string $value, string $datatype_string): datatype
 {
     /**
      * Takes a [value] [datatype] pair in string format and returns a single datatype object.
-     * Will throw Exceptions on converting errors.
      * 
      * @param string $value The value that belongs to the datatype
      * @param string $datatype_string The datatype you want the value in
@@ -134,95 +131,98 @@ function str_to_datatype(string $value, string $datatype_string): datatype
      * @return datatype A new datatype object with the value set
      */
 
-    // number
-    if ($datatype_string == 'number') {
-        if (!is_numeric($value)) {
-            throw new Exception('Cannot convert '.$value.' to datatype number: value is not numeric', 1);
+    if (is_numeric($value)) {
+
+        // number
+        if ($datatype_string == 'number') {
+            return new number($value);
         }
 
-        return new number($value);
-    }
-
-    if ($datatype_string == 'meter') {
-        return new meter($value);
-    }
-
-    // meters
-    global $meter_units;
-    foreach ($meter_units as $unit) {
-        if (str_starts_with($datatype_string, $unit) && is_numeric(substr($datatype_string, strlen($unit)))) {
-            $exponent = (int)str_replace($unit, '', $datatype_string);
-            return new meter(meter_conversion($value, $datatype_string, 'm'.$exponent), $exponent);
-            break;
+        if ($datatype_string == 'meter') {
+            return new meter($value);
         }
+
+        // meters
+        global $meter_units;
+        foreach ($meter_units as $unit) {
+            if (str_starts_with($datatype_string, $unit) && is_numeric(substr($datatype_string, strlen($unit)))) {
+                $exponent = (int)str_replace($unit, '', $datatype_string);
+                return new meter(meter_conversion($value, $datatype_string, 'm'.$exponent), $exponent);
+                break;
+            }
+        }
+
+        switch ($datatype_string) {
+            //
+            // seconds
+            //
+            case 'ms':
+                return new second($value * 1000);
+                break;
+            case 's':
+                return new second($value);
+                break;
+            case 'min':
+                return new second($value * 60);
+                break;
+            case 'h':
+                return new second(($value * 60) * 60);
+                break;
+            case 'day':
+                return new second((($value * 24) * 60) * 60);
+                break;
+            case 'w':
+                return new second(((($value * 7) * 24) * 60) * 60);
+                break;
+
+            //
+            // kilogram
+            //
+            case 'ng':
+                return new kilogram($value / 1000000000000);
+                break;
+            case 'mcg':
+            case 'μg':
+                return new kilogram($value / 1000000000);
+                break;
+            case 'mg':
+                return new kilogram($value / 1000000);
+                break;
+            case 'cg':
+                return new kilogram($value / 100000);
+                break;
+            case 'dg':
+                return new kilogram($value / 10000);
+                break;
+            case 'g':
+                return new kilogram($value / 1000);
+                break;
+            case 'dag':
+                return new kilogram($value / 100);
+                break;
+            case 'hg':
+                return new kilogram($value / 10);
+                break;
+            case 'kg':
+                return new kilogram($value);
+                break;
+            case 't':
+                return new kilogram($value * 1000);
+                break;
+        }
+
+        // derived_units
+        if (strpos($datatype_string, '/') !== false) {
+            $derived_unit_array = explode('/', $datatype_string);
+            return new derived_unit($value, $derived_unit_array[0], $derived_unit_array[1]);
+        }
+        
+        throw new calculator_error('CE005', [$datatype_string]);
+    } else {
+
+        throw new calculator_error('CE004', [$value]);
     }
 
-    switch ($datatype_string) {
-        //
-        // seconds
-        //
-        case 'ms':
-            return new second($value * 1000);
-            break;
-        case 's':
-            return new second($value);
-            break;
-        case 'min':
-            return new second($value * 60);
-            break;
-        case 'h':
-            return new second(($value * 60) * 60);
-            break;
-        case 'day':
-            return new second((($value * 24) * 60) * 60);
-            break;
-        case 'w':
-            return new second(((($value * 7) * 24) * 60) * 60);
-            break;
-
-        //
-        // kilogram
-        //
-        case 'ng':
-            return new kilogram($value / 1000000000000);
-            break;
-        case 'mcg':
-        case 'μg':
-            return new kilogram($value / 1000000000);
-            break;
-        case 'mg':
-            return new kilogram($value / 1000000);
-            break;
-        case 'cg':
-            return new kilogram($value / 100000);
-            break;
-        case 'dg':
-            return new kilogram($value / 10000);
-            break;
-        case 'g':
-            return new kilogram($value / 1000);
-            break;
-        case 'dag':
-            return new kilogram($value / 100);
-            break;
-        case 'hg':
-            return new kilogram($value / 10);
-            break;
-        case 'kg':
-            return new kilogram($value);
-            break;
-        case 't':
-            return new kilogram($value * 1000);
-            break;
-    }
-
-    // derived_units
-    if (strpos($datatype_string, '/') !== false) {
-        $derived_unit_array = explode('/', $datatype_string);
-        return new derived_unit($value, $derived_unit_array[0], $derived_unit_array[1]);
-    }
-    
-    throw new Exception($datatype_string.' is not a valid datatype', 1);
 }
 
 function calculate_array_recursive(array $array, array &$history): datatype
@@ -287,7 +287,7 @@ function calculate_array_recursive(array $array, array &$history): datatype
         // Prevent infinite loop in case of error
         if ($limit_counter > 200) {
 
-            throw new Exception('Safety limit reached for calculate_array_recursive function', 1);
+            throw new calculator_error('GE001', []);
             exit;
 
         }

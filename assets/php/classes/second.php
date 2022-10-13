@@ -29,7 +29,10 @@ class second extends datatype
                 break;
         }
 
-        throw new Exception('datatype second cannot be converted to '.$datatype, 1);
+        throw new calculator_error('CE001', [$datatype, $this->datatype_name], [
+            'nl' => 'Tijdseenheden kunnen alleen worden omgezet naar andere tijdseenheden',
+            'en' => 'Time units can only be converted to other time units',
+        ]);
     }
 
     public function add(datatype $value): datatype
@@ -50,10 +53,13 @@ class second extends datatype
                 break;
 
             default:
-                throw new Exception('Invalid datatype for operator + on datatype second', 1);
+                throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name], [
+                    'nl' => 'Tijdseenheden kunnen alleen worden opgeteld met getallen of andere tijdseenheden',
+                    'en' => 'Time units can only be increased by numbers and other time units',
+                ]);
                 break;
         }
-    }
+    }   
 
     public function subtract(datatype $value): datatype
     {
@@ -72,7 +78,10 @@ class second extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator - on datatype second', 1);
+                throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name], [
+                    'nl' => 'operatie - is alleen mogelijk met getallen of andere tijdseenheden',
+                    'en' => 'Time units can only be subtracted by numbers or other time units',
+                ]);               
                 break;
         }
     }
@@ -94,7 +103,10 @@ class second extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator * on datatype second', 1);
+                throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name], [
+                    'nl' => 'Tijdseenheden kunnen alleen worden vermenigvuldigt met getallen of andere tijdseenheden',
+                    'en' => 'Time units can only be multiplied with numbers and other time units',
+                ]);
                 break;
         }
     }
@@ -111,7 +123,7 @@ class second extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new Exception('Cannot divide by 0');
+            throw new calculator_error('OE001', [$this->datatype_name]);
         }
 
         switch ($datatype_name) {
@@ -127,8 +139,8 @@ class second extends datatype
                 return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
                 break;
         }
-        
-        throw new Exception('Invalid datatype for operator / on datatype second', 1);
+
+        throw new calculator_error('DE001', [$datatype_name, '/', $this->datatype_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -147,7 +159,10 @@ class second extends datatype
                 break;
 
             default:
-                throw new Exception('Invalid datatype for operator ^ on datatype second', 1);
+                throw new calculator_error('DE001', [$datatype_name, '^', $this->datatype_name], [
+                    'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
+                    'en' => 'Exponentiation is only available using numbers',
+                ]);
                 break;
         }
     }

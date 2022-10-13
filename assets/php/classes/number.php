@@ -10,7 +10,7 @@ class number extends datatype
     public function convert_to(string $datatype)
     {
         if (in_array($datatype, $this::$invalid_datatypes)) {
-            throw new Exception('datatype number cannot be converted to '.$datatype, 1);
+            throw new calculator_error('CE001', [$this->datatype_name, $datatype]);
         }
 
         return $this->value;
@@ -32,7 +32,7 @@ class number extends datatype
             return $value;
         }
 
-        throw new Exception('Invalid datatype for operator + on datatype number', 1);
+        throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name]);
     }
 
     public function subtract(datatype $value): datatype
@@ -51,7 +51,7 @@ class number extends datatype
             return $value;
         }
 
-        throw new Exception('Invalid datatype for operator - on datatype number', 1);
+        throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name]);
     }
 
     public function multiply(datatype $value): datatype
@@ -70,7 +70,7 @@ class number extends datatype
             return $value;
         }
 
-        throw new Exception('Invalid datatype for operator * on datatype number', 1);
+        throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name]);
     }
 
     public function divide(datatype $value): datatype
@@ -85,14 +85,14 @@ class number extends datatype
         $datatype_name = $value->datatype_name;
         
         if ($value->value == 0) {
-            throw new Exception('Cant divide by 0..', 1);
+            throw new calculator_error('OE001', [$this->datatype_name]);
         }
 
         if (!in_array($datatype_name, $this::$invalid_datatypes)) {
             return new number($this->value / $value->value);
         }
 
-        throw new Exception('Invalid datatype for operator / on datatype number', 1);
+        throw new calculator_error('DE001', [$datatype_name, '/', $this->datatype_name]);
     }
 
     public function percentage(datatype $value): datatype
@@ -111,7 +111,7 @@ class number extends datatype
             return $value;
         }
 
-        throw new Exception('Invalid datatype for operator % on datatype number', 1);
+        throw new calculator_error('DE001', [$datatype_name, '%', $this->datatype_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -130,7 +130,10 @@ class number extends datatype
                 break;
             
             default:
-                throw new Exception('Invalid datatype for operator ^ on datatype number', 1);
+                throw new calculator_error('DE001', [$datatype_name, '^', $this->datatype_name], [ 
+                    'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
+                    'en' => 'Exponentiation is only available using numbers',
+                ]);
                 break;
         }
     }

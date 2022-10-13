@@ -54,12 +54,12 @@ $unit_tests['seconds datatype tests'] = [
                     $second = new second(3);
                     $value = new meter(77);
                     $second->add($value);
-                } catch (Exception $ex) {
+                } catch (calculator_error $ex) {
                     return new test_result(true, '');
                 }
 
 
-                return new test_result(false, 'Exception was not thrown');
+                return new test_result(false, 'calculator_error was not thrown');
             }
         ),
 
@@ -103,11 +103,11 @@ $unit_tests['seconds datatype tests'] = [
                     $second = new second(173);
                     $value = new meter(73);
                     $second->subtract($value);
-                } catch (Exception $ex) {
+                } catch (calculator_error $ex) {
                     return new test_result(true, '');
                 }
 
-                return new test_result(false, 'Exception was not thrown');
+                return new test_result(false, 'calculator_error was not thrown');
             }
         ),
     ],
@@ -149,11 +149,11 @@ $unit_tests['seconds datatype tests'] = [
                     $second = new second(173);
                     $value = new number(0);
                     $second->divide($value);
-                } catch (Exception $ex) {
+                } catch (calculator_error $ex) {
                     return new test_result(true, '');
                 }
 
-                return new test_result(false, 'Exception was not thrown');
+                return new test_result(false, 'calculator_error was not thrown');
             }
         ),
         
@@ -226,11 +226,11 @@ $unit_tests['seconds datatype tests'] = [
                     $second = new second(173);
                     $value = new meter(73);
                     $second->multiply($value);
-                } catch (Exception $ex) {
+                } catch (calculator_error $ex) {
                     return new test_result(true, '');
                 }
 
-                return new test_result(false, 'Exception was not thrown');
+                return new test_result(false, 'calculator_error was not thrown');
             }
         ),
     ],
@@ -257,11 +257,11 @@ $unit_tests['seconds datatype tests'] = [
                     $second = new second(173);
                     $value = new meter(73);
                     $second->percentage($value);
-                } catch (Exception $ex) {
+                } catch (calculator_error $ex) {
                     return new test_result(true, '');
                 }
 
-                return new test_result(false, 'Exception was not thrown');
+                return new test_result(false, 'calculator_error was not thrown');
             }
         ),
     ],

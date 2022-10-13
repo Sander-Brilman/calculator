@@ -33,17 +33,22 @@ class calculator_error extends Error
                 'en' => 'Something went wrong.. We do not know exactly what. But it has something to do with [?] and [?]',
             ],
 
+            '001' => [// safety limit calculating
+                'nl' => 'Maximum aantal haakjes bereikt',
+                'en' => 'Maximum amount of round brackets reached',
+            ],
+
         ],
         'CE' => [// Convert Error
 
             '000' => [// covert function is not set
-                'nl' => 'Omzetten is uitgeschakeld voor datatype [?].',
-                'en' => 'Converting is disables for datatype [?].',
+                'nl' => 'Omzetten is uitgeschakeld voor eenheid [?].',
+                'en' => 'Converting is disables for unit [?].',
             ],
 
             '001' => [// cannot convert to
-                'nl' => 'Datatype [?] kan niet worden omgezet naar [?]',
-                'en' => 'Datatype [?] can not be converted to [?]',
+                'nl' => 'Eenheid [?] kan niet worden omgezet naar [?]',
+                'en' => 'Unit [?] can not be converted to [?]',
             ],
 
             '002' => [// invalid exponent values not equal
@@ -56,12 +61,22 @@ class calculator_error extends Error
                 'en' => 'can not convert [?] to a valid date time',
             ],
 
+            '004' => [// value is not numeric
+                'nl' => 'Kan [?] niet omzetten naar een getal',
+                'en' => 'can not convert [?] to a number',
+            ],
+
+            '005' => [// value is not numeric
+                'nl' => '[?] is geen geldige eenheid',
+                'en' => '[?] is not a valid unit',
+            ],
+
         ],
         'OE' => [// Operator Error
 
             '000' => [// invalid operator
-                'nl' => 'Operator [?] is niet beschikbaar voor datatype [?]',
-                'en' => 'Operator [?] is not available for datatype [?]',
+                'nl' => '[?] is niet beschikbaar voor eenheid [?]',
+                'en' => 'Operator [?] is not available for unit [?]',
             ],
             
             '001' => [// divide by 0
@@ -78,18 +93,18 @@ class calculator_error extends Error
             ],
 
             '001' => [// invalid value for operator
-                'nl' => 'Ongeldige waarde [?] voor operator [?] op datatype [?]',
-                'en' => 'Invalid value [?] for operator [?] on datatype [?]',
+                'nl' => 'Ongeldige waarde [?] voor operator [?] op eenheid [?]',
+                'en' => 'Invalid value [?] for operator [?] on unit [?]',
             ],
 
             '002' => [// invalid exponent values not equal
-                'nl' => 'Ongeldige waarde [?] voor operator [?] op datatype [?], exponenten zijn niet gelijk',
-                'en' => 'Invalid value [?] for operator [?] on datatype [?], exponents are not equal',
+                'nl' => 'Ongeldige waarde [?] voor operator [?] op eenheid [?], exponenten zijn niet gelijk',
+                'en' => 'Invalid value [?] for operator [?] on unit [?], exponents are not equal',
             ],
 
             '003' => [// no exponent values found
-                'nl' => '[?] heeft geen exponenten. Bedoel je misschien [?]1?',
-                'en' => '[?] does not have an exponent value. Do you perhaps mean [?]1?',
+                'nl' => 'Eenheid [?] heeft geen exponenten. Bedoel je misschien [?]1?',
+                'en' => 'Unit [?] does not have an exponent value. Do you perhaps mean [?]1?',
             ],
 
         ],

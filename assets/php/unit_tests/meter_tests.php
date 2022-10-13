@@ -199,11 +199,11 @@ $unit_tests['meter datatype tests'] = [
                     $expected = new meter(150, 2);
     
                     $result = $meter->execute_operation('%', $value);
-                } catch(Exception $ex) {
+                } catch(calculator_error $ex) {
                     return new test_result(true, '');
                 }
 
-                return new test_result(false, 'Expected value and result do not match');
+                return new test_result(false, 'calculator_error value and result do not match');
             }
         ),
 

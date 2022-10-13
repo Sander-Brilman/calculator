@@ -82,7 +82,7 @@ $unit_tests['string processing tests'] = [
         new unit_test('str to invalid type', function() {
             try {
                 str_to_datatype(55, 'something_invalid');
-            } catch (Exception $ex) {
+            } catch (calculator_error $ex) {
                 return new test_result(true);
             }
         

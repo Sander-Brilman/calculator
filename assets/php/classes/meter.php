@@ -112,7 +112,7 @@ class meter extends datatype
             
             default:
                 throw new calculator_error('DE001', [$datatype_name, '*', $this->datatype_name], [
-                    'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met datatype number of door andere meter eenheden.',
+                    'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met getallen of met andere meter eenheden.',
                     'en' => $this->datatype_name.' can only be multiplied by numbers or other meter units.',
                 ]);
                 break;
@@ -131,7 +131,7 @@ class meter extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new calculator_error('OE001', [$datatype_name]);
+            throw new calculator_error('OE001', [$this->datatype_name]);
         }
 
         switch ($datatype_name) {

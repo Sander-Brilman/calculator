@@ -94,8 +94,8 @@ class kilogram extends datatype
             
             default:
                 throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name], [
-                    'nl' => $this->datatype_name.' optellen kan alleen met getallen of gewicht eenheden',
-                    'en' => 'Increasing '.$this->datatype_name.' is only possible with units of weight',
+                    'nl' => 'operatie - kan alleen met getallen of gewicht eenheden',
+                    'en' => 'subtracting '.$this->datatype_name.' is only possible with units of weight',
                 ]);
                 break;
         }
@@ -119,8 +119,8 @@ class kilogram extends datatype
             
             default:
                 throw new calculator_error('DE001', [$datatype_name, '*', $this->datatype_name], [
-                    'nl' => '',
-                    'en' => '',
+                    'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met getallen of met andere gewicht eenheden.',
+                    'en' => $this->datatype_name.' can only be multiplied by numbers or other meter units.',
                 ]);
                 break;
         }
@@ -138,7 +138,7 @@ class kilogram extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new calculator_error('OE000', [$this->datatype_name, '']);
+            throw new calculator_error('OE001', [$this->datatype_name]);
         }
 
         switch ($datatype_name) {

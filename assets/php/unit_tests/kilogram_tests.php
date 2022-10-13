@@ -107,13 +107,13 @@ $unit_tests['kilograms datatype tests'] = [
                     $kilogram = new kilogram(55);
                     $value = new kilogram(0);
                     $kilogram->execute_operation('/', $value);
-                } catch (Exception $ex) {
+                } catch (calculator_error $ex) {
                     return $ex->getMessage() == 'Cannot divide by 0'
                         ? new test_result(true)
-                        : new test_result(false, 'Wrong exception was thrown');
+                        : new test_result(false, 'Wrong calculator_error was thrown');
                 }
 
-                return new test_result(false, 'No exception was thrown');
+                return new test_result(false, 'No calculator_error was thrown');
             }
         ),
 
@@ -247,13 +247,11 @@ $unit_tests['kilograms datatype tests'] = [
                     $second = new kilogram(173);
                     $value = new meter(73);
                     $second->percentage($value);
-                } catch (Exception $ex) {
-                    return $ex->getMessage() == 'Operator % is not available for datatype kg'
-                        ? new test_result(true, '')
-                        : new test_result(false, 'Wrong exception was thrown');
+                } catch (calculator_error $ex) {
+                    return new test_result(true, '');
                 }
 
-                return new test_result(false, 'Exception was not thrown');
+                return new test_result(false, 'calculator error was not thrown');
             }
         ),
     ],
