@@ -35,7 +35,7 @@ function calculate_string(string $full_calculate_string)
     // convert to requested datatype
     $result = $result_datatype->convert_to($return_type);
 
-    return round($result, $decimal_places);
+    return number_format(round($result, $decimal_places), $decimal_places);
 }
 
 function str_to_sum_array(string $sum_string): array
@@ -138,8 +138,14 @@ function str_to_datatype(string $value, string $datatype_string): datatype
             return new number($value);
         }
 
+        // meters
         if ($datatype_string == 'meter') {
             return new meter($value);
+        }
+
+        // dates
+        if ($datatype_string == 'datetime') {
+            return new calculator_datetime(str_to_full_date_string($value));
         }
 
         // meters
@@ -216,6 +222,8 @@ function str_to_datatype(string $value, string $datatype_string): datatype
             $derived_unit_array = explode('/', $datatype_string);
             return new derived_unit($value, $derived_unit_array[0], $derived_unit_array[1]);
         }
+
+
         
         throw new calculator_error('CE005', [$datatype_string]);
     } else {

@@ -28,6 +28,10 @@ class derived_unit extends datatype
     {
         $derived_units = explode('/', $datatype);
 
+        if ($datatype == 'number') {
+            return $this->value;
+        }
+        
         if (sizeof($derived_units) != 2) {
             throw new calculator_error('CE001', [$this->datatype_name, $datatype]);
         }
