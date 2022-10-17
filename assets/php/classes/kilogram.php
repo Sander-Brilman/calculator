@@ -45,7 +45,7 @@ class kilogram extends datatype
                 break;
         }
 
-        throw new calculator_error('CE001', [$this->datatype_name, $datatype], [
+        throw new convert_error(1, [$this->datatype_name, $datatype], [
             'nl' => $this->datatype_name.' kan alleen worden omgezet naar gewicht eenheden',
             'en' => $this->datatype_name.' can only be converted to a units of weight',
         ]);
@@ -69,7 +69,7 @@ class kilogram extends datatype
                 break;
 
             default:
-                throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name], [
+                throw new datatype_error(1, [$datatype_name, '+', $this->datatype_name], [
                     'nl' => $this->datatype_name.' optellen kan alleen met getallen of gewicht eenheden',
                     'en' => 'Increasing '.$this->datatype_name.' is only possible with units of weight',
                 ]);
@@ -93,7 +93,7 @@ class kilogram extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name], [
+                throw new datatype_error(1, [$datatype_name, '-', $this->datatype_name], [
                     'nl' => 'operatie - kan alleen met getallen of gewicht eenheden',
                     'en' => 'subtracting '.$this->datatype_name.' is only possible with units of weight',
                 ]);
@@ -118,7 +118,7 @@ class kilogram extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '*', $this->datatype_name], [
+                throw new datatype_error(1, [$datatype_name, '*', $this->datatype_name], [
                     'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met getallen of met andere gewicht eenheden.',
                     'en' => $this->datatype_name.' can only be multiplied by numbers or other meter units.',
                 ]);
@@ -138,7 +138,7 @@ class kilogram extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new calculator_error('OE001', [$this->datatype_name]);
+            throw new operator_error(1, [$this->datatype_name]);
         }
 
         switch ($datatype_name) {
@@ -154,7 +154,7 @@ class kilogram extends datatype
                 return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
                 break;
         }
-        throw new calculator_error('DE001', [$datatype_name, '/', $this->datatype_name]);
+        throw new datatype_error(1, [$datatype_name, '/', $this->datatype_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -174,7 +174,7 @@ class kilogram extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '^', $this->datatype_name]);
+                throw new datatype_error(1, [$datatype_name, '^', $this->datatype_name]);
                 break;
         }
     }

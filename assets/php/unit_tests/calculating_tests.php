@@ -334,7 +334,7 @@ $unit_tests['Full calculation test'] = [
     
             $result = calculate_string($sum_full);
             $expected = 52500;
-    
+            
             return $result == $expected
                 ? new test_result(true, '')
                 : new test_result(false, 'Values are not equal');

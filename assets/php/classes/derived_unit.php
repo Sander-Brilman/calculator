@@ -4,8 +4,8 @@ class derived_unit extends datatype
 {
     public function __construct($datatype1_value, string $datatype1, string $datatype2, $datatype2_value = 1)
     {
-        if (in_array($datatype1, $this::$invalid_datatypes)) { throw new calculator_error('DE000', [$datatype1]); }
-        if (in_array($datatype2, $this::$invalid_datatypes)) { throw new calculator_error('DE000', [$datatype2]); }
+        if (in_array($datatype1, $this::$invalid_datatypes)) { throw new datatype_error(0, [$datatype1]); }
+        if (in_array($datatype2, $this::$invalid_datatypes)) { throw new datatype_error(0, [$datatype2]); }
 
         $datatype_obj1 = str_to_datatype($datatype1_value, $datatype1);
         $datatype_obj2 = str_to_datatype($datatype2_value, $datatype2);
@@ -33,7 +33,7 @@ class derived_unit extends datatype
         }
         
         if (sizeof($derived_units) != 2) {
-            throw new calculator_error('CE001', [$this->datatype_name, $datatype]);
+            throw new convert_error(1, [$this->datatype_name, $datatype]);
         }
 
         return $this->datatype1->convert_to($derived_units[0]) / $this->datatype2->convert_to($derived_units[1]);
@@ -49,7 +49,7 @@ class derived_unit extends datatype
          * @return datatype returns a new datatype with the result
          */
         if (!($value instanceof derived_unit)) {
-            throw new calculator_error('DE001', [$value->datatype_name, '+', $this->datatype_name]);
+            throw new datatype_error(1, [$value->datatype_name, '+', $this->datatype_name]);
         }
 
         return new derived_unit(
@@ -69,7 +69,7 @@ class derived_unit extends datatype
          * @return datatype returns a new datatype with the result
          */
         if (!($value instanceof derived_unit)) {
-            throw new calculator_error('DE001', [$value->datatype_name, '-', $this->datatype_name]);
+            throw new datatype_error(1, [$value->datatype_name, '-', $this->datatype_name]);
         }
 
         return new derived_unit(
@@ -106,7 +106,7 @@ class derived_unit extends datatype
 
         }
 
-        throw new calculator_error('DE001', [$value->datatype_name, '*', $this->datatype_name]);
+        throw new datatype_error(1, [$value->datatype_name, '*', $this->datatype_name]);
     }
 
     public function divide(datatype $value): datatype
@@ -120,11 +120,11 @@ class derived_unit extends datatype
          */
         
         if (!($value instanceof number)) {
-            throw new calculator_error('DE001', [$value->datatype_name, '/', $this->datatype_name]);
+            throw new datatype_error(1, [$value->datatype_name, '/', $this->datatype_name]);
         }
 
         if ($value->value == 0) {
-            throw new calculator_error('OE001', [$this->datatype_name, '']);
+            throw new operator_error(1, [$this->datatype_name, '']);
         }
 
         return new derived_unit(

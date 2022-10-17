@@ -35,7 +35,7 @@ function calculate_string(string $full_calculate_string)
     // convert to requested datatype
     $result = $result_datatype->convert_to($return_type);
 
-    return number_format(round($result, $decimal_places), $decimal_places);
+    return number_format(round($result, $decimal_places), $decimal_places, '.', '');
 }
 
 function str_to_sum_array(string $sum_string): array
@@ -145,7 +145,7 @@ function str_to_datatype(string $value, string $datatype_string): datatype
 
         // dates
         if ($datatype_string == 'datetime') {
-            return new calculator_datetime(str_to_full_date_string($value));
+            return new calculator_datetime($value);
         }
 
         // meters
@@ -278,8 +278,8 @@ function calculate_array_recursive(array $array, array &$history): datatype
             $object_1 = $array[$highest_operator - 1];
             $object_2 = $array[$highest_operator + 1];
             $operator = $array[$highest_operator];
-
-            $return = $object_1->execute_operation($operator, $object_2);
+            
+            $return = $object_1->execute_operation($operator, clone $object_2);
 
             unset($array[$highest_operator - 1]);  
             unset($array[$highest_operator + 1]);
@@ -289,7 +289,10 @@ function calculate_array_recursive(array $array, array &$history): datatype
             $array = array_values($array);
 
             // keep track of history
-            $history['calculation'][] = $object_1->value.' '.$object_1->datatype_name.' '.$operator.' '.$object_2->value.' '.$object_2->datatype_name.' = '.$return->value.' '.$return->datatype_name;
+            $history['calculation'][] = $object_1->value.' '.$object_1->datatype_name.' '.
+                                        $operator.' '.
+                                        $object_2->value.' '.$object_2->datatype_name.' = '.
+                                        $return->value.' '.$return->datatype_name;
         }
 
         // Prevent infinite loop in case of error

@@ -29,7 +29,7 @@ class second extends datatype
                 break;
         }
 
-        throw new calculator_error('CE001', [$datatype, $this->datatype_name], [
+        throw new convert_error(1, [$datatype, $this->datatype_name], [
             'nl' => 'Tijdseenheden kunnen alleen worden omgezet naar andere tijdseenheden',
             'en' => 'Time units can only be converted to other time units',
         ]);
@@ -53,7 +53,7 @@ class second extends datatype
                 break;
 
             default:
-                throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name], [
+                throw new datatype_error(1, [$datatype_name, '+', $this->datatype_name], [
                     'nl' => 'Tijdseenheden kunnen alleen worden opgeteld met getallen of andere tijdseenheden',
                     'en' => 'Time units can only be increased by numbers and other time units',
                 ]);
@@ -78,7 +78,7 @@ class second extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name], [
+                throw new datatype_error(1, [$datatype_name, '-', $this->datatype_name], [
                     'nl' => 'operatie - is alleen mogelijk met getallen of andere tijdseenheden',
                     'en' => 'Time units can only be subtracted by numbers or other time units',
                 ]);               
@@ -103,7 +103,7 @@ class second extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name], [
+                throw new calculator_error(1, [$datatype_name, '+', $this->datatype_name], [
                     'nl' => 'Tijdseenheden kunnen alleen worden vermenigvuldigt met getallen of andere tijdseenheden',
                     'en' => 'Time units can only be multiplied with numbers and other time units',
                 ]);
@@ -123,7 +123,7 @@ class second extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new calculator_error('OE001', [$this->datatype_name]);
+            throw new operator_error(1, [$this->datatype_name]);
         }
 
         switch ($datatype_name) {
@@ -140,7 +140,7 @@ class second extends datatype
                 break;
         }
 
-        throw new calculator_error('DE001', [$datatype_name, '/', $this->datatype_name]);
+        throw new datatype_error(1, [$datatype_name, '/', $this->datatype_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -159,7 +159,7 @@ class second extends datatype
                 break;
 
             default:
-                throw new calculator_error('DE001', [$datatype_name, '^', $this->datatype_name], [
+                throw new datatype_error(1, [$datatype_name, '^', $this->datatype_name], [
                     'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
                     'en' => 'Exponentiation is only available using numbers',
                 ]);

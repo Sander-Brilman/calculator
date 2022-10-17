@@ -5,12 +5,14 @@ class number extends datatype
         parent::__construct('number', $value, false, 0);
     }
 
-    public static array $invalid_datatypes = [];
+    public static array $invalid_datatypes = [
+        'calculator_datetime',
+    ];
 
     public function convert_to(string $datatype)
     {
         if (in_array($datatype, $this::$invalid_datatypes)) {
-            throw new calculator_error('CE001', [$this->datatype_name, $datatype]);
+            throw new convert_error(1, [$this->datatype_name, $datatype]);
         }
 
         return $this->value;
@@ -28,11 +30,12 @@ class number extends datatype
         $datatype_name = $value->datatype_name;
 
         if (!in_array($datatype_name, $this::$invalid_datatypes)) {
-            $value->value = ($value->value + $this->value);
+
+            $value->value = ($this->value + $value->value);
             return $value;
         }
 
-        throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name]);
+        throw new datatype_error(1, [$datatype_name, '+', $this->datatype_name]);
     }
 
     public function subtract(datatype $value): datatype
@@ -51,7 +54,7 @@ class number extends datatype
             return $value;
         }
 
-        throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name]);
+        throw new datatype_error(1, [$datatype_name, '-', $this->datatype_name]);
     }
 
     public function multiply(datatype $value): datatype
@@ -66,11 +69,11 @@ class number extends datatype
         $datatype_name = $value->datatype_name;
 
         if (!in_array($datatype_name, $this::$invalid_datatypes)) {
-            $value->value = ($value->value * $this->value);
+            $value->value = ($this->value * $value->value);
             return $value;
         }
 
-        throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name]);
+        throw new datatype_error(1, [$datatype_name, '-', $this->datatype_name]);
     }
 
     public function divide(datatype $value): datatype
@@ -85,14 +88,14 @@ class number extends datatype
         $datatype_name = $value->datatype_name;
         
         if ($value->value == 0) {
-            throw new calculator_error('OE001', [$this->datatype_name]);
+            throw new operator_error(1, [$this->datatype_name]);
         }
 
         if (!in_array($datatype_name, $this::$invalid_datatypes)) {
             return new number($this->value / $value->value);
         }
 
-        throw new calculator_error('DE001', [$datatype_name, '/', $this->datatype_name]);
+        throw new datatype_error(1, [$datatype_name, '/', $this->datatype_name]);
     }
 
     public function percentage(datatype $value): datatype
@@ -111,7 +114,7 @@ class number extends datatype
             return $value;
         }
 
-        throw new calculator_error('DE001', [$datatype_name, '%', $this->datatype_name]);
+        throw new datatype_error(1, [$datatype_name, '%', $this->datatype_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -130,7 +133,7 @@ class number extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '^', $this->datatype_name], [ 
+                throw new datatype_error(1, [$datatype_name, '^', $this->datatype_name], [ 
                     'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
                     'en' => 'Exponentiation is only available using numbers',
                 ]);

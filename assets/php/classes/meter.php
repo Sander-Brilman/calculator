@@ -111,7 +111,7 @@ class meter extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '*', $this->datatype_name], [
+                throw new datatype_error(1, [$datatype_name, '*', $this->datatype_name], [
                     'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met getallen of met andere meter eenheden.',
                     'en' => $this->datatype_name.' can only be multiplied by numbers or other meter units.',
                 ]);
@@ -131,7 +131,7 @@ class meter extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new calculator_error('OE001', [$this->datatype_name]);
+            throw new operator_error(1, [$this->datatype_name]);
         }
 
         switch ($datatype_name) {
@@ -149,7 +149,7 @@ class meter extends datatype
         }
 
         if (in_array($datatype_name, derived_unit::$invalid_datatypes)) {
-            throw new calculator_error('DE001', [$datatype_name, '/', $this->datatype_name]);
+            throw new datatype_error(1, [$datatype_name, '/', $this->datatype_name]);
         }
 
         return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
@@ -171,7 +171,7 @@ class meter extends datatype
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '^', $this->datatype_name], [ 
+                throw new datatype_error(1, [$datatype_name, '^', $this->datatype_name], [ 
                     'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
                     'en' => 'Exponentiation is only available using numbers',
                 ]);

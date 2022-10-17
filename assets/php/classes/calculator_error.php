@@ -10,7 +10,7 @@ class calculator_error extends Error
          * 
          * @param array $error_data the array with strings containing the details of the errors. Will be the replace value for the question marks
          * 
-         * @param array $additional_text Give additional text in different languages
+         * @param array $additional_text Give additional trailing text in different languages
          */
         $this->error_code = $error_code;
         $this->error_data = $error_data;
@@ -160,6 +160,76 @@ class calculator_error extends Error
     }
 }
 
+class convert_error extends calculator_error {
+    public function __construct(int $error_number, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
+        /**
+         * throws a new convert calculator error.
+         * convert errors occur when converting datatypes is not possible.
+         * 
+         * @param string $error_number the error code number of the convert_error category,
+         * 
+         * @param array $error_data the array with strings containing the details of the errors. Will be the replace value for the question marks
+         * 
+         * @param array $additional_text Give additional trailing text in different languages
+         */
 
+
+        parent::__construct('CE'.sprintf('%03d', $error_number), $error_data, $additional_text);
+    }
+}
+
+class general_error extends calculator_error {
+    public function __construct(int $error_number, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
+        /**
+         * throws a new general calculator error.
+         * general errors are uncategorised errors. 
+         * 
+         * @param string $error_number the error code number of the general_error category,
+         * 
+         * @param array $error_data the array with strings containing the details of the errors. Will be the replace value for the question marks
+         * 
+         * @param array $additional_text Give additional trailing text in different languages
+         */
+
+
+        parent::__construct('GE'.sprintf('%03d', $error_number), $error_data, $additional_text);
+    }
+}
+
+class operator_error extends calculator_error {
+    public function __construct(int $error_number, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
+        /**
+         * throws a new operator calculator error.
+         * operator errors are when thrown when a math operation cant be executed for some reason
+         * 
+         * @param string $error_number the error code number of the operator_error category,
+         * 
+         * @param array $error_data the array with strings containing the details of the errors. Will be the replace value for the question marks
+         * 
+         * @param array $additional_text Give additional trailing text in different languages
+         */
+
+
+        parent::__construct('OE'.sprintf('%03d', $error_number), $error_data, $additional_text);
+    }
+}
+
+class datatype_error extends calculator_error {
+    public function __construct(int $error_number, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
+        /**
+         * throws a new datatype calculator error.
+         * datatype errors are when thrown when a datatype object does not meet the requirements for the current context.
+         * 
+         * @param string $error_number the error code number of the datatype_error category,
+         * 
+         * @param array $error_data the array with strings containing the details of the errors. Will be the replace value for the question marks
+         * 
+         * @param array $additional_text Give additional trailing text in different languages
+         */
+
+
+        parent::__construct('DE'.sprintf('%03d', $error_number), $error_data, $additional_text);
+    }
+}
 
 ?>

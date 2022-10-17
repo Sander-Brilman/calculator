@@ -25,12 +25,13 @@ $m = new meter(10, 2);
 
 
 try {
-    // dump($m->convert_to('cm1'));
-    dump(str_to_full_date_string('12-12-2022'));
-    dump(str_to_full_date_string('12-12-2022 12:00'));
-    dump(str_to_full_date_string('12-12-2022 1:2 +200'));
-    dump(str_to_full_date_string('3:30 12-12-2022'));
 
+    
+    $datetime = new DateTime('22-10-2022 10:00');
+    dump($datetime);
+
+    $datetime2 = new DateTime('22-10-2022 9:00');
+    dump($datetime2);
 
 
 } catch (calculator_error $er) {
