@@ -2,7 +2,7 @@
 class number extends datatype 
 {
     public function __construct($value) {
-        parent::__construct('number', $value, false, 0);
+        parent::__construct('number', $value);
     }
 
     public static array $invalid_datatypes = [

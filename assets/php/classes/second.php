@@ -3,7 +3,7 @@
 class second extends datatype
 {
     public function __construct($value) {
-        parent::__construct('s', $value, false);
+        parent::__construct('s', $value);
     }
 
     public function convert_to(string $datatype)

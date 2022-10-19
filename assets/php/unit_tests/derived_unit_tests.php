@@ -31,6 +31,17 @@ $unit_tests['derived unit datatype tests'] = [
                     : new test_result(false, 'Expected value and result do not match');
             }
         ),
+
+        new unit_test('derived unit failure test', function ()
+            {
+                try {
+                    new derived_unit(100, 'm1', 'calculator_datetime');
+                } catch (calculator_error $er) {
+                    return new test_result(true, '');
+                }
+                return new test_result(false, 'no calculator error was thrown');
+            }
+        ),
     ],
 
 

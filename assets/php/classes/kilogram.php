@@ -3,8 +3,48 @@
 class kilogram extends datatype
 {
     public function __construct($value) {
-        parent::__construct('kg', $value, false, 1);
+        parent::__construct($this::get_string_identifier(), $value);
     }
+
+    public static function get_string_identifier(): string { return 'kg'; }
+    public static array $synonyms = [
+        'en' => [
+            'kilogram',
+            'kilograms',
+
+            'nanogram',
+            'nanograms',
+
+            'microgram',
+            'micrograms',
+
+            'milligram',
+            'milligrams',
+
+            'centigram',
+            'centigrams',
+
+            'decigram',
+            'decigrams',    
+          
+            'gram',
+            'grams',         
+
+            'decagram',
+            'dekagram',
+            'decagrams',  
+            'dekagrams',  
+
+            'hectogram',  
+            'hectograms',  
+
+            'kilogram',  
+            'kilograms',  
+
+            'ton',  
+        ],
+        'nl' => &self::$synonyms['en'],
+    ];
 
     public function convert_to(string $datatype)
     {
@@ -25,13 +65,13 @@ class kilogram extends datatype
             case 'cg':
                 return $this->value * 100000;
                 break;
-            case 'dg':
+            case 'dg':// decigram
                 return $this->value * 10000;
                 break;
             case 'g':
                 return $this->value * 1000;
                 break;
-            case 'dag':
+            case 'dag':// decagram
                 return $this->value * 100;
                 break;
             case 'hg':

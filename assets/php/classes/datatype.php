@@ -2,26 +2,35 @@
 /**
  * Base class for all datatypes objects
  */
-
-class datatype  
+abstract class datatype  
 {
-    public function __construct(string $datatype_name, $value, bool $uses_exponent = false, int $exponent_value = 0) {
+    public function __construct(string $datatype_name, $value) {
         $this->datatype_name = $datatype_name; 
+
         $this->value = $value;
-
-        $this->uses_exponent = $uses_exponent; 
-
-        $this->exponent_value = $uses_exponent
-            ? $exponent_value
-            : 0; 
     }
-
-    public bool $uses_exponent;
-    public int $exponent_value;
-    
+        
     public string $datatype_name;
-
     public $value;
+
+    abstract public static function get_string_identifier(): string;
+    public static array $synonyms = [
+        'en' => [],
+        'nl' => [],
+    ];
+    public static function convert_synonyms(string $input): string
+    {
+        /**
+         * Converts language synonyms to the values the calculator can understand
+         * 
+         * By default searches and replaces the strings in the $synonyms property.
+         * Can be overwritten with custom code if needed
+         */
+        $input = str_replace(self::$synonyms['nl'], self::get_string_identifier(), $input);
+        $input = str_replace(self::$synonyms['en'], self::get_string_identifier(), $input);
+
+        return $input;
+    }
 
     public function convert_to(string $datatype)
     {

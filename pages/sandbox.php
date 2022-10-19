@@ -27,12 +27,10 @@ $m = new meter(10, 2);
 try {
 
     
-    $datetime = new DateTime('22-10-2022 10:00');
-    dump($datetime);
+    $m = str_to_datatype(1, 'km1');
+    $sec = str_to_datatype(1, 'h');
 
-    $datetime2 = new DateTime('22-10-2022 9:00');
-    dump($datetime2);
-
+    $m->add($sec);
 
 } catch (calculator_error $er) {
     dump($er->get_error_message());

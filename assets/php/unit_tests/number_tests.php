@@ -63,6 +63,21 @@ $unit_tests['number datatype tests'] = [
                     : new test_result(false, 'Expected value and result do not match');
             }
         ),
+
+        new unit_test('Number add test 4', function ()
+            {
+                try {
+                    $number = new number(30);
+                    $value = new calculator_datetime('20/10/2022 10:00');
+    
+                    $number->add($value);
+                } catch (calculator_error $er) {
+                    return new test_result(true, '');
+                }
+
+                return new test_result(false, 'Expected value and result do not match');
+            }
+        ),
     ],
 
     'Subtract tests' => [

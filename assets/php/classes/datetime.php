@@ -3,16 +3,31 @@ class calculator_datetime extends datatype
 {
     public function __construct(string $datetime_string) {
         try {
-            $this->datetime = new DateTime($this::str_to_full_date_string($datetime_string));
+            $this->datetime = new DateTime($this->str_to_full_date_string($datetime_string));
         } catch(Exception $ex) {
             throw new convert_error(3, [$datetime_string]);
         }
-        parent::__construct('calculator_datetime', $datetime_string, false);
+        parent::__construct($this::get_string_identifier(), $this->convert_to('full'));
     }
 
     public DateTime $datetime;
 
-    public static function str_to_full_date_string(string $input): string
+    public static function get_string_identifier(): string { return 'calculator_datetime'; }
+    public static array $synonyms = [
+        'en' => [
+            'date',
+            'time',
+            'datetime',
+            'date-time',
+        ],
+        'nl' => [
+            'datum',
+            'tijd',
+            'datum-tijd',
+        ],
+    ];
+
+    private function str_to_full_date_string(string $input): string
     {
         try {
             return (new DateTime(str_replace(['/', '\\'], '-', $input)))->format('c');
@@ -25,7 +40,7 @@ class calculator_datetime extends datatype
     {
         switch ($datatype) {
             case 'full':
-                return $this->datetime->format('H:i:s l j F Y');
+                return $this->datetime->format('l j F Y H:i:s');
                 break;
 
             case 'date':
@@ -37,7 +52,7 @@ class calculator_datetime extends datatype
                 break;
 
             case 'day':
-                return $this->datetime->format('d');
+                return $this->datetime->format('l d');
                 break;
 
             case 'month':
@@ -49,7 +64,7 @@ class calculator_datetime extends datatype
                 break;
 
             case 'leapyear':
-                return $this->datetime->format('Y') == '1' ? 'true' : 'false';
+                return $this->datetime->format('L') ? 'true' : 'false';
                 break;
                 
             case 'timezone':
@@ -113,7 +128,7 @@ class calculator_datetime extends datatype
             $copy->value = $copy->convert_to('full');
             return $copy;
         } else if ($value instanceof calculator_datetime) {
-            return new second($this->datetime->getTimestamp() - $value->datetime->getTimestamp());
+            return new second($this->datetime->getTimestamp() - $value->datetime->getTimestamp(), 'seconds');
         }
 
         throw new datatype_error(1, [$value->datatype_name, '-', $this->datatype_name], [

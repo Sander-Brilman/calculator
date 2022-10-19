@@ -16,13 +16,28 @@ class derived_unit extends datatype
         $this->datatype1 = $datatype_obj1;
         $this->datatype2 = $datatype_obj2;
 
-        parent::__construct($this->datatype1->datatype_name.'/'.$this->datatype2->datatype_name, $this->datatype1->value, false);
+        parent::__construct($this->datatype1->datatype_name.'/'.$this->datatype2->datatype_name, $this->datatype1->value);
     }
 
     public datatype $datatype1;
     public datatype $datatype2;
 
-    static public array $invalid_datatypes = [];
+    static public array $invalid_datatypes = [
+        'calculator_datetime',
+    ];
+
+    public static function get_string_identifier(): string { return 'calculator_datetime'; }
+    public static function convert_synonyms(string $input): string
+    {
+        $datatypes  = explode('/', $input);
+
+        foreach ($datatypes as &$datatype) {
+            $datatype = kilogram::convert_synonyms($datatype);
+            $datatype = second::convert_synonyms($datatype);
+            $datatype = meter::convert_synonyms($datatype);
+        }
+        return $datatypes[0].'/'.$datatypes[1];
+    }
 
     public function convert_to(string $datatype)
     {

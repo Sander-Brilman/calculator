@@ -1,36 +1,7 @@
 <?php
-function translate_string(string $input, string $translate_to): string
+function translate_string(string $input, string $translate_from, string $translate_to): string
 {
-    $search = [
-        // days
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-
-        // months
-        'January',
-        'February',
-        'march',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-
-        // other
-        'true',
-        'false',
-    ];
-
-    $replace = [
+    $text = [
         'nl' => [
             // days
             'maandag',
@@ -55,15 +26,42 @@ function translate_string(string $input, string $translate_to): string
             'november',
             'december',
 
-            // other
+            // b
             'waar',
             'niet waar',
         ],
 
-        'en' => &$search,
+        'en' => [
+            // days
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday',
+    
+            // months
+            'January',
+            'February',
+            'march',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+    
+            // other
+            'true',
+            'false',
+        ],
     ];
 
-    return str_replace($search, $replace[$translate_to], $input);
+    return str_replace($text[$translate_from], $$text[$translate_to], $input);
 }
 
 ?>

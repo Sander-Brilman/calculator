@@ -3,8 +3,11 @@
 class meter extends datatype
 {
     public function __construct($value, int $exponent_value = 1) {
-        parent::__construct('m'.$exponent_value, $value, true, $exponent_value);
+        $this->exponent_value = $exponent_value;
+        parent::__construct('m'.$exponent_value, $value);
     }
+
+    public int $exponent_value;
 
     public function convert_to(string $datatype)
     {
@@ -36,8 +39,6 @@ class meter extends datatype
          * @return datatype returns a new datatype with the result
          */
         $datatype_name = $value->datatype_name;
-
-
 
         switch ($datatype_name) {
             case 'number':
@@ -169,7 +170,7 @@ class meter extends datatype
             case 'number':
                 return new meter($this->value ** $value->value, $this->exponent_value * $value->exponent_value);
                 break;
-            
+             
             default:
                 throw new datatype_error(1, [$datatype_name, '^', $this->datatype_name], [ 
                     'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
