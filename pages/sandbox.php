@@ -2,7 +2,8 @@
 require_once('assets/php/load_files.php');
 
 
-$show_list = true;
+$show_list = false;
+// $show_list = true;
 
 if ($show_list) {
     echo '<pre>';
@@ -26,29 +27,143 @@ $m = new meter(10, 2);
 
 try {
 
-    
-    $m = str_to_datatype(1, 'km1');
-    $sec = str_to_datatype(1, 'h');
+    // dump(replace_synonyms('
+    //     milimeter
+    //     millimeter
+    //     millimeters
 
-    $m->add($sec);
+    //     centimeter
+    //     centimeters
+
+    //     decimeter
+    //     decimeters
+
+    //     meter
+    //     meters
+
+    //     decameter
+    //     dekameter
+    //     dekameters
+    //     decameters
+
+    //     hectometer
+    //     hectometers
+
+    //     kilometer
+    //     kilometers
+
+    //     ----------
+
+    //     date
+    //     time
+    //     date-time
+    //     datum
+    //     tijd
+    //     datum-tijd
+
+    //     ----------
+
+    //     nanogram
+    //     nanograms
+
+    //     microgram
+    //     microgrammen
+    //     micrograms
+
+    //     milligram
+    //     milligrammen
+    //     milligrams
+
+    //     centigram
+    //     centigrammen
+    //     centigrams
+
+    //     decigram
+    //     decigrammen
+    //     decigrams
+
+    //     gram
+    //     gram
+    //     grams
+
+    //     decagram
+    //     decagrammen
+    //     dekagram
+    //     decagrams
+    //     dekagrams
+
+    //     hectogram
+    //     hectogrammen
+    //     hectograms
+
+    //     kil 
+    //     kilogram 
+    //     kilogrammen 
+    //     kilograms 
+        
+    //     ton
+    //     tonnen
+
+    //     ----------
+
+    //     int
+    //     integer
+    //     num 
+    //     getal
+    //     getallen
+    //     numbers
+        
+    //     ----------
+
+    //     milliseconds
+    //     milliseconden
+    //     millisec
+
+    //     sec
+    //     seconden
+    //     seconds
+
+    //     minutes
+    //     minuten
+
+    //     hour
+    //     hours
+    //     uur
+    //     uren
+
+    //     days
+    //     dag
+    //     dagen
+
+    //     week
+    //     weeks
+    //     weken
+    // '));
+    
+
+    dump(parse_calculating_string('( 10 meter - -50 dm ) / 4 sec * 10 seconds * (500 dm2 + 500 int) als cm2 met 2 decimalen'));
+
+    // dump(second::convert_synonyms('sec'));
 
 } catch (calculator_error $er) {
     dump($er->get_error_message());
 }
 
+/*
+problem explaination
+
+-- converting int to number
+10 int
+10 [int] => 10 number
+
+-- converting num to number
+10 number
+10 [num]ber => numberber
 
 
-// $datetime = new DateTime('1990-12-31T23:59:60Z');
-// dump($datetime);
 
 
-// $datetime = new DateTime('1996-12-19T16:39:57-08:00');
-// dump($datetime);
-
-
-// $datetime = new DateTime('1996-12-19T16:39:57+e08:00');
-// dump($datetime);
-
+*/
 
 ?>
 

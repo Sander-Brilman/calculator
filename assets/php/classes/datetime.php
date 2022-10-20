@@ -7,23 +7,23 @@ class calculator_datetime extends datatype
         } catch(Exception $ex) {
             throw new convert_error(3, [$datetime_string]);
         }
-        parent::__construct($this::get_string_identifier(), $this->convert_to('full'));
+        parent::__construct('calculator_datetime', $this->convert_to('full'));
     }
 
     public DateTime $datetime;
 
-    public static function get_string_identifier(): string { return 'calculator_datetime'; }
+    public string $display_name = 'datetime';
     public static array $synonyms = [
-        'en' => [
+        'datetime' => [
             'date',
             'time',
-            'datetime',
             'date-time',
-        ],
-        'nl' => [
+            'date_time',
+
             'datum',
             'tijd',
             'datum-tijd',
+            'datum_tijd',
         ],
     ];
 
@@ -72,7 +72,7 @@ class calculator_datetime extends datatype
                 break;
 
             default:
-                throw new convert_error(1, [$this->datatype_name, $datatype]);    
+                throw new convert_error(1, [$this->display_name, $datatype]);    
                 break;
         }
     }
@@ -100,7 +100,7 @@ class calculator_datetime extends datatype
             return $copy;
         }
 
-        throw new datatype_error(1, [$value->datatype_name, '+', $this->datatype_name], [
+        throw new datatype_error(1, [$value->display_name, '+', $this->display_name], [
             'nl' => 'Je kan alleen een tijdseenheid bij een datum/tijd optellen',
             'en' => 'You can only add a time unit to a date/time',
         ]);
@@ -131,7 +131,7 @@ class calculator_datetime extends datatype
             return new second($this->datetime->getTimestamp() - $value->datetime->getTimestamp(), 'seconds');
         }
 
-        throw new datatype_error(1, [$value->datatype_name, '-', $this->datatype_name], [
+        throw new datatype_error(1, [$value->display_name, '-', $this->display_name], [
             'nl' => 'Je kan alleen tijdseenheden & datums/tijden aftrekken van een datum/tijd',
             'en' => 'You can only subtract time units & dates/time from a date/time',
         ]);

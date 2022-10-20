@@ -144,16 +144,15 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         }
 
         // dates
-        if ($datatype_string == 'datetime') {
+        if ($datatype_string == 'datetime' || $datatype_string == 'calculator_datetime') {
             return new calculator_datetime($value);
         }
 
         // meters
-        global $meter_units;
-        foreach ($meter_units as $unit) {
+        foreach (meter::$meter_units as $unit) {
             if (str_starts_with($datatype_string, $unit) && is_numeric(substr($datatype_string, strlen($unit)))) {
                 $exponent = (int)str_replace($unit, '', $datatype_string);
-                return new meter(meter_conversion($value, $datatype_string, 'm'.$exponent), $exponent);
+                return new meter(meter::meter_conversion($value, $datatype_string, 'm'.$exponent), $exponent);
                 break;
             }
         }
@@ -225,10 +224,10 @@ function str_to_datatype(string $value, string $datatype_string): datatype
 
 
         
-        throw new calculator_error('CE005', [$datatype_string]);
+        throw new convert_error(5, [$datatype_string]);
     } else {
 
-        throw new calculator_error('CE004', [$value]);
+        throw new convert_error(4, [$value]);
     }
 
 }

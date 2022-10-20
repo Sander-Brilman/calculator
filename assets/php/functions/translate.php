@@ -26,7 +26,7 @@ function translate_string(string $input, string $translate_from, string $transla
             'november',
             'december',
 
-            // b
+            // booleans
             'waar',
             'niet waar',
         ],
@@ -55,7 +55,7 @@ function translate_string(string $input, string $translate_from, string $transla
             'November',
             'December',
     
-            // other
+            // booleans
             'true',
             'false',
         ],

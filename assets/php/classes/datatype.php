@@ -7,37 +7,25 @@ abstract class datatype
     public function __construct(string $datatype_name, $value) {
         $this->datatype_name = $datatype_name; 
 
+        if ($this->display_name == '') {
+            $this->display_name = $datatype_name;
+        }
+
         $this->value = $value;
     }
         
     public string $datatype_name;
     public $value;
 
-    abstract public static function get_string_identifier(): string;
-    public static array $synonyms = [
-        'en' => [],
-        'nl' => [],
-    ];
-    public static function convert_synonyms(string $input): string
-    {
-        /**
-         * Converts language synonyms to the values the calculator can understand
-         * 
-         * By default searches and replaces the strings in the $synonyms property.
-         * Can be overwritten with custom code if needed
-         */
-        $input = str_replace(self::$synonyms['nl'], self::get_string_identifier(), $input);
-        $input = str_replace(self::$synonyms['en'], self::get_string_identifier(), $input);
-
-        return $input;
-    }
+    public string $display_name = '';
+    public static array $synonyms = [];
 
     public function convert_to(string $datatype)
     {
         /**
          * Placeholder function. This function should be overwritten with custom code for each datatype
          */
-        throw new convert_error(0, [$this->datatype_name, '']);
+        throw new convert_error(0, [$this->display_name, '']);
     }
 
     
@@ -71,7 +59,7 @@ abstract class datatype
                 return $this->power_of($value);
                 break;
             default:
-                throw new operator_error(0, [$operator, $this->datatype_name]);
+                throw new operator_error(0, [$operator, $this->display_name]);
                 break;
         }
     }
@@ -85,7 +73,7 @@ abstract class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new operator_error(0, ['+', $this->datatype_name]);
+        throw new operator_error(0, ['+', $this->display_name]);
     }
 
     public function subtract(datatype $value): datatype
@@ -97,7 +85,7 @@ abstract class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new operator_error(0, ['-', $this->datatype_name]);
+        throw new operator_error(0, ['-', $this->display_name]);
     }
 
     public function multiply(datatype $value): datatype
@@ -109,7 +97,7 @@ abstract class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new operator_error(0, ['*', $this->datatype_name]);
+        throw new operator_error(0, ['*', $this->display_name]);
     }
 
     public function divide(datatype $value): datatype
@@ -121,7 +109,7 @@ abstract class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new operator_error(0, ['/', $this->datatype_name]);
+        throw new operator_error(0, ['/', $this->display_name]);
     }
 
     public function percentage(datatype $value): datatype
@@ -133,7 +121,7 @@ abstract class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new operator_error(0, ['%', $this->datatype_name]);
+        throw new operator_error(0, ['%', $this->display_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -145,7 +133,7 @@ abstract class datatype
          * 
          * @return datatype returns a new datatype with the result
          */
-        throw new operator_error(0, ['^', $this->datatype_name]);
+        throw new operator_error(0, ['^', $this->display_name]);
     }
 }
 

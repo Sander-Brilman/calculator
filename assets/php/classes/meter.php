@@ -4,17 +4,124 @@ class meter extends datatype
 {
     public function __construct($value, int $exponent_value = 1) {
         $this->exponent_value = $exponent_value;
+
+        $this->display_name = $exponent_value == 1 ? 'meter' : "m$exponent_value";
+        
         parent::__construct('m'.$exponent_value, $value);
     }
 
+    public string $display_name = '';
+    public static array $synonyms = [
+        'mm' => [
+            'milimeter',
+            'millimeter',
+            'millimeters',
+        ],
+        'cm' => [
+            'centimeter',
+            'centimeters',
+        ],
+        'dm' => [
+            'decimeter',
+            'decimeters',
+        ],
+        'm' => [
+            'meter',
+            'meters',
+        ],
+        'dcm' => [
+            'decameter',
+            'dekameter',
+            'dekameters',
+            'decameters',
+        ],
+        'hm' => [
+            'hectometer',
+            'hectometers',
+        ],
+        'km' => [
+            'kilometer',
+            'kilometers',
+        ],
+    ];
+
     public int $exponent_value;
+
+    public static $meter_units = [
+        'mm',
+        'cm',
+        'dm',
+        'm',
+        'dcm',
+        'hm',
+        'km',
+    ];
+    public static function meter_conversion($value, string $from, string $to)
+    {
+        /**
+         * Can convert a meter unit (dm2, cm, km3) to another meter unit if it has the same exponent
+         */
+        $meter_units = self::$meter_units;
+
+        foreach ($meter_units as $key => $unit) {
+            if (str_starts_with($from, $unit) && is_numeric(substr($from, strlen($unit)))) {
+                $from_index    = $key;
+                $from_exponent = (int)str_replace($unit, '', $from);
+            }
+
+            if (str_starts_with($to, $unit) && is_numeric(substr($to, strlen($unit)))) {
+                $to_index    = $key;
+                $to_exponent = (int)str_replace($unit, '', $to);
+            }
+        }
+
+        if (!isset($to_index)) {
+            throw new datatype_error(3, [$to, $to]);
+        }
+        if (!isset($from_index)) {
+            throw new datatype_error(3, [$from, $from]);
+        }
+
+        $index_difference = abs($from_index - $to_index);
+
+        $return_value = $value;
+
+
+        if ($from_exponent != $to_exponent) {
+            throw new convert_error(2, [$from, $to]);
+        } else if ($to_exponent == 0) {
+            return $value;
+        }
+
+        $multiply_number = 1;
+        if ($to_exponent < 0) {
+            for ($i = 0; $i > $to_exponent; $i--) { 
+                $multiply_number /= 10;
+            }
+        } else {
+            for ($i = 0; $i < $to_exponent; $i++) { 
+                $multiply_number .= 0;
+            }
+        }
+
+        if ($from_index > $to_index) {
+            for ($i = 0; $i < $index_difference; $i++) { 
+                $return_value *= $multiply_number;
+            }
+        } else {
+            for ($i = 0; $i < $index_difference; $i++) { 
+                $return_value /= $multiply_number;
+            }
+        }
+
+        return $return_value;
+    }
 
     public function convert_to(string $datatype)
     {
-        global $meter_units;
-        foreach ($meter_units as $unit) {
+        foreach (meter::$meter_units as $unit) {
             if (str_starts_with($datatype, $unit)) {
-                return meter_conversion($this->value, 'm'.$this->exponent_value, $datatype);
+                return self::meter_conversion($this->value, 'm'.$this->exponent_value, $datatype);
                 break;
             }
         }
@@ -26,7 +133,7 @@ class meter extends datatype
 
         }
 
-        throw new calculator_error('CE001', [$this->datatype_name, $datatype]);
+        throw new convert_error(1, [$this->display_name, $datatype]);
     }
 
     public function add(datatype $value): datatype
@@ -49,13 +156,13 @@ class meter extends datatype
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value + $value->value, $this->exponent_value);
                 }
-                throw new calculator_error('DE002', [$datatype_name, '+', $this->datatype_name]);
+                throw new datatype_error(2, [$value->display_name, '+', $this->display_name]);
                 break;
 
             default:
-                throw new calculator_error('DE001', [$datatype_name, '+', $this->datatype_name], [
-                    'nl' => $this->datatype_name.' kan alleen worden opgeteld met getallen of door andere meter eenheden met dezelfde exponent waarde.',
-                    'en' => $this->datatype_name.' can only be increased by numbers or other meter units with the same exponent value.',
+                throw new datatype_error(1, [$value->display_name, '+', $this->display_name], [
+                    'nl' => $this->display_name.' kan alleen worden opgeteld met getallen of door andere meter eenheden met dezelfde exponent waarde.',
+                    'en' => $this->display_name.' can only be increased by numbers or other meter units with the same exponent value.',
                 ]);
                 break;
         }
@@ -80,13 +187,13 @@ class meter extends datatype
                 if ($value->exponent_value == $this->exponent_value) {
                     return new meter($this->value - $value->value, $this->exponent_value);
                 }
-                throw new calculator_error('DE002', [$datatype_name, '-', $this->datatype_name]);
+                throw new datatype_error(2, [$value->display_name, '-', $this->display_name]);
                 break;
             
             default:
-                throw new calculator_error('DE001', [$datatype_name, '-', $this->datatype_name], [
-                    'nl' => 'Operatie - op datatype '.$this->datatype_name.' kan alleen worden uitgevoerd met getallen of door andere meter eenheden met dezelfde exponent waarde.',
-                    'en' => $this->datatype_name.' can only be subtracted by numbers or other meter units with the same exponent value.',
+                throw new datatype_error(1, [$value->display_name, '-', $this->display_name], [
+                    'nl' => 'Operatie - op datatype '.$this->display_name.' kan alleen worden uitgevoerd met getallen of door andere meter eenheden met dezelfde exponent waarde.',
+                    'en' => $this->display_name.' can only be subtracted by numbers or other meter units with the same exponent value.',
                 ]);
                 break;
         }
@@ -112,9 +219,9 @@ class meter extends datatype
                 break;
             
             default:
-                throw new datatype_error(1, [$datatype_name, '*', $this->datatype_name], [
-                    'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met getallen of met andere meter eenheden.',
-                    'en' => $this->datatype_name.' can only be multiplied by numbers or other meter units.',
+                throw new datatype_error(1, [$value->display_name, '*', $this->display_name], [
+                    'nl' => $this->display_name.' kan alleen worden vermenigvuldigt met getallen of met andere meter eenheden.',
+                    'en' => $this->display_name.' can only be multiplied by numbers or other meter units.',
                 ]);
                 break;
         }
@@ -132,7 +239,7 @@ class meter extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new operator_error(1, [$this->datatype_name]);
+            throw new operator_error(1, [$this->display_name]);
         }
 
         switch ($datatype_name) {
@@ -150,7 +257,7 @@ class meter extends datatype
         }
 
         if (in_array($datatype_name, derived_unit::$invalid_datatypes)) {
-            throw new datatype_error(1, [$datatype_name, '/', $this->datatype_name]);
+            throw new datatype_error(1, [$value->display_name, '/', $this->display_name]);
         }
 
         return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
@@ -172,7 +279,7 @@ class meter extends datatype
                 break;
              
             default:
-                throw new datatype_error(1, [$datatype_name, '^', $this->datatype_name], [ 
+                throw new datatype_error(1, [$value->display_name, '^', $this->display_name], [ 
                     'nl' => 'Machtsverheffen is alleen beschikbaar met getallen',
                     'en' => 'Exponentiation is only available using numbers',
                 ]);

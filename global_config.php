@@ -43,16 +43,6 @@ $operators_priority = [
     '-' => 2,
     '%' => 1,
 ];
-// cm2
-$meter_units = [
-    'mm',
-    'cm',
-    'dm',
-    'm',
-    'dcm',
-    'hm',
-    'km',
-];
 
 
 // 

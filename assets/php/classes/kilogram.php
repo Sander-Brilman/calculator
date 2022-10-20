@@ -3,47 +3,71 @@
 class kilogram extends datatype
 {
     public function __construct($value) {
-        parent::__construct($this::get_string_identifier(), $value);
+        parent::__construct('kg', $value);
     }
 
-    public static function get_string_identifier(): string { return 'kg'; }
+    public string $display_name = 'kilogram';
     public static array $synonyms = [
-        'en' => [
-            'kilogram',
-            'kilograms',
-
+        'ng' =>  [
             'nanogram',
             'nanograms',
+        ],
 
+        'mcg' =>  [
             'microgram',
+            'microgrammen',
             'micrograms',
+        ],
 
+        'mg' =>  [
             'milligram',
+            'milligrammen',
             'milligrams',
+        ],
 
+        'cg' =>  [
             'centigram',
+            'centigrammen',
             'centigrams',
+        ],
 
+        'dg' =>  [
             'decigram',
+            'decigrammen',
             'decigrams',    
-          
+        ],
+
+        'g' =>  [
+            'gram',
             'gram',
             'grams',         
+        ],
 
+        'dag' =>  [
             'decagram',
+            'decagrammen',
             'dekagram',
             'decagrams',  
             'dekagrams',  
-
-            'hectogram',  
-            'hectograms',  
-
-            'kilogram',  
-            'kilograms',  
-
-            'ton',  
         ],
-        'nl' => &self::$synonyms['en'],
+
+        'hg' =>  [
+            'hectogram',  
+            'hectogrammen',  
+            'hectograms',  
+        ],
+
+        'kg' =>  [
+            'kilo',
+            'kilogram',  
+            'kilogrammen',  
+            'kilograms',  
+        ],
+
+        't' =>  [
+            'ton',  
+            'tonnen',  
+        ],
     ];
 
     public function convert_to(string $datatype)
@@ -85,9 +109,9 @@ class kilogram extends datatype
                 break;
         }
 
-        throw new convert_error(1, [$this->datatype_name, $datatype], [
-            'nl' => $this->datatype_name.' kan alleen worden omgezet naar gewicht eenheden',
-            'en' => $this->datatype_name.' can only be converted to a units of weight',
+        throw new convert_error(1, [$this->display_name, $datatype], [
+            'nl' => $this->display_name.' kan alleen worden omgezet naar gewicht eenheden',
+            'en' => $this->display_name.' can only be converted to a units of weight',
         ]);
     }
 
@@ -109,9 +133,9 @@ class kilogram extends datatype
                 break;
 
             default:
-                throw new datatype_error(1, [$datatype_name, '+', $this->datatype_name], [
-                    'nl' => $this->datatype_name.' optellen kan alleen met getallen of gewicht eenheden',
-                    'en' => 'Increasing '.$this->datatype_name.' is only possible with units of weight',
+                throw new datatype_error(1, [$value->display_name, '+', $this->display_name], [
+                    'nl' => $this->display_name.' optellen kan alleen met getallen of gewicht eenheden',
+                    'en' => 'Increasing '.$this->display_name.' is only possible with units of weight',
                 ]);
         }
     }
@@ -133,9 +157,9 @@ class kilogram extends datatype
                 break;
             
             default:
-                throw new datatype_error(1, [$datatype_name, '-', $this->datatype_name], [
+                throw new datatype_error(1, [$value->display_name, '-', $this->display_name], [
                     'nl' => 'operatie - kan alleen met getallen of gewicht eenheden',
-                    'en' => 'subtracting '.$this->datatype_name.' is only possible with units of weight',
+                    'en' => 'subtracting '.$this->display_name.' is only possible with units of weight',
                 ]);
                 break;
         }
@@ -158,9 +182,9 @@ class kilogram extends datatype
                 break;
             
             default:
-                throw new datatype_error(1, [$datatype_name, '*', $this->datatype_name], [
-                    'nl' => $this->datatype_name.' kan alleen worden vermenigvuldigt met getallen of met andere gewicht eenheden.',
-                    'en' => $this->datatype_name.' can only be multiplied by numbers or other meter units.',
+                throw new datatype_error(1, [$value->display_name, '*', $this->display_name], [
+                    'nl' => $this->display_name.' kan alleen worden vermenigvuldigt met getallen of met andere gewicht eenheden.',
+                    'en' => $this->display_name.' can only be multiplied by numbers or other meter units.',
                 ]);
                 break;
         }
@@ -178,7 +202,7 @@ class kilogram extends datatype
         $datatype_name = $value->datatype_name;
 
         if ($value->value == 0) {
-            throw new operator_error(1, [$this->datatype_name]);
+            throw new operator_error(1, [$this->display_name]);
         }
 
         switch ($datatype_name) {
@@ -194,7 +218,7 @@ class kilogram extends datatype
                 return new derived_unit($this->value, $this->datatype_name, $datatype_name, $value->value);
                 break;
         }
-        throw new datatype_error(1, [$datatype_name, '/', $this->datatype_name]);
+        throw new datatype_error(1, [$value->display_name, '/', $this->display_name]);
     }
 
     public function power_of(datatype $value): datatype
@@ -214,7 +238,7 @@ class kilogram extends datatype
                 break;
             
             default:
-                throw new datatype_error(1, [$datatype_name, '^', $this->datatype_name]);
+                throw new datatype_error(1, [$value->display_name, '^', $this->display_name]);
                 break;
         }
     }
