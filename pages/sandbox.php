@@ -27,126 +27,14 @@ $m = new meter(10, 2);
 
 try {
 
-    // dump(replace_synonyms('
-    //     milimeter
-    //     millimeter
-    //     millimeters
 
-    //     centimeter
-    //     centimeters
 
-    //     decimeter
-    //     decimeters
+    dump(parse_calculating_string(' (1 + (1 + ( 10 meter - -50 dm + 20))) / 4 sec * 10 seconds x (500 decimeter2 + 500 int) als cm2 met 2 decimalen'));
 
-    //     meter
-    //     meters
-
-    //     decameter
-    //     dekameter
-    //     dekameters
-    //     decameters
-
-    //     hectometer
-    //     hectometers
-
-    //     kilometer
-    //     kilometers
-
-    //     ----------
-
-    //     date
-    //     time
-    //     date-time
-    //     datum
-    //     tijd
-    //     datum-tijd
-
-    //     ----------
-
-    //     nanogram
-    //     nanograms
-
-    //     microgram
-    //     microgrammen
-    //     micrograms
-
-    //     milligram
-    //     milligrammen
-    //     milligrams
-
-    //     centigram
-    //     centigrammen
-    //     centigrams
-
-    //     decigram
-    //     decigrammen
-    //     decigrams
-
-    //     gram
-    //     gram
-    //     grams
-
-    //     decagram
-    //     decagrammen
-    //     dekagram
-    //     decagrams
-    //     dekagrams
-
-    //     hectogram
-    //     hectogrammen
-    //     hectograms
-
-    //     kil 
-    //     kilogram 
-    //     kilogrammen 
-    //     kilograms 
-        
-    //     ton
-    //     tonnen
-
-    //     ----------
-
-    //     int
-    //     integer
-    //     num 
-    //     getal
-    //     getallen
-    //     numbers
-        
-    //     ----------
-
-    //     milliseconds
-    //     milliseconden
-    //     millisec
-
-    //     sec
-    //     seconden
-    //     seconds
-
-    //     minutes
-    //     minuten
-
-    //     hour
-    //     hours
-    //     uur
-    //     uren
-
-    //     days
-    //     dag
-    //     dagen
-
-    //     week
-    //     weeks
-    //     weken
-    // '));
-    
-
-    dump(parse_calculating_string('( 10 meter - -50 dm ) / 4 sec * 10 seconds * (500 dm2 + 500 int) als cm2 met 2 decimalen'));
-
-    // dump(second::convert_synonyms('sec'));
+    dump(parse_calculating_string('500 kilometer \ (nu - 21/10/2022 12:00 +03:00) | m/s | 0'));
 
 } catch (calculator_error $er) {
-    dump($er->get_error_message());
+    dump($er->error_code. ' -> '. $er->get_error_message());
 }
 
 /*

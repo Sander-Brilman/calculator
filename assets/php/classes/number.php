@@ -16,7 +16,7 @@ class number extends datatype
     ];
 
     public static array $invalid_datatypes = [
-        'calculator_datetime',
+        'dt',
     ];
 
     public function convert_to(string $datatype)

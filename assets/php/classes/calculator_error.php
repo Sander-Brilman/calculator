@@ -38,6 +38,11 @@ class calculator_error extends Error
                 'en' => 'Maximum amount of round brackets reached',
             ],
 
+            '002' => [// maximum decimal precision reached
+                'nl' => 'Maximum aantal decimalen is 14',
+                'en' => 'Maximum amount decimals is 14',
+            ],
+
         ],
         'CE' => [// Convert Error
 
@@ -108,6 +113,19 @@ class calculator_error extends Error
             ],
 
         ],
+        'PE' => [// Parser Error
+
+            '000' => [// misplaced operator
+                'nl' => 'Verkeerd geplaatste operator [?]',
+                'en' => 'Misplaced operator [?]',
+            ],
+
+            '001' => [// no data type assigned and value not numeric and not a valid date time
+                'nl' => 'Kan niet waarde [?] automatisch omzetten naar een getal of datum/tijd. Controleer je invoer en specificeer de eenheid om verwarring te voorkomen.',
+                'en' => 'Can not automatically convert value [?] to a number or date/time. Check your input and specify the datatype to prevent confusion',
+            ],
+
+        ],
     ];
 
 
@@ -147,7 +165,7 @@ class calculator_error extends Error
         }
 
         foreach ($this->error_data as $data_string) {
-            $return_string = str_replace_first_match('[?]', $data_string, $return_string);
+            $return_string = str_replace_first_match('[?]', "\"$data_string\"", $return_string);
         }
 
         if (isset($this->additional_text[$lang]) && $this->additional_text[$lang] != '') {
@@ -200,7 +218,7 @@ class operator_error extends calculator_error {
     public function __construct(int $error_number, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
         /**
          * throws a new operator calculator error.
-         * operator errors are when thrown when a math operation cant be executed for some reason
+         * operator errors are thrown when a math operation cant be executed for some reason
          * 
          * @param string $error_number the error code number of the operator_error category,
          * 
@@ -218,7 +236,7 @@ class datatype_error extends calculator_error {
     public function __construct(int $error_number, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
         /**
          * throws a new datatype calculator error.
-         * datatype errors are when thrown when a datatype object does not meet the requirements for the current context.
+         * datatype errors are thrown when a datatype object does not meet the requirements for the current context.
          * 
          * @param string $error_number the error code number of the datatype_error category,
          * 
@@ -229,6 +247,24 @@ class datatype_error extends calculator_error {
 
 
         parent::__construct('DE'.sprintf('%03d', $error_number), $error_data, $additional_text);
+    }
+}
+
+class parser_error extends calculator_error {
+    public function __construct(int $error_number, array $error_data = [], array $additional_text = ['en' => '', 'nl' => '']) {
+        /**
+         * throws a new parser calculator error.
+         * parser errors are thrown when the string being parsed contains invalid syntax or invalid characters
+         * 
+         * @param string $error_number the error code number of the datatype_error category,
+         * 
+         * @param array $error_data the array with strings containing the details of the errors. Will be the replace value for the question marks
+         * 
+         * @param array $additional_text Give additional trailing text in different languages
+         */
+
+
+        parent::__construct('PE'.sprintf('%03d', $error_number), $error_data, $additional_text);
     }
 }
 

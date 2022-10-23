@@ -235,11 +235,11 @@ $unit_tests['string processing tests'] = [
                 }
             ),
 
-            new unit_test('kilograms convert test dag', function ()
+            new unit_test('kilograms convert test dcg', function ()
                 {
                     $expected = new kilogram(0.01);
 
-                    $result = str_to_datatype(1, 'dag');
+                    $result = str_to_datatype(1, 'dcg');
 
 
                     return $expected == $result

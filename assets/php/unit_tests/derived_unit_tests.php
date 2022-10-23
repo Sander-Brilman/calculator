@@ -35,7 +35,7 @@ $unit_tests['derived unit datatype tests'] = [
         new unit_test('derived unit failure test', function ()
             {
                 try {
-                    new derived_unit(100, 'm1', 'calculator_datetime');
+                    new derived_unit(100, 'm1', 'dt');
                 } catch (calculator_error $er) {
                     return new test_result(true, '');
                 }
@@ -61,15 +61,16 @@ $unit_tests['derived unit datatype tests'] = [
             }
         ),
 
-        new unit_test('derived unit meter/second Subtract test 2', function ()
+        new unit_test('derived unit meter/second Subtract test 2 oeleh', function ()
             {
                 $derived_unit = new derived_unit(100, 'm1', 's');
-                $value = new derived_unit(50, 'km1', 'h');
+                $value = new derived_unit(55, 'km1', 'h');
 
-                $expected = new derived_unit(86.111111111111, 'm1', 's');
+                $expected = new derived_unit(84.722222222222, 'm1', 's');
                 $result = $derived_unit->subtract($value);
 
-                return $expected == $result
+
+                return ($expected == $result)
                     ? new test_result(true, '')
                     : new test_result(false, 'Expected value and result do not match');
             }
@@ -77,7 +78,7 @@ $unit_tests['derived unit datatype tests'] = [
     ],
 
     'multiply tests' => [
-        new unit_test('derived unit meter/second Subtract test 1', function ()
+        new unit_test('derived unit meter/second multiply test 1', function ()
             {
                 $derived_unit = new derived_unit(100, 'm1', 's');
                 $value = new number(2);
@@ -92,12 +93,12 @@ $unit_tests['derived unit datatype tests'] = [
             }
         ),
 
-        new unit_test('derived unit meter/second Subtract test 2', function ()
+        new unit_test('derived unit meter/second multiply test 2', function ()
             {
                 $derived_unit = new derived_unit(100, 'm1', 's');
                 $value = new second(10);
 
-                $expected = new derived_unit(1000, 'm1', 's');
+                $expected = new meter(1000);
                 $result = $derived_unit->multiply($value);
 
                 return $expected == $result
@@ -108,7 +109,7 @@ $unit_tests['derived unit datatype tests'] = [
     ],
 
     'divide tests' => [
-        new unit_test('derived unit meter/second Subtract test 1', function ()
+        new unit_test('derived unit meter/second divide test 1', function ()
             {
                 $derived_unit = new derived_unit(100, 'm1', 's');
                 $value = new number(2);
@@ -123,7 +124,7 @@ $unit_tests['derived unit datatype tests'] = [
             }
         ),
 
-        new unit_test('derived unit meter/second Subtract test 2', function ()
+        new unit_test('derived unit meter/second divide test 2', function ()
             {
                 $derived_unit = new derived_unit(100, 'm1', 's');
                 $value = new number(5);

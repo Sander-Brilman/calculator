@@ -18,5 +18,6 @@ function include_files(string $dir)
 include_files('functions');
 include_files('classes');
 
+include_once('assets/php/globals.php');
 
 ?>

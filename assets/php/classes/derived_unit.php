@@ -25,7 +25,7 @@ class derived_unit extends datatype
     public datatype $datatype2;
 
     static public array $invalid_datatypes = [
-        'calculator_datetime',
+        'dt',
     ];
 
     public function convert_to(string $datatype)
@@ -102,11 +102,8 @@ class derived_unit extends datatype
 
         } else if (get_class($value) == get_class($this->datatype2)) {
 
-            return new derived_unit(
-                $this->datatype1->value * ($value->value / $this->datatype2->value),
-                $this->datatype1->datatype_name,
-                $this->datatype2->datatype_name,
-            );
+            $this->datatype1->value *= ($value->value / $this->datatype2->value);
+            return $this->datatype1;
 
         }
 

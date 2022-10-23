@@ -7,6 +7,8 @@ function calculate_string(string $full_calculate_string)
      * Syntax:
      * [calculation] | [return datatype] | [number of decimals]
      * 
+     * @throws calculator_error
+     * 
      * @param string $full_calculate_string The full formatted & parsed string
      * 
      * @return mixed The converted result of the calculation.
@@ -15,6 +17,10 @@ function calculate_string(string $full_calculate_string)
 
     $return_type = $splitted_string[1];
     $decimal_places = $splitted_string[2];
+
+    if ($decimal_places > 14) {
+        throw new general_error(2);
+    }
 
     $sum_string        = $splitted_string[0];
     $sum_array         = str_to_sum_array($sum_string);
@@ -43,6 +49,8 @@ function str_to_sum_array(string $sum_string): array
     /**
      * split sum on the spaces.
      * Divides parts into nested arrays if brackets they are wrapped in round brackets
+     * 
+     * @throws calculator_error
      * 
      * @param string $sum_string the full parsed sum string
      * 
@@ -77,6 +85,8 @@ function set_datatypes_recursive(array $array, array &$history = []): array
     /**
      * Convert array with [value] [datatype] pair to datatype object
      * Is used recursively to make sure all nested arrays are converted
+     * 
+     * @throws calculator_error
      * 
      * @param array $array The array to preform the conversion on
      * @param array $history The array to store the history of the conversion in
@@ -125,6 +135,8 @@ function str_to_datatype(string $value, string $datatype_string): datatype
     /**
      * Takes a [value] [datatype] pair in string format and returns a single datatype object.
      * 
+     * @throws calculator_error
+     * 
      * @param string $value The value that belongs to the datatype
      * @param string $datatype_string The datatype you want the value in
      * 
@@ -132,21 +144,6 @@ function str_to_datatype(string $value, string $datatype_string): datatype
      */
 
     if (is_numeric($value)) {
-
-        // number
-        if ($datatype_string == 'number') {
-            return new number($value);
-        }
-
-        // meters
-        if ($datatype_string == 'meter') {
-            return new meter($value);
-        }
-
-        // dates
-        if ($datatype_string == 'datetime' || $datatype_string == 'calculator_datetime') {
-            return new calculator_datetime($value);
-        }
 
         // meters
         foreach (meter::$meter_units as $unit) {
@@ -158,6 +155,13 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         }
 
         switch ($datatype_string) {
+            //
+            // number
+            //
+            case 'number':
+                return new number($value);
+                break;
+            
             //
             // seconds
             //
@@ -202,7 +206,7 @@ function str_to_datatype(string $value, string $datatype_string): datatype
             case 'g':
                 return new kilogram($value / 1000);
                 break;
-            case 'dag':
+            case 'dcg':
                 return new kilogram($value / 100);
                 break;
             case 'hg':
@@ -222,12 +226,20 @@ function str_to_datatype(string $value, string $datatype_string): datatype
             return new derived_unit($value, $derived_unit_array[0], $derived_unit_array[1]);
         }
 
-
-        
         throw new convert_error(5, [$datatype_string]);
     } else {
 
-        throw new convert_error(4, [$value]);
+        switch ($datatype_string) {
+            //
+            // datetime
+            //
+            case 'dt':
+                return new calculator_datetime($value);
+                break;
+
+        }
+
+        throw new convert_error(5, [$datatype_string]);
     }
 
 }
@@ -236,6 +248,8 @@ function calculate_array_recursive(array $array, array &$history): datatype
 {
     /**
      * Calculates nested arrays datatypes recursively and will return a single result datatype
+     * 
+     * @throws calculator_error
      * 
      * @param array $array The array to calculate
      * @param array &$history The array where the history of all calculations will be kept

@@ -108,7 +108,7 @@ $unit_tests['kilograms datatype tests'] = [
                     $value = new kilogram(0);
                     $kilogram->execute_operation('/', $value);
                 } catch (calculator_error $ex) {
-                    return $ex->get_error_message() == 'Like most calculators, you can not divide kilogram by 0'
+                    return $ex->get_error_message() == 'Like most calculators, you can not divide "kilogram" by 0'
                         ? new test_result(true)
                         : new test_result(false, 'Wrong calculator_error was thrown');
                 }
@@ -299,13 +299,13 @@ $unit_tests['kilograms datatype tests'] = [
             }
         ),
 
-        new unit_test('kilograms convert test dag', function ()
+        new unit_test('kilograms convert test dcg', function ()
             {
                 $kilogram = new kilogram(1);
 
                 $expected = 100;
 
-                $result = $kilogram->convert_to('dag');
+                $result = $kilogram->convert_to('dcg');
 
                 return $expected == $result
                     ? new test_result(true, '')

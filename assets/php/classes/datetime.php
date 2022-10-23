@@ -3,18 +3,18 @@ class calculator_datetime extends datatype
 {
     public function __construct(string $datetime_string) {
         try {
-            $this->datetime = new DateTime($this->str_to_full_date_string($datetime_string));
+            $this->datetime = new DateTime($this::str_to_full_date_string($datetime_string));
         } catch(Exception $ex) {
             throw new convert_error(3, [$datetime_string]);
         }
-        parent::__construct('calculator_datetime', $this->convert_to('full'));
+        parent::__construct('dt', $this->convert_to('full'));
     }
 
     public DateTime $datetime;
 
     public string $display_name = 'datetime';
     public static array $synonyms = [
-        'datetime' => [
+        'dt' => [
             'date',
             'time',
             'date-time',
@@ -27,7 +27,7 @@ class calculator_datetime extends datatype
         ],
     ];
 
-    private function str_to_full_date_string(string $input): string
+    public static function str_to_full_date_string(string $input): string
     {
         try {
             return (new DateTime(str_replace(['/', '\\'], '-', $input)))->format('c');

@@ -43,7 +43,7 @@ class kilogram extends datatype
             'grams',         
         ],
 
-        'dag' =>  [
+        'dcg' =>  [
             'decagram',
             'decagrammen',
             'dekagram',
@@ -95,7 +95,7 @@ class kilogram extends datatype
             case 'g':
                 return $this->value * 1000;
                 break;
-            case 'dag':// decagram
+            case 'dcg':// decagram
                 return $this->value * 100;
                 break;
             case 'hg':
