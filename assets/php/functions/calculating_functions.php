@@ -30,13 +30,15 @@ function calculate_string(string $full_calculate_string)
     // replace [value] [datatype] pair with datatype objects
     $sum_array = set_datatypes_recursive($sum_array, $calculating_history);
 
+    $sum_array = replace_number($sum_array, $calculating_history);
+
 
     // calculate the converted array in appropriate order
     $result_datatype = calculate_array_recursive($sum_array, $calculating_history);
 
     // print history for debugging
-    // dump($sum_string);
-    // dump($calculating_history);
+    dump($sum_string);
+    dump($calculating_history);
 
     // convert to requested datatype
     $result = $result_datatype->convert_to($return_type);
@@ -218,6 +220,29 @@ function str_to_datatype(string $value, string $datatype_string): datatype
             case 't':
                 return new kilogram($value * 1000);
                 break;
+
+            // liters
+            case 'ml':
+                return new meter(($value / 1000000), 3);
+                break;
+            case 'cl':
+                return new meter(($value / 100000), 3);
+                break;
+            case 'dl':
+                return new meter(($value / 10000), 3);
+                break;
+            case 'l':
+                return new meter(($value / 1000), 3);
+                break;
+            case 'dal':
+                return new meter(($value / 100), 3);
+                break;
+            case 'hl':
+                return new meter(($value / 10), 3);
+                break;
+            case 'kl':
+                return new meter($value, 3);
+                break;
         }
 
         // derived_units
@@ -242,6 +267,32 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         throw new convert_error(5, [$datatype_string]);
     }
 
+}
+
+function replace_number(array $calculation_array, array &$history): array
+{
+    /**
+     * Calculates nested arrays datatypes recursively and will return a single result datatype
+     * 
+     * @throws calculator_error
+     * 
+     * @param array $array The array to calculate
+     * @param array &$history The array where the history of all calculations will be kept
+     * 
+     * @param datatype The result datatype object from all the calculation within the given array
+     */
+    $search_operators = [ 
+        '+' => 2,
+        '-' => 2,
+    ];
+
+
+    foreach ($calculation_array as $index => $sum_part) {
+        dump($sum_part);
+    }
+
+
+    return $calculation_array;
 }
 
 function calculate_array_recursive(array $array, array &$history): datatype
@@ -275,19 +326,28 @@ function calculate_array_recursive(array $array, array &$history): datatype
         for ($index = 0; $index < $array_length; $index++) { 
             $array_item = $array[$index];
 
-            if (is_array($array_item)) {
-
-                $array[$index] = calculate_array_recursive($array_item, $history);
-
-            } else if ((is_string($array_item) && isset($operators_priority[$array_item])) && $highest_operator === null)
+            if ($index % 2 == 1) 
             {
-                $highest_operator = $index;
-            }
+                if (!is_string($array_item) || !isset($operators_priority[$array_item])) {
+                    throw new general_error(3, []);
+                }
+
+                if (is_string($array_item) && $highest_operator === null)
+                {
+                    $highest_operator = $index;
+                    continue;
+                }
+            } 
+            
+            if (is_array($array_item)) 
+            {
+                $array[$index] = calculate_array_recursive($array_item, $history);
+            } 
         }
 
         // replace the [datatype] [operator] [datatype] with the result datatype object
-        if ($highest_operator !== null) {
-
+        if ($highest_operator !== null) 
+        {
             $object_1 = $array[$highest_operator - 1];
             $object_2 = $array[$highest_operator + 1];
             $operator = $array[$highest_operator];

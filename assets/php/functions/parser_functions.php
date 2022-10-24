@@ -57,9 +57,8 @@ function parse_calculating_string(string $string): string
     // replace synonyms into strings the calculator can understand
     $string = replace_synonyms($string);
 
-    for ($i=0; $i < 5; $i++) { 
-        $string = str_replace('  ', ' ', $string);
-    }
+    // remove all double spaces
+    $string = str_replace(['  ', '  ', '  '], ' ', $string);
 
     $string = trim($string);
 
@@ -82,78 +81,83 @@ function parse_calculating_string(string $string): string
         if ($is_control_char || $current_index == sizeof($split_sum) - 1) {
 
             $items_count = sizeof($items_between);
-            if ($items_count > 0) {
-                
-                $value = '';
-                $datatype = '';
-                $items_joined = implode(' ', $items_between);
+            if ($items_count == 0) {
+                if ($is_control_char) {
+                    $parsed_split_sum[] = $sum_part;
+                }
+                $items_between = [];
+                continue;
+            }
 
-                if ($items_count == 1) {
-                    if (is_numeric($items_joined)) {
-                        $datatype = 'number';
-                        $value = $items_joined;
-                    } else {
-                        try {
-                            $value = calculator_datetime::str_to_full_date_string($items_joined);
-                            $datatype = 'dt';
-                        } catch (calculator_error $er) {
-                            throw new parser_error(1, [$items_joined]);
-                        }
+            $value = '';
+            $datatype = '';
+            $items_joined = implode(' ', $items_between);
+
+            if ($items_count == 1) {
+                if (is_numeric($items_joined)) {
+                    $datatype = 'number';
+                    $value = $items_joined;
+                } else {
+                    try {
+                        $value = calculator_datetime::str_to_full_date_string($items_joined);
+                        $datatype = 'dt';
+                    } catch (calculator_error $er) {
+                        throw new parser_error(1, [$items_joined]);
                     }
-                } else if ($items_count == 2) {
-                    if ($items_between[1] == 'dt') {
-                        $value = calculator_datetime::str_to_full_date_string($items_between[0]);
+                }
+            } else if ($items_count == 2) {
+                if ($items_between[1] == 'dt') {
+                    $value = calculator_datetime::str_to_full_date_string($items_between[0]);
+                } else {
+                    $items_joined = implode('', $items_between);
+                    if (is_numeric($items_joined)) {
+                        $value    = $items_joined;
+                        $datatype = 'number';
                     } else {
+                        if (!is_numeric($items_between[0])) {
+                            throw new convert_error(4, [$items_between[0]]);
+                        }
+                        $value    = $items_between[0];
+                        $datatype = $items_between[1];
+                    }
+                }
+            } else {
+
+                if ($items_between[$items_count - 1] == 'dt') {
+                    $value = calculator_datetime::str_to_full_date_string(str_replace('dt', '', $items_joined));
+                    $datatype = 'dt';
+                } else {
+                    try {
+                        $value = calculator_datetime::str_to_full_date_string($items_joined);
+                        $datatype = 'dt';
+                    } catch (calculator_error $er) {
+
                         $items_joined = implode('', $items_between);
                         if (is_numeric($items_joined)) {
                             $value    = $items_joined;
                             $datatype = 'number';
                         } else {
-                            if (!is_numeric($items_between[0])) {
-                                throw new convert_error(4, [$items_between[0]]);
-                            }
-                            $value    = $items_between[0];
-                            $datatype = $items_between[1];
-                        }
-                    }
-                } else {
-
-                    if ($items_between[$items_count - 1] == 'dt') {
-                        $value = calculator_datetime::str_to_full_date_string(str_replace('dt', '', $items_joined));
-                        $datatype = 'dt';
-                    } else {
-                        try {
-                            $value = calculator_datetime::str_to_full_date_string($items_joined);
-                            $datatype = 'dt';
-                        } catch (calculator_error $er) {
     
-                            $items_joined = implode('', $items_between);
-                            if (is_numeric($items_joined)) {
-                                $value    = $items_joined;
-                                $datatype = 'number';
-                            } else {
-        
-                                $items_between_striped = $items_between;
-                                $datatype = array_pop($items_between_striped);
-                                $items_joined_striped = implode('', $items_between_striped);
-                                
-                                if (!is_numeric($items_joined_striped)) {
-                                    throw new convert_error(4, [$items_between[0]]);
-                                }// joined value - last item not numeric
-        
-                                $value = $items_joined_striped;
-                            }// joined value not numeric
-                        }// joined values not a date time
-                    }// last item is not "dt"
-                }// more then 2 items
+                            $items_between_striped = $items_between;
+                            $datatype = array_pop($items_between_striped);
+                            $items_joined_striped = implode('', $items_between_striped);
+                            
+                            if (!is_numeric($items_joined_striped)) {
+                                throw new convert_error(4, [$items_between[0]]);
+                            }// joined value - last item not numeric
+    
+                            $value = $items_joined_striped;
+                        }// joined value not numeric
+                    }// joined values not a date time
+                }// last item is not "dt"
+            }// more then 2 items
 
-                if (in_array($datatype, meter::$meter_units)) {
-                    $datatype .= 1;
-                }
+            if (in_array($datatype, meter::$meter_units)) {
+                $datatype .= 1;
+            }
 
-                $parsed_split_sum[] = $value;
-                $parsed_split_sum[] = $datatype;
-            }// more items then 0
+            $parsed_split_sum[] = $value;
+            $parsed_split_sum[] = $datatype;
 
             // add control character to the array and reset value and datatype
             if ($is_control_char) {
@@ -163,6 +167,9 @@ function parse_calculating_string(string $string): string
             continue;
         }
     }
+
+    // remove all double spaces
+    $string = str_replace(['  ', '  ', '  '], ' ', $string);
 
     return implode(' | ', [implode(' ', $parsed_split_sum), $return_type, $decimals]);
 }

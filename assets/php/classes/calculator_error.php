@@ -34,8 +34,8 @@ class calculator_error extends Error
             ],
 
             '001' => [// safety limit calculating
-                'nl' => 'Maximum aantal haakjes bereikt',
-                'en' => 'Maximum amount of round brackets reached',
+                'nl' => 'Maximum lengte van som bereikt',
+                'en' => 'Maximum length of calculation reached',
             ],
 
             '002' => [// maximum decimal precision reached
@@ -43,12 +43,17 @@ class calculator_error extends Error
                 'en' => 'Maximum amount decimals is 14',
             ],
 
+            '003' => [// no operator found between
+                'nl' => 'Niet alle waardes zijn gescheiden door een reken operator. Zorg dat er tussen alle waardes een rekenoperator zit',
+                'en' => 'Not all values are separated by a math operator. Check your input and make sure there is a math operator between all values',
+            ],
+
         ],
         'CE' => [// Convert Error
 
             '000' => [// covert function is not set
-                'nl' => 'Omzetten is uitgeschakeld voor eenheid [?].',
-                'en' => 'Converting is disables for unit [?].',
+                'nl' => 'Omzetten is uitgeschakeld voor eenheid [?]',
+                'en' => 'Converting is disables for unit [?]',
             ],
 
             '001' => [// cannot convert to
@@ -121,7 +126,7 @@ class calculator_error extends Error
             ],
 
             '001' => [// no data type assigned and value not numeric and not a valid date time
-                'nl' => 'Kan niet waarde [?] automatisch omzetten naar een getal of datum/tijd. Controleer je invoer en specificeer de eenheid om verwarring te voorkomen.',
+                'nl' => 'Kan niet waarde [?] automatisch omzetten naar een getal of datum/tijd. Controleer je invoer en specificeer de eenheid om verwarring te voorkomen',
                 'en' => 'Can not automatically convert value [?] to a number or date/time. Check your input and specify the datatype to prevent confusion',
             ],
 

@@ -6,7 +6,7 @@ class second extends datatype
         parent::__construct('s', $value);
     }
 
-    public string $display_name = 'seconden';
+    public string $display_name = 'seconds';
     public static array $synonyms = [
         'ms' =>  [
             'milliseconds',

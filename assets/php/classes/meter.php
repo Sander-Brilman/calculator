@@ -43,6 +43,39 @@ class meter extends datatype
             'kilometer',
             'kilometers',
         ],
+
+        // liters
+        'ml' => [
+            'milliliter',
+            'mililiters',
+            'milliliters',
+        ],
+        'cl' => [
+            'centiliter',
+            'centiliters',
+        ],
+        'dl' => [
+            'deciliter',
+            'deciliter',
+        ],
+        'l' => [
+            'liter',
+            'liters',
+        ],
+        'dal' => [
+            'decaliter',
+            'dekaliter',
+            'decaliters',
+            'dekaliters',
+        ],
+        'hl' => [
+            'hectoliter',
+            'hectoliters',
+        ],
+        'kl' => [
+            'kiloliter',
+            'kiloliters',
+        ],
     ];
 
     public int $exponent_value;
@@ -123,6 +156,33 @@ class meter extends datatype
             if (str_starts_with($datatype, $unit)) {
                 return self::meter_conversion($this->value, 'm'.$this->exponent_value, $datatype);
                 break;
+            }
+        }
+
+        if ($this->exponent_value == 3) {
+            switch ($datatype) {
+                // liters
+                case 'ml':
+                    return $this->value * 1000000;
+                    break;
+                case 'cl':
+                    return $this->value * 100000;
+                    break;
+                case 'dl':
+                    return $this->value * 10000;
+                    break;
+                case 'l':
+                    return $this->value * 1000;
+                    break;
+                case 'dal':
+                    return $this->value * 100;
+                    break;
+                case 'hl':
+                    return $this->value * 10;
+                    break;
+                case 'kl':
+                    return $this->value;
+                    break;
             }
         }
 
