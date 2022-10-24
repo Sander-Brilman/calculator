@@ -48,6 +48,8 @@ function parse_calculating_string(string $string): string
         ' with ' => ' | ',
     ];
 
+    // convert to lowercase
+    $string = strtolower($string);
 
     // make sure all brackets are wrapped with spaces around them
     $string = str_replace_with_array($search_replace, $string);
@@ -69,9 +71,15 @@ function parse_calculating_string(string $string): string
     $split_sum      = explode(' ', $split_string[0]);
     $return_type    = $split_string[1];
     $decimals       = $split_string[2];
-    foreach ($split_sum as $current_index => $sum_part) {
 
-        if (in_array($sum_part, $control_characters) || $current_index == sizeof($split_sum) - 1) {
+    foreach ($split_sum as $current_index => $sum_part) {
+        $is_control_char = in_array($sum_part, $control_characters);
+
+        if (!$is_control_char) {
+            $items_between[] = $sum_part;
+        }
+
+        if ($is_control_char || $current_index == sizeof($split_sum) - 1) {
 
             $items_count = sizeof($items_between);
             if ($items_count > 0) {
@@ -80,45 +88,64 @@ function parse_calculating_string(string $string): string
                 $datatype = '';
                 $items_joined = implode(' ', $items_between);
 
-                if (in_array('number', $items_between)) {
-
-                    $items_between_copy = $items_between;
-                    unset($items_between_copy[array_search('number', $items_between_copy)]);
-                    $items_joined_striped = implode('', $items_between_copy);
-
-                    if (!is_numeric($items_joined_striped)) {
-                        throw new convert_error(4, [$items_joined]);
-
+                if ($items_count == 1) {
+                    if (is_numeric($items_joined)) {
+                        $datatype = 'number';
+                        $value = $items_joined;
+                    } else {
+                        try {
+                            $value = calculator_datetime::str_to_full_date_string($items_joined);
+                            $datatype = 'dt';
+                        } catch (calculator_error $er) {
+                            throw new parser_error(1, [$items_joined]);
+                        }
                     }
-                    
-                    $datatype = 'number';
-                } else if (in_array('dt', $items_between)) {
-
-                    // TODO
-
-                    $datatype = 'dt';
+                } else if ($items_count == 2) {
+                    if ($items_between[1] == 'dt') {
+                        $value = calculator_datetime::str_to_full_date_string($items_between[0]);
+                    } else {
+                        $items_joined = implode('', $items_between);
+                        if (is_numeric($items_joined)) {
+                            $value    = $items_joined;
+                            $datatype = 'number';
+                        } else {
+                            if (!is_numeric($items_between[0])) {
+                                throw new convert_error(4, [$items_between[0]]);
+                            }
+                            $value    = $items_between[0];
+                            $datatype = $items_between[1];
+                        }
+                    }
                 } else {
-                    // TODO
 
-                }
-                    // TODO
-
-                if (is_numeric($items_joined)) {
-                    $value = $items_joined;
-                    $datatype = 'number';
-                } else {
-                    try {
-                        $value = calculator_datetime::str_to_full_date_string($items_joined);
+                    if ($items_between[$items_count - 1] == 'dt') {
+                        $value = calculator_datetime::str_to_full_date_string(str_replace('dt', '', $items_joined));
                         $datatype = 'dt';
-                    } catch (calculator_error $er) {
-                        throw new parser_error(1, [$items_joined]);
-                    }
-                }
-
-                if ($items_between[$items_count - 1] == 'dt') {
-                    $value = calculator_datetime::str_to_full_date_string(str_replace('dt', ' ', $items_joined));
-                    $datatype = 'dt';
-                }
+                    } else {
+                        try {
+                            $value = calculator_datetime::str_to_full_date_string($items_joined);
+                            $datatype = 'dt';
+                        } catch (calculator_error $er) {
+    
+                            $items_joined = implode('', $items_between);
+                            if (is_numeric($items_joined)) {
+                                $value    = $items_joined;
+                                $datatype = 'number';
+                            } else {
+        
+                                $items_between_striped = $items_between;
+                                $datatype = array_pop($items_between_striped);
+                                $items_joined_striped = implode('', $items_between_striped);
+                                
+                                if (!is_numeric($items_joined_striped)) {
+                                    throw new convert_error(4, [$items_between[0]]);
+                                }// joined value - last item not numeric
+        
+                                $value = $items_joined_striped;
+                            }// joined value not numeric
+                        }// joined values not a date time
+                    }// last item is not "dt"
+                }// more then 2 items
 
                 if (in_array($datatype, meter::$meter_units)) {
                     $datatype .= 1;
@@ -126,15 +153,15 @@ function parse_calculating_string(string $string): string
 
                 $parsed_split_sum[] = $value;
                 $parsed_split_sum[] = $datatype;
-            }
+            }// more items then 0
 
             // add control character to the array and reset value and datatype
-            $parsed_split_sum[] = $sum_part;
+            if ($is_control_char) {
+                $parsed_split_sum[] = $sum_part;
+            }
             $items_between = [];
             continue;
         }
-
-        $items_between[] = $sum_part;
     }
 
     return implode(' | ', [implode(' ', $parsed_split_sum), $return_type, $decimals]);
