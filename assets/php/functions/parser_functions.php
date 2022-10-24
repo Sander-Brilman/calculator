@@ -74,38 +74,50 @@ function parse_calculating_string(string $string): string
         if (in_array($sum_part, $control_characters) || $current_index == sizeof($split_sum) - 1) {
 
             $items_count = sizeof($items_between);
-            $items_joined = implode(' ', $items_between);
             if ($items_count > 0) {
                 
                 $value = '';
                 $datatype = '';
-                if ($items_count == 1) {
-                    if (is_numeric($items_joined)) {
-                        $value = $items_joined;
-                        $datatype = 'number';
-                    } else {
-                        try {
-                            $value = calculator_datetime::str_to_full_date_string($items_joined);
-                            $datatype = 'dt';
-                        } catch (calculator_error $er) {
-                            throw new parser_error(1, [$items_joined]);
-                        }
-                    }
-                } else if ($items_count == 2) {
-                    $value = $items_between[0];
-                    $datatype = $items_between[1];
-                } else {
-                    if ($items_between[$items_count - 1] == 'dt') {
-                        $value = calculator_datetime::str_to_full_date_string(str_replace('dt', ' ', $items_joined));
-                        $datatype = 'dt';
-                    }
+                $items_joined = implode(' ', $items_between);
 
+                if (in_array('number', $items_between)) {
+
+                    $items_between_copy = $items_between;
+                    unset($items_between_copy[array_search('number', $items_between_copy)]);
+                    $items_joined_striped = implode('', $items_between_copy);
+
+                    if (!is_numeric($items_joined_striped)) {
+                        throw new convert_error(4, [$items_joined]);
+
+                    }
+                    
+                    $datatype = 'number';
+                } else if (in_array('dt', $items_between)) {
+
+                    // TODO
+
+                    $datatype = 'dt';
+                } else {
+                    // TODO
+
+                }
+                    // TODO
+
+                if (is_numeric($items_joined)) {
+                    $value = $items_joined;
+                    $datatype = 'number';
+                } else {
                     try {
                         $value = calculator_datetime::str_to_full_date_string($items_joined);
                         $datatype = 'dt';
                     } catch (calculator_error $er) {
                         throw new parser_error(1, [$items_joined]);
                     }
+                }
+
+                if ($items_between[$items_count - 1] == 'dt') {
+                    $value = calculator_datetime::str_to_full_date_string(str_replace('dt', ' ', $items_joined));
+                    $datatype = 'dt';
                 }
 
                 if (in_array($datatype, meter::$meter_units)) {
