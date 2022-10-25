@@ -14,66 +14,87 @@ class meter extends datatype
     public static array $synonyms = [
         'mm' => [
             'milimeter',
+            'milimetre',
             'millimeter',
+            'millimetre',
             'millimeters',
         ],
         'cm' => [
             'centimeter',
+            'centimetre',
             'centimeters',
         ],
         'dm' => [
             'decimeter',
+            'decimetre',
             'decimeters',
         ],
         'm' => [
             'meter',
+            'metre',
             'meters',
         ],
         'dcm' => [
             'decameter',
+            'decametre',
+
             'dekameter',
+            'dekametre',
+
             'dekameters',
             'decameters',
         ],
         'hm' => [
             'hectometer',
+            'hectometre',
             'hectometers',
         ],
         'km' => [
             'kilometer',
+            'kilometre',
             'kilometers',
         ],
 
         // liters
         'ml' => [
             'milliliter',
+            'millilitre',
             'mililiters',
             'milliliters',
         ],
         'cl' => [
             'centiliter',
+            'centilitre',
             'centiliters',
         ],
         'dl' => [
             'deciliter',
+            'decilitre',
             'deciliter',
         ],
         'l' => [
             'liter',
+            'litre',
             'liters',
         ],
         'dal' => [
             'decaliter',
+            'decalitre',
+
             'dekaliter',
+            'dekalitre',
+
             'decaliters',
             'dekaliters',
         ],
         'hl' => [
             'hectoliter',
+            'hectolitre',
             'hectoliters',
         ],
         'kl' => [
             'kiloliter',
+            'kilolitre',
             'kiloliters',
         ],
     ];

@@ -10,49 +10,57 @@ class kilogram extends datatype
     public static array $synonyms = [
         'ng' =>  [
             'nanogram',
+            'nanogramme',
             'nanograms',
         ],
 
         'mcg' =>  [
             'microgram',
+            'microgramme',
             'microgrammen',
             'micrograms',
         ],
 
         'mg' =>  [
             'milligram',
+            'milligramme',
             'milligrammen',
             'milligrams',
         ],
 
         'cg' =>  [
             'centigram',
+            'centigramem',
             'centigrammen',
             'centigrams',
         ],
 
         'dg' =>  [
             'decigram',
+            'decigramme',
             'decigrammen',
             'decigrams',    
         ],
 
         'g' =>  [
             'gram',
-            'gram',
+            'gramme',
             'grams',         
         ],
 
         'dcg' =>  [
             'decagram',
+            'decagramme',
             'decagrammen',
             'dekagram',
+            'dekagramme',
             'decagrams',  
             'dekagrams',  
         ],
 
         'hg' =>  [
             'hectogram',  
+            'hectogramme',  
             'hectogrammen',  
             'hectograms',  
         ],
@@ -60,6 +68,7 @@ class kilogram extends datatype
         'kg' =>  [
             'kilo',
             'kilogram',  
+            'kilogramme',  
             'kilogrammen',  
             'kilograms',  
         ],

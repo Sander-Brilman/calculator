@@ -11,19 +11,23 @@ class second extends datatype
         'ms' =>  [
             'milliseconds',
             'milliseconden',
+            'milliseconde',
             'millisec',
         ],
         's' =>  [
             'sec',
             'seconden',
+            'seconde',
             'seconds',
         ],
         'min' =>  [
             'minutes',
+            'minute',
             'minuten',
         ],
         'h' =>  [
             'hour',
+            'houre',
             'hours',
             'uur',
             'uren',

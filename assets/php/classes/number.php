@@ -12,6 +12,7 @@ class number extends datatype
             'getal',
             'getallen',
             'numbers',
+            'numbre',
         ],
     ];
 

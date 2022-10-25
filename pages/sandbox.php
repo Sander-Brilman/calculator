@@ -28,7 +28,7 @@ $m = new meter(10, 2);
 try {
 
     // dump(calculate_string(parse_calculating_string('1000 00 00 / (24/10/2022 12:00 +200 - nu) als cm3 met 2 decimalen')));
-    dump(calculate_string(parse_calculating_string('100 km + 50 + (30 + 20) als number met 4 decimalen')));
+    dump(calculate_string(parse_calculating_string('100 km + 50 + 2 / 10 seconden + 10 als number met 4 decimalen')));
 
 
     // dump((parse_calculating_string('(1 + (1 + ( 10 meter - -50 dm + 20))) / 4 sec * (23/10/2022 - nu) x (500 decimeter2 + 500 int) als cm3 met 2 decimalen')));
@@ -43,6 +43,7 @@ try {
 
 } catch (calculator_error $er) {
     dump($er->error_code. ' -> '. $er->get_error_message());
+    dump($calculating_history);
 }
 
 ?>

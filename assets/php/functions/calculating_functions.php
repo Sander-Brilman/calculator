@@ -32,7 +32,6 @@ function calculate_string(string $full_calculate_string)
 
     $sum_array = replace_number($sum_array, $calculating_history);
 
-
     // calculate the converted array in appropriate order
     $result_datatype = calculate_array_recursive($sum_array, $calculating_history);
 
@@ -288,7 +287,7 @@ function replace_number(array $calculation_array, array &$history): array
 
 
     foreach ($calculation_array as $index => $sum_part) {
-        dump($sum_part);
+        // dump($sum_part);
     }
 
 
@@ -332,7 +331,7 @@ function calculate_array_recursive(array $array, array &$history): datatype
                     throw new general_error(3, []);
                 }
 
-                if (is_string($array_item) && $highest_operator === null)
+                if ($highest_operator === null || $operators_priority[$array[$highest_operator]] < $operators_priority[$array_item])
                 {
                     $highest_operator = $index;
                     continue;
