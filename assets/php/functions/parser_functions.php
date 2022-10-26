@@ -50,6 +50,9 @@ function parse_calculating_string(string $string): string
 
     // convert to lowercase
     $string = strtolower($string);
+    
+    // translate keywords
+    $string = translate_keywords($string, 'nl', 'en');
 
     // make sure all brackets are wrapped with spaces around them
     $string = str_replace_with_array($search_replace, $string);
@@ -198,4 +201,67 @@ function str_replace_with_array(array $key_value_array, string $subject): string
     return $subject;
 }
 
+function translate_keywords(string $subject, string $from, string $to): string
+{
+    $keywords = [
+        'nl' => [
+            'januari',
+            'februari',
+            'maart',
+            'april',
+            'mei',
+            'juni',
+            'juli',
+            'augustus',
+            'september',
+            'oktober',
+            'november',
+            'december',
+
+            // days
+            'maandag',
+            'dinsdag',
+            'woensdag',
+            'donderdag',
+            'vrijdag',
+            'zaterdag',
+            'zondag',
+
+            // datatypes
+            'datum Tijd',
+            'getal',
+            'seconden',
+        ],
+        'en' => [
+            'January',
+            'February',
+            'march',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+
+            // days
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+
+            // datatypes
+            'datetime',
+            'number',
+            'seconds',
+        ],
+    ];
+
+    return str_replace($keywords[$from], $keywords[$to], $subject);
+}
 ?>

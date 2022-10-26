@@ -18,7 +18,7 @@ function calculate_string(string $full_calculate_string)
     $return_type = $splitted_string[1];
     $decimal_places = $splitted_string[2];
 
-    if ($decimal_places > 14) {
+    if ($decimal_places > PHP_FLOAT_DIG) {
         throw new general_error(2);
     }
 
@@ -36,8 +36,8 @@ function calculate_string(string $full_calculate_string)
     $result_datatype = calculate_array_recursive($sum_array, $calculating_history);
 
     // print history for debugging
-    dump($sum_string);
-    dump($calculating_history);
+    // dump($sum_string);
+    // dump($calculating_history);
 
     // convert to requested datatype
     $result = $result_datatype->convert_to($return_type);
@@ -159,89 +159,46 @@ function str_to_datatype(string $value, string $datatype_string): datatype
             //
             // number
             //
-            case 'number':
-                return new number($value);
-                break;
+            case 'number': return new number($value);
             
             //
             // seconds
             //
-            case 'ms':
-                return new second($value * 1000);
-                break;
-            case 's':
-                return new second($value);
-                break;
-            case 'min':
-                return new second($value * 60);
-                break;
-            case 'h':
-                return new second(($value * 60) * 60);
-                break;
-            case 'day':
-                return new second((($value * 24) * 60) * 60);
-                break;
-            case 'w':
-                return new second(((($value * 7) * 24) * 60) * 60);
-                break;
+            case 'ms': return new second($value * 1000);
+            case 's': return new second($value);
+            case 'min': return new second($value * 60);
+            case 'h': return new second(($value * 60) * 60);
+            case 'day': return new second((($value * 24) * 60) * 60);
+            case 'w': return new second(((($value * 7) * 24) * 60) * 60);
 
             //
             // kilogram
             //
-            case 'ng':
-                return new kilogram($value / 1000000000000);
-                break;
+            case 'ng': return new kilogram($value / 1000000000000);
             case 'mcg':
-            case 'μg':
-                return new kilogram($value / 1000000000);
-                break;
-            case 'mg':
-                return new kilogram($value / 1000000);
-                break;
-            case 'cg':
-                return new kilogram($value / 100000);
-                break;
-            case 'dg':
-                return new kilogram($value / 10000);
-                break;
-            case 'g':
-                return new kilogram($value / 1000);
-                break;
-            case 'dcg':
-                return new kilogram($value / 100);
-                break;
-            case 'hg':
-                return new kilogram($value / 10);
-                break;
-            case 'kg':
-                return new kilogram($value);
-                break;
-            case 't':
-                return new kilogram($value * 1000);
-                break;
+            case 'μg': return new kilogram($value / 1000000000);
+            case 'mg': return new kilogram($value / 1000000);
+            case 'cg': return new kilogram($value / 100000);
+            case 'dg': return new kilogram($value / 10000);
+            case 'g': return new kilogram($value / 1000);
+            case 'dcg': return new kilogram($value / 100);
+            case 'hg': return new kilogram($value / 10);
+            case 'kg': return new kilogram($value);
+            case 't': return new kilogram($value * 1000);
 
             // liters
-            case 'ml':
-                return new meter(($value / 1000000), 3);
-                break;
-            case 'cl':
-                return new meter(($value / 100000), 3);
-                break;
-            case 'dl':
-                return new meter(($value / 10000), 3);
-                break;
-            case 'l':
-                return new meter(($value / 1000), 3);
-                break;
-            case 'dal':
-                return new meter(($value / 100), 3);
-                break;
-            case 'hl':
-                return new meter(($value / 10), 3);
-                break;
-            case 'kl':
-                return new meter($value, 3);
-                break;
+            case 'ml': return new meter(($value / 1000000), 3);
+            case 'cl': return new meter(($value / 100000), 3);
+            case 'dl': return new meter(($value / 10000), 3);
+            case 'l': return new meter(($value / 1000), 3);
+            case 'dal': return new meter(($value / 100), 3);
+            case 'hl': return new meter(($value / 10), 3);
+            case 'kl': return new meter($value, 3);
+
+            // imperial units
+            case 'oz': return new meter($value / 33814.022702, 3);
+            case 'pt': return new meter($value / 1759.75, 3);
+            case 'gal': return new meter($value / 264.172052, 3);
         }
 
         // derived_units
@@ -251,16 +208,11 @@ function str_to_datatype(string $value, string $datatype_string): datatype
         }
 
         throw new convert_error(5, [$datatype_string]);
-    } else {
-
-        switch ($datatype_string) {
-            //
-            // datetime
-            //
-            case 'dt':
-                return new calculator_datetime($value);
-                break;
-
+    } 
+    else 
+    {
+        if ($datatype_string == 'dt') {
+            return new calculator_datetime($value);
         }
 
         throw new convert_error(5, [$datatype_string]);

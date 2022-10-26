@@ -12,6 +12,7 @@ class meter extends datatype
 
     public string $display_name = '';
     public static array $synonyms = [
+        // metric units
         'mm' => [
             'milimeter',
             'milimetre',
@@ -97,6 +98,7 @@ class meter extends datatype
             'kilolitre',
             'kiloliters',
         ],
+
     ];
 
     public int $exponent_value;
@@ -183,28 +185,19 @@ class meter extends datatype
         if ($this->exponent_value == 3) {
             switch ($datatype) {
                 // liters
-                case 'ml':
-                    return $this->value * 1000000;
-                    break;
-                case 'cl':
-                    return $this->value * 100000;
-                    break;
-                case 'dl':
-                    return $this->value * 10000;
-                    break;
-                case 'l':
-                    return $this->value * 1000;
-                    break;
-                case 'dal':
-                    return $this->value * 100;
-                    break;
-                case 'hl':
-                    return $this->value * 10;
-                    break;
-                case 'kl':
-                    return $this->value;
-                    break;
+                case 'ml': return $this->value * 1000000;
+                case 'cl': return $this->value * 100000;
+                case 'dl': return $this->value * 10000;
+                case 'l': return $this->value * 1000;
+                case 'dal': return $this->value * 100;
+                case 'hl': return $this->value * 10;
+                case 'kl': return $this->value;
             }
+        }
+        if ($this->exponent_value == 2) {
+
+        }
+        if ($this->exponent_value == 1) {
         }
 
         switch ($datatype) {

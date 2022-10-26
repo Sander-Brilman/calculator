@@ -39,8 +39,8 @@ class calculator_error extends Error
             ],
 
             '002' => [// maximum decimal precision reached
-                'nl' => 'Maximum aantal decimalen is 14',
-                'en' => 'Maximum amount decimals is 14',
+                'nl' => 'Maximum aantal decimalen is '.PHP_FLOAT_DIG,
+                'en' => 'Maximum amount of decimals is '.PHP_FLOAT_DIG,
             ],
 
             '003' => [// no operator found between

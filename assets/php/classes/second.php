@@ -26,6 +26,7 @@ class second extends datatype
             'minuten',
         ],
         'h' =>  [
+            'u ',
             'hour',
             'houre',
             'hours',

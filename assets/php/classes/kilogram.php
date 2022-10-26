@@ -111,10 +111,10 @@ class kilogram extends datatype
                 return $this->value * 10;
                 break;
             case 'kg':
-                return $this->value;
+                return $this->value * 1;
                 break;
             case 't':
-                return $this->value / 1000;
+                return $this->value * 0.001;
                 break;
         }
 

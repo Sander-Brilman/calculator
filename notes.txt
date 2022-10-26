@@ -8,20 +8,14 @@ ________________________________________________________________
 
 
 
-ERROR TYPES
-
-GE000 = General Error
-CE000 = Convert Error
-OE000 = Operator Error
-DE000 = Invalid Datatype Error
-
-
-
-
-
-
 - links
 
 https://nl.wikipedia.org/wiki/SI-stelsel#
 
 https://en.wikipedia.org/wiki/International_System_of_Units#:~:text=The%20SI%20comprises%20a%20coherent,candela%20(cd%2C%20luminous%20intensity)
+
+- imperial unit links
+
+https://en.wikipedia.org/wiki/Imperial_units#Length
+https://simple.wikipedia.org/wiki/Imperial_units#Volume
+https://simple.wikipedia.org/wiki/International_System_of_Units
