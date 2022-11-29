@@ -89,6 +89,10 @@ function get_page_info(array $url_array = []): array
             $php[] = 'run_unit_tests.php';
             break;
 
+        case 'teapot':
+            header("HTTP/1.1 418 I'm a teapot");
+            break;
+
 		default:
 			$php[] = '404';
 			$indexing = false;
