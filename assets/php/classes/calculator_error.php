@@ -170,7 +170,7 @@ class calculator_error extends Error
         }
 
         foreach ($this->error_data as $data_string) {
-            $return_string = str_replace_first_match('[?]', "\"$data_string\"", $return_string);
+            $return_string = str_replace_first_match('[?]', "$data_string", $return_string);
         }
 
         if (isset($this->additional_text[$lang]) && $this->additional_text[$lang] != '') {

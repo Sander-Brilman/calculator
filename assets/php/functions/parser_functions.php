@@ -71,8 +71,30 @@ function parse_calculating_string(string $string): string
     $items_between  = [];
     $split_string   = explode(' | ', $string);
     $split_sum      = explode(' ', $split_string[0]);
-    $return_type    = $split_string[1];
-    $decimals       = $split_string[2];
+    $return_type    = '[empty]';
+    $decimals       = '[empty]';
+
+    $size = sizeof($split_string);
+
+    if ($size == 2) {
+
+        if (is_numeric($split_string[1])) {
+            $decimals    = $split_string[1];
+        } else {
+            $return_type = $split_string[1];
+        }
+
+    } else if ($size >= 3) {
+        
+        if (is_numeric($split_string[1])) {
+            $return_type = $split_string[2];
+            $decimals    = $split_string[1];
+        } else {
+            $return_type = $split_string[1];
+            $decimals    = $split_string[2];
+        }
+
+    } 
 
     foreach ($split_sum as $current_index => $sum_part) {
         $is_control_char = in_array($sum_part, $control_characters);

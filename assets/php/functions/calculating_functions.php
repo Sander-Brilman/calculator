@@ -15,8 +15,8 @@ function calculate_string(string $full_calculate_string)
      */
     $splitted_string  = explode(' | ', $full_calculate_string);
 
-    $return_type = $splitted_string[1];
-    $decimal_places = $splitted_string[2];
+    $return_type = $splitted_string[1] == '[empty]' ? null : $splitted_string[1];
+    $decimal_places = $splitted_string[2] == '[empty]' ? 2 : $splitted_string[2];
 
     if ($decimal_places > PHP_FLOAT_DIG) {
         throw new general_error(2);
@@ -36,13 +36,13 @@ function calculate_string(string $full_calculate_string)
     $result_datatype = calculate_array_recursive($sum_array, $calculating_history);
 
     // print history for debugging
-    // dump($sum_string);
-    // dump($calculating_history);
+    dump($sum_string);
+    dump($calculating_history);
 
     // convert to requested datatype
-    $result = $result_datatype->convert_to($return_type);
+    $result = $return_type != null ? $result_datatype->convert_to($return_type) : $result_datatype->value;
 
-    return number_format(round($result, $decimal_places), $decimal_places, '.', '');
+    return number_format(round($result, $decimal_places), $decimal_places, '.', '') . ($return_type == null ? ' ' . $result_datatype->display_name : '');
 }
 
 function str_to_sum_array(string $sum_string): array

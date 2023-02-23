@@ -120,14 +120,14 @@ class meter extends datatype
         $meter_units = self::$meter_units;
 
         foreach ($meter_units as $key => $unit) {
-            if (str_starts_with($from, $unit) && is_numeric(substr($from, strlen($unit)))) {
+            if (str_starts_with($from, $unit)) {
                 $from_index    = $key;
-                $from_exponent = (int)str_replace($unit, '', $from);
+                $from_exponent = is_numeric(substr($from, strlen($unit))) ? (int)str_replace($unit, '', $from) : 1;
             }
 
-            if (str_starts_with($to, $unit) && is_numeric(substr($to, strlen($unit)))) {
+            if (str_starts_with($to, $unit)) {
                 $to_index    = $key;
-                $to_exponent = (int)str_replace($unit, '', $to);
+                $to_exponent = is_numeric(substr($to, strlen($unit))) ? (int)str_replace($unit, '', $to) : 1;
             }
         }
 

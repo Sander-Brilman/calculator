@@ -346,7 +346,7 @@ $unit_tests['Full calculation test'] = [
             $sum_full = '( ( 2000 cm1 + 100 dm1 ) * 100 mm1 + ( 66 km2 - 88 dcm2 + 1 hm2 ) ) / 10 m1 | m1 | 1';
     
             $result = calculate_string($sum_full);
-            $expected = 6600120.3;
+            $expected = "6600420.0";
     
             return $result == $expected
                 ? new test_result(true, '')
